@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>{{head-title}} for {{salesperson.name}}</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css">
+		<script type="text/javascript" src="/javascript/mustache.min.js"></script>
+		<script>
+		
+			var template;
+		
+			function pageInit() {
+		
+				// Get the template.
+				// In this case, the template is the entire HTML document.
+				template = document.getElementsByTagName('html')[0].innerHTML;
+				// console.log(template);	
+				
+				// Do the initial load of remote content.
+				remoteContentGet();	
+				
+			}
+			
+			function remoteContentGet() {  							
+						
+				requestObject = xmlHttpRequestGet();
+		
+				if (requestObject != null) {
+					document.getElementsByTagName('body')[0].innerHTML = ''
+						+ '<p style="margin: auto; text-align: center;"><img src="/images/loading.png" width=24 /></p>';
+					requestObject.open("GET", "/data", true);
+					requestObject.onerror = function(e) { pageUpdateError(e); };
+					requestObject.onreadystatechange = function(){ pageUpdateSuccess(); };
+					requestObject.send(null); 
+				}		
+				
+			}				
+		
+			function xmlHttpRequestGet() {
+	
+				if (window.XMLHttpRequest) {
+					return new XMLHttpRequest();
+				} else {
+					alert("Your browser does not support XMLHttpRequest.");
+					return null;
+				}
+
+			}		
+							
+			function pageUpdateSuccess() {   
+								
+				if (requestObject.readyState == 4) {
+				
+					// Specify the data to merge with the template.
+					var data = JSON.parse(requestObject.responseText);
+					// console.log(JSON.stringify(data));
+				
+					// Merge the data with the template and replace the document
+					// with the rendered content.
+					document.getElementsByTagName('html')[0].innerHTML = Mustache.render(template, data);					
+					
+				}
+		
+			}	
+			
+			function pageUpdateError(e) {   
+			
+				// console.log("Error Status: " + e.target.status);
+				document.getElementsByTagName('body')[0].innerHTML = ''
+					+ '<p style="text-align: center; font-size: 24pt; color: red;">Updating failed.</p>'
+					+ '<p style="text-align: center;"><a href="#" onclick="remoteContentGet();">Try again?</a></p>';
+		
+			}							
+					
+		</script>		
+	</head>
+
+	<body onload="pageInit();">
+	
+		<div class="pagewrapper">
+	
+			<h1>Sales Report</h1>
+			<p>
+			Sales Person Name: {{salesperson.name}}<br />
+			Sales Person Number: {{salesperson.number}}
+			</p>
+	
+			<table class="gridtable" id="orders" width="100%">
+				<thead>
+					<tr>				
+						<th>Customer</th>
+						<th>Order #</th>
+						<th style="text-align: right;">Order Total</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<!--{{#orders}}-->				
+						<tr>
+							<td><a href="{{customer.url}}" target="_new">{{customer.name}}</a></td>
+							<td>{{order-number}}</td>
+							<td style="text-align: right;">${{amount}}</td>
+						</tr>		
+					<!--{{/orders}}-->
+				</tbody>
+			
+			</table>
+		
+			<p>
+			<a href="#" onclick="remoteContentGet();">Refresh the Table</a>
+			</p>
+		
+			<p>
+			Generated on {{system.date.longdate}} @ {{system.date.shorttime}}.
+			</p>	
+		
+			<p>
+			Made with Xojo {{system.meta.xojo-version}} &amp; Aloe Express {{system.meta.aloe-version}}.
+			</p>
+		
+		</div>
+					
+	</body>
+	
+</html>

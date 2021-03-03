@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<title>Aloe Express WebSockets Demo</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/stylesheet.css" />	
+
+		<script type="text/javascript">
+	
+			// The WebSocket connection.
+			var connection;
+			
+			// The username that the user provides before connecting.
+			var username;
+						
+			// The server that will be connect to.
+			var server = 'wss://' + window.location.host;
+			
+			// If we are not connecting securely...
+			if ( window.location.protocol == 'http:' ) {
+				server = 'ws://' + window.location.host;
+			}
+			
+			// Processes a request to join the chat.
+			function joinChat() {
+				username = document.getElementById('username').value;
+				if (username != "") {
+					document.getElementById('register').setAttribute("style", "display: none;");
+					connect();
+				}
+			}
+			
+			// Processes a request to leave the chat.
+			function leaveChat() {	
+				var x = window.confirm("Are you sure you want to leave the chat?");
+				if (!x) {
+					return;
+				}			
+				payload = {};			
+				payload.username = encodeURI(username);
+				payload.type = "leave";
+				connection.send(JSON.stringify(payload));																	
+			}			
+					
+			// Processes a WebSocket connection request, and configures the socket's events.	
+			function connect() {
+			
+				connection = new WebSocket(server + '/chat');
+
+				connection.onmessage = function (payload) {
+					var payloadJSON;
+					try {
+						payloadJSON = JSON.parse(payload.data);	
+					} catch(err) {
+						// A message has been received that cannot be parsed. We just ignore it.
+					}
+					if (payloadJSON.type == "message") {
+						document.getElementById("transcript").innerHTML = "<b>" + decodeURI(payloadJSON.username) + "</b>: " + decodeURI(payloadJSON.message) + "<br>" + transcript.innerHTML;	
+					}					
+				};
+	
+				connection.onerror = function (error) {
+					document.getElementById("transcript").innerHTML = "<span style=\"color: red;\"><span style=\"font-weight: bold;\">Error</span>: " + error + "</span><br>" + transcript.innerHTML;
+				};
+	
+				connection.onopen = function () {	
+					document.getElementById("transcript").innerHTML = "";			
+					document.getElementById('chat').setAttribute("style", "display: block;");
+					document.getElementById("message").focus();					
+					payload = {};			
+					payload.username = encodeURI(username);
+					payload.type = "join";
+					connection.send(JSON.stringify(payload));		
+				};
+				
+				connection.onclose = function () {
+					document.getElementById('register').setAttribute("style", "display: block;");
+					document.getElementById('chat').setAttribute("style", "display: none;");				
+					alert("You have been disconnected from the chat.");
+				};
+				
+				window.onbeforeunload = function() {
+					payload = {};			
+					payload.username = encodeURI(username);
+					payload.type = "leave";
+					connection.send(JSON.stringify(payload));	
+				};
+								
+			}
+			
+			// Processes a request to send / broadcast a message.
+			function sendMessage() {	
+				var message = document.getElementById('message').value;	
+				if ( message == "" ) {
+					return;
+				}
+				message = message.replace(/"/g,'&quot;');
+				payload = {};			
+				payload.username = encodeURI(username);
+				payload.type = "message";
+				payload.message = message;		
+				// Strip HTML tags from the message.
+				var regex = /(<([^>]+)>)/ig;
+				payload.message = payload.message.replace(regex, "");	
+				payload.message = encodeURI(payload.message);	
+				connection.send(JSON.stringify(payload));
+				document.getElementById('message').value = '';
+				document.getElementById("message").focus();
+			}
+			
+			// Sends a request to get a list of users.
+			function who() {			
+				payload = {};			
+				payload.type = "who";
+				connection.send(JSON.stringify(payload));
+			}			
+		
+		</script>				
+					
+	</head>
+
+	<body style="background-color: #eee;">	
+	
+		<div id="page-wrapper" style="margin: 0 auto; width: 90%; border: 1px solid #ccc; padding: 24px; background-color: #fff;">
+		
+			<h1 style="text-align: center; font-size: 18pt;">Aloe Express WebSockets Demo</h1>
+		
+			<div id="register">
+				<div style="text-align: center; padding: 24px;">
+					<form id="join" action="#" onSubmit="joinChat(); return false;">
+					<label for="username">Select a username: </label>
+					<input type="text" id="username" autofocus />
+					<input type="submit" valut="Join" />		
+					</form>
+				</div>
+			</div>		
+				
+			<div id="chat" style="display: none;">
+				<div id="transcript" style="height: 300px; overflow: scroll; margin: 0 auto; border: 1px solid #eee; padding: 9px;"></div>
+				<form id="chat" action="#" onSubmit="sendMessage(); return false">
+				<input type="text" id="message" style="display: block; margin: 0 auto; margin-top: 20px; height: 50px; width: 100%; font-size: 16px;" placeholder="Type a message and click return..." />		
+				</form>
+		
+				<p style="text-align: center;">
+				<button type="button" onClick="who();">Who</button>		
+				<button type="button" onClick="leaveChat();">Leave</button>		
+				</p>	
+			</div>	
+		
+		</div>		
+
+	</body>
+	
+</html>

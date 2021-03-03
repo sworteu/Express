@@ -1,0 +1,59 @@
+body {
+	margin: 5%;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4em;
+    color: #333;
+    padding: 0; 
+    background: #eee;    
+}
+
+h1 {
+    font-weight: 400;
+    border-bottom: 1px solid #666666;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+div.pagewrapper {
+	margin: auto;
+	padding: 5%;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-radius: 12px;
+	max-width: 800px;
+}
+
+/* Grid Table */
+table.gridtable {
+	font-family: Helvetica, verdana, arial, sans-serif;
+	font-size: 11pt;
+	color: #333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 9px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+	text-align: left;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 9px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+	vertical-align: top;
+}
+
+

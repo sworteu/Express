@@ -1,11 +1,30 @@
 # Xojo (formerly REALbasic and Real Studio)
 
+# Build apps, folder and files
 Builds*
+
+# Debug apps, folders and files
 *.debug
 *.debug.app
+*Debug*
+Debug*
+*Debug
 Debug*.exe
 Debug*/Debug*.exe
 Debug*/Debug*\ Libs
-*.rbuistate
+
+# Personal files per IDE instance
 *.xojo_uistate
-*.obsolete
+*.rbuistate
+
+# Obsolete files
+*.obsolete*
+
+buildoutput.txt
+
+# MacOS Specific files to ignore
+*.DS_Store
+
+# Ignore other types of projects (this way it can't be commited as a different type)
+*.xojo_binary_project
+*.xojo_xml_project

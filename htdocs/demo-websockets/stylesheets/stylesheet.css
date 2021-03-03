@@ -1,0 +1,86 @@
+body {
+    margin: 50px;   
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4em;
+    color: #333;
+    padding: 0;     
+}
+
+.page-wrapper {
+    background: #ffffff; 
+    padding: 24px; 
+    width: 600px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    margin-top: 24px; 
+    margin-bottom: 24px;
+}
+
+.content-wrapper {
+    margin-top: 0px;
+    padding: 0px;
+}
+
+.header-wrapper {
+    width: 100%; 
+    text-align: left; 
+    font-size: 18pt; 
+    font-weight: bold; 
+    color: #00B9E6;
+    padding-bottom: 9px; 
+    margin-bottom: 0px; 
+}
+
+.nav-wrapper {     
+    margin-top: 0px; 
+    margin-bottom: 48px;
+}
+
+h1 {
+    margin-top: 24px;
+    font-weight: 200;
+}
+
+h2 {
+    margin-top: 48px;
+    font-weight: 200;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+ul {
+    padding-left: 0px;
+    list-style-position: inside;
+}
+
+
+/* Grid Table */
+table.gridtable {
+	font-family: Helvetica, verdana, arial, sans-serif;
+	font-size: 12px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+	text-align: left;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+	vertical-align: top;
+}

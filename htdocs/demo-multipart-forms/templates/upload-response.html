@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Aloe Multipart Form Demo</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css">
+		<script type="text/javascript" src="/javascript/handlebars.min-v4.0.11.js"></script>
+	</head>
+
+	<body>
+	
+		<div class="pagewrapper">
+	
+			<h1>Multipart Form Demo</h1>
+			
+			<!-- This is the div in which the merged HTML will be displayed. -->
+			<div class="merged-html" id="merged-html"></div>						
+
+		</div>
+					
+	</body>
+	
+	
+	<!-- This is the template. -->
+	<script id="template-script" type="text/x-handlebars-template">
+	
+		<h2 style="margin-top: 36px;">Files</h2>
+		{{#files}}
+		<p>
+		<span style="color: #777777;">{{FieldName}}:</span><br />
+		{{#if Filename}}
+			File Name: {{Filename}}<br />
+			File Type: {{ContentType}}<br />
+			File Size: {{ContentLength}} bytes<br />
+			Saved File Name: {{SavedFilename}}<br />
+			Saved File Path: {{NativePath}}<br />
+		{{else}}
+			<span style="color: red;">No file uploaded.</span>
+		{{/if}}
+		</p>
+		{{/files}}
+		
+		
+		<hr style="margin-top: 24px; margin-bottom: 24px; border: 0; border-bottom: 1px dashed #ccc; background: #999;">
+	
+		<h2>Fields</h2>
+		{{#fields}}
+		<p>
+		<span style="color: #777777;">{{Name}}:</span><br />
+		{{#if Value}}
+			{{Value}}
+		{{else}}
+			<span style="color: red;">N/A</span>
+		{{/if}}
+		</p>
+		{{/fields}}	
+	
+	</script>	
+	
+	
+	<!-- This is the script that performs the merge. -->
+	<script>
+
+		// Specify the data to merge with the template.
+		var data = [[data]];
+		// console.log(JSON.stringify(data));
+
+		// Get the template source.
+		var source = document.getElementById("template-script").innerHTML;
+	
+		// Compile the template source.
+		var template = Handlebars.compile(source);	
+	
+		// Merge the template with the data.
+		var mergedHTML = template(data);	
+
+		// Display the merged HTML.
+		document.getElementById('merged-html').innerHTML = mergedHTML;								
+			
+	</script>	
+	
+	
+</html>

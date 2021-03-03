@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Aloe Express Caching Demo</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css">
+	</head>
+
+	<body>
+	
+		<h1>Best Drummers of All Time</h1>
+		
+		<table class="gridtable" width="100%">
+			<tr>
+				<th width="10%">Rank</th>
+				<th width="10%">Votes</th>
+				<th width="30%">Drummer</th>
+				<th width="50%">Band</th>
+			<tr>
+			<script>rank = 0;</script>
+			{{#drummers}}
+				<tr>				
+					<td><script>rank = rank + 1; document.write(rank);</script></td>
+					<td>{{drummers.Votes}}</td>
+					<td><a href="{{drummers.URL}}" target=""_new"">{{drummers.Drummer_Name}}</a></td>
+					<td>{{drummers.Band_Name}}</td>				
+				<tr>		
+			{{/drummers}}
+		</table>
+				
+		<script>
+			if ({{cached}}) {
+				document.write('<p style="color: green;">This response was much faster because the table was pulled from the cache.</p>');
+				document.write('<p>The data will remain in the cache until {{cacheExpiration}}.</p>');				
+			} else {
+				document.write('<p style="color: red;">This response was slow because we simulated a slow database connection / query.</p>');
+				document.write('<p>The data is now cached, and it will remain in the cache until {{cacheExpiration}}. Responses will be faster until that time.</p>');
+				document.write('<p><a href=""."">Click here</a> to reload the page.</p>');
+			}
+		</script>		
+		
+	</body>
+	
+</html>

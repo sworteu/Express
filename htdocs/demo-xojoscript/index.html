@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<title>Aloe Express Demo</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/stylesheet.css" />		
+	</head>
+
+	<body>		
+		
+		<h1 style="font-size: 24pt;"><xojoscript>Print("XojoScript Demo")</xojoscript></h1>	
+		
+		<p>
+		<xojoscript>Print(Left("XojoScript", 4))</xojoscript> rocks!
+		</p>
+
+		<p>
+		<xojoscript>
+		Dim Minutes As Double = SystemUptimeMinutes
+		Var Seconds As Double = SystemUptimeSeconds
+		Print("The server device that this app is running on has been up for " + Str(Minutes) + " minutes or "+Str(seconds)+" seconds.")
+		Minutes = SoftwareUptimeMinutes
+		Seconds = SoftwareUptimeSeconds
+		Print("The software is running for " + Str(Minutes) + " minutes or " + Str(seconds) + " seconds.")
+		</xojoscript>
+		</p>
+		
+		<p>
+		<xojoscript>
+		' This is a comment.
+		Print("Here's some text. ")
+		Print("And here's some more.")
+		</xojoscript>
+		</p>
+		
+		<p>
+		Loop:<br />
+		<xojoscript>
+		For i As Integer = 0 to 1000
+			Print(Str(i) + " ")
+		Next
+		</xojoscript>
+		</p>
+		
+		<p>
+		Replace Javascript:<br />
+		<xojoscript>
+		Print(Replace("JavaScript is eating the world.", "Javascript", "<b>Xojo</b>"))
+		</xojoscript>
+		</p>	
+		
+		<p>
+		<xojoscript>
+		Print(This will throw an error, and Aloe will render it as a comment.)
+		</xojoscript>
+		</p>			
+
+	</body>
+	
+</html>
+
