@@ -16,6 +16,8 @@ Inherits ConsoleApplication
 		  // This is used by the DemoCaching demo module.
 		  Server.CachingEnabled = True
 		  
+		  server.KeepAlive = True
+		  
 		  //Pass any additional information to be displayed with Server.ServerInfoDisplay
 		  //Dim info As New Dictionary
 		  //info.Value( "My App Version" ) = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
@@ -31,7 +33,7 @@ Inherits ConsoleApplication
 		Function UnhandledException(error As RuntimeException) As Boolean
 		  Var exceptionType As Introspection.TypeInfo = Introspection.GetType(error)
 		  
-		  System.Log System.LogLevelCritical, CurrentMethodName + ", " + exceptionType  
+		  System.Log System.LogLevelCritical, CurrentMethodName + ", " + exceptionType.FullName
 		  System.Log System.LogLevelCritical, "Message: " + error.Message
 		  System.Log System.LogLevelCritical, "Error Number: " + error.ErrorNumber.ToString
 		  
@@ -58,18 +60,12 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h0
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
+		  #Pragma Unused Response // For now unused
+		  
 		  // Processes an HTTP request.
 		  
-		  
-		  #If Not DebugBuild Then
-		    #Pragma Warning "Remove LOADER IO on export"
-		    If Request.Path.BeginsWith("/loaderio-0f83885408f2ffdae25b8623af2fd8e7") Then
-		      Request.Response.Content = "loaderio-0f83885408f2ffdae25b8623af2fd8e7"
-		      Request.Response.Headers.Value("Content-Type") = "text/plain"
-		      Request.Response.Status = "200 OK"
-		      Return
-		    End If
-		  #EndIf
+		  Var host As String = Request.Headers.Value("Host").StringValue
+		  // - This is the requested host (domain) name.
 		  
 		  
 		  // Uncomment the demo module that you want to use.
@@ -102,7 +98,7 @@ Inherits ConsoleApplication
 		  'DemoWebSockets.RequestProcess(Request)
 		  
 		  // Demonstrates Xojoscript support.
-		  DemoXojoScript.RequestProcess(Request)
+		  'DemoXojoScript.RequestProcess(Request)
 		  
 		  // Express.ServerThread demo.
 		  // *** Before using this demo... *** 
