@@ -235,7 +235,7 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0
 		Sub Constructor(Server As Express.Server)
 		  // Associate this request (socket) with its server.
-		  Self.Server = Server
+		  Self.Server = Server // Converts this instance value to a weakref internally.
 		  
 		  // Inherit properties from the server.
 		  Multithreading = Server.Multithreading
@@ -268,7 +268,6 @@ Inherits SSLSocket
 		  // Creates a dictionary representing the request cookies.
 		  // The cookies are delivered as a request header, like this:
 		  // Cookie: x=12; y=124
-		  
 		  
 		  // Create the dictionary.
 		  Cookies = New Dictionary
@@ -557,7 +556,6 @@ Inherits SSLSocket
 		    
 		  End If
 		  
-		  
 		  // If the folder item exists and it is not a directory...
 		  If FI.Exists And FI.IsFolder = False Then
 		    
@@ -565,6 +563,7 @@ Inherits SSLSocket
 		    If UseETags Then
 		      
 		      // Generate the current Etag for the file.
+		      Const quote As String = """"
 		      Dim CurrentEtag As String 
 		      CurrentEtag = MD5(FI.NativePath)
 		      CurrentEtag = EncodeHex(CurrentEtag)
@@ -581,8 +580,8 @@ Inherits SSLSocket
 		        Return
 		      End If
 		      
-		      // Add an Etag header.
-		      Response.Headers.Value("ETag") = CurrentEtag
+		      // Add an Etag header. (rfc says the string must have quotes "")
+		      Response.Headers.Value("ETag") = quote + CurrentEtag +  quote
 		      
 		    End If
 		    
@@ -1388,8 +1387,31 @@ Inherits SSLSocket
 		Response As Express.Response
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And ServerRef IsA Express.Server Then
+			    Return Express.Server(Self.ServerRef)
+			  End If
+			  
+			  Return Nil
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  If value = Nil Then
+			    Self.ServerRef = Nil
+			    Return
+			  End If
+			  
+			  Self.ServerRef = New WeakRef(value)
+			End Set
+		#tag EndSetter
 		Server As Express.Server
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h21
+		Private ServerRef As WeakRef
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
