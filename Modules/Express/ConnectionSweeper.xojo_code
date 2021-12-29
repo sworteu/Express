@@ -17,7 +17,7 @@ Inherits Timer
 	#tag Method, Flags = &h0
 		Sub Constructor(Server As Express.Server)
 		  // Store the server.
-		  Self.Server = Server
+		  Self.Server = Server // Stored as a weakref internally
 		  
 		  // Schedule the Sweep process.
 		  Period = Server.ConnSweepIntervalSecs * 1000
@@ -133,8 +133,31 @@ Inherits Timer
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And Self.ServerRef.Value IsA Express.Server Then
+			    Return Express.Server(Self.ServerRef.Value)
+			  End If
+			  
+			  Return Nil
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  If value = Nil Then
+			    Self.ServerRef = Nil
+			    Return
+			  End If
+			  
+			  Self.ServerRef = New WeakRef(value)
+			End Set
+		#tag EndSetter
 		Server As Express.Server
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h21
+		Private ServerRef As WeakRef
 	#tag EndProperty
 
 
