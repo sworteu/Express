@@ -192,7 +192,7 @@ Protected Class MustacheLite
 		  // Add the Meta object.
 		  Dim MetaData As New JSONItem
 		  MetaData.Value("xojo-version") = XojoVersionString
-		  MetaData.Value("express-version") = Express.VersionString
+		  MetaData.Value("express-version") = Express.VERSION_STRING
 		  SystemData.Value("meta") = MetaData
 		  
 		  // Add the Request object.

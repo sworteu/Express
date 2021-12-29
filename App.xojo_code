@@ -60,13 +60,13 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h0
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
-		  #Pragma Unused Response // For now unused
+		  //#Pragma Unused Response // For now unused
 		  
 		  // Processes an HTTP request.
 		  
 		  Var host As String = Request.Headers.Value("Host").StringValue
 		  // - This is the requested host (domain) name.
-		  
+		  Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
 		  
 		  // Uncomment the demo module that you want to use.
 		  'Break

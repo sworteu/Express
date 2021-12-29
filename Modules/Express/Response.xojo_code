@@ -180,7 +180,7 @@ Protected Class Response
 		  
 		  // Set debug-related headers if applicable...
 		  #If DebugBuild Then
-		    Headers.Value("X-Express-Version") = Express.VersionString
+		    Headers.Value("X-Express-Version") = Express.VERSION_STRING
 		    Headers.Value("X-Host") = Request.Headers.Lookup("Host", "")
 		    Headers.Value("X-Last-Connect") = Request.LastConnect.SQLDateTime
 		    Headers.Value("X-Socket-ID") = Request.SocketID

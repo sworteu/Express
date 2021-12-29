@@ -24,7 +24,6 @@ Protected Module Express
 	#tag Method, Flags = &h0
 		Function BlockGet(Source As String, TokenBegin As String, TokenEnd As String, Start As Integer = 0) As String
 		  
-		  
 		  Dim Content As String
 		  
 		  // Get the start position of the beginning token.
@@ -930,12 +929,6 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function VersionString() As String
-		  Return "5.0.0"
-		End Function
-	#tag EndMethod
-
 
 	#tag Note, Name = 0.0.0 ORIGINAL AUTHOR
 		
@@ -1372,23 +1365,6 @@ Protected Module Express
 		- Fixed a bug where the StaticPath in some examples was set to the wrong main folder (parent.parent.. changed to parent..)
 	#tag EndNote
 
-	#tag Note, Name = 5.0.0 - Express - API 2.0
-		"AloeExpress" became "Express"
-		
-		
-		Major changes:
-		- Changed project name to "Express" from "AloeExpress" 
-		- Added Express.Response as the second parameter of the RequestHandler
-		- Moved Request handling to Dictionary lookup based by default for dynamic requests. 
-		For Static files (or with xojoscript handling) it will be checked if it's a valid path into the "public_html" folder. 
-		If the path is invalid a 404 will be given, if it's valid and parsable it will be checked for xojoscript (if .htm, .html or .xs and will be executed if it 
-		exists inside the file, otherwise if will just forward the file.
-		
-		- Removed slower functions and classes. Replaced JSONItem with Dictionary (ParseJSON, GenerateJSON) to improve speed.
-		- Removed functions to go from primitives to boolean, string, integer etc. Since API 2.0 has those natively using .ToString, FromString etc.
-		
-	#tag EndNote
-
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1410,6 +1386,32 @@ Protected Module Express
 		
 		
 		
+	#tag EndNote
+
+	#tag Note, Name = Express 5.0.0 - API 2.0
+		"AloeExpress" converted to (fork) "Express"
+		
+		
+		Major changes:
+		- Changed project name to "Express" from "AloeExpress" 
+		- Added Express.Response as the second parameter of the RequestHandler
+		- Moved Request handling to Dictionary lookup based by default for dynamic requests. 
+		For Static files (or with xojoscript handling) it will be checked if it's a valid path into the "public_html" folder. 
+		If the path is invalid a 404 will be given, if it's valid and parsable it will be checked for xojoscript (if .htm, .html or .xs and will be executed if it 
+		exists inside the file, otherwise if will just forward the file.
+		
+		- Removed slower functions and classes. Replaced JSONItem with Dictionary (ParseJSON, GenerateJSON) to improve speed.
+		- Removed functions to go from primitives to boolean, string, integer etc. Since API 2.0 has those natively using .ToString, FromString etc.
+		
+	#tag EndNote
+
+	#tag Note, Name = Express 5.0.1
+		
+		- Fixed serveral minor issues.
+		- Improved memory leak free coding, now using weakref and conversions for server/client.
+		- Removed loggin module, suggest using System.Log instead 
+		for improved loggin capabilities provided by the system.
+		- Express.VERSION_STRING is now a constant.
 	#tag EndNote
 
 	#tag Note, Name = License
@@ -1464,7 +1466,7 @@ Protected Module Express
 		and for helping with the WebSocket testing.
 		
 		Derk Jochems for suggesting the Request.PathItems concept, which makes it much
-		easier to route and process reqeusts.
+		easier to route and process reqeusts. And fixing several socket parsing issues.
 		
 		Wes Westhaver for reporting issues that he found with regards to non-HTTP requests.
 		
@@ -1481,6 +1483,10 @@ Protected Module Express
 	#tag Property, Flags = &h0
 		StartTimestamp As DateTime
 	#tag EndProperty
+
+
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"5.0.1", Scope = Public
+	#tag EndConstant
 
 
 	#tag Enum, Name = LogLevel, Type = Integer, Flags = &h0

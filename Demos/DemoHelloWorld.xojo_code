@@ -18,7 +18,7 @@ Protected Module DemoHelloWorld
 		    Request.Response.Content = "<link rel=""stylesheet"" type=""text/css"" media=""all"" href=""/stylesheets/stylesheet.css"" />" _
 		    + "<p style=""margin-top: 24px; text-align: center; font-size: 24pt;"">Hello again!</p>" _
 		    + "<p style=""text-align: center; font-size: 14pt;"">This is a dynamically generated response.</p>" _
-		    + "<p style=""text-align: center; font-size: 14pt;"">This is a demo of Aloe Express " + Express.VersionString + ".</p>" _
+		    + "<p style=""text-align: center; font-size: 14pt;"">This is a demo of Aloe Express " + Express.VERSION_STRING + ".</p>" _
 		    + "<p style=""text-align: center; font-size: 14pt;"">You're running Xojo " + XojoVersionString + ".</p>" _
 		    + "<p style=""text-align: center; font-size: 14pt;"">The date and time is " + Now + ".</p>"
 		    

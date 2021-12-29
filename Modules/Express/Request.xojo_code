@@ -942,7 +942,7 @@ Inherits SSLSocket
 		  
 		  // Set the response content.
 		  Response.Content = NotFoundContent
-		  Response.Content = Response.Content.ReplaceAll("[[ServerType]]", "Xojo/" + XojoVersionString + "+ AloeExpress/" + Express.VersionString)
+		  Response.Content = Response.Content.ReplaceAll("[[ServerType]]", "Xojo/" + XojoVersionString + "+ AloeExpress/" + Express.VERSION_STRING)
 		  Response.Content = Response.Content.ReplaceAll("[[Host]]", Headers.Lookup("Host", ""))
 		  Response.Content = Response.Content.ReplaceAll("[[Path]]", Path)
 		  
@@ -1390,8 +1390,8 @@ Inherits SSLSocket
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
 			Get
-			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And ServerRef IsA Express.Server Then
-			    Return Express.Server(Self.ServerRef)
+			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And ServerRef.Value IsA Express.Server Then
+			    Return Express.Server(Self.ServerRef.Value)
 			  End If
 			  
 			  Return Nil

@@ -13,6 +13,10 @@ Inherits ServerSocket
 		    Dim NewSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
+		    #If DebugBuild Then
+		      System.DebugLog CurrentMethodName + ", socket: " + CurrentSocketID.ToString
+		    #EndIf
+		    
 		    // Return the socket.
 		    Return NewSocket
 		    
@@ -24,6 +28,8 @@ Inherits ServerSocket
 		    System.DebugLog "Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
 		    
 		  End Try
+		  
+		  
 		End Function
 	#tag EndEvent
 
@@ -64,8 +70,9 @@ Inherits ServerSocket
 		  #Else
 		    Port = 80
 		  #EndIf
+		  
 		  MaximumSocketsConnected = 5000
-		  MinimumSocketsAvailable = 1000
+		  MinimumSocketsAvailable = 10
 		  Secure = False
 		  ConnectionType = SSLSocket.SSLConnectionTypes.TLSv12
 		  'CertificateFile = App.ExecutableFile.Parent.Parent.Child("certificates").Child("default-certificate.crt")
@@ -147,7 +154,7 @@ Inherits ServerSocket
 		  Dim Info As String = EndOfLine + EndOfLine _
 		  + Name + " has started... " + EndOfLine _
 		  + "• Xojo Version: " + XojoVersionString + EndOfLine _
-		  + "• Aloe Express Version: " + Express.VersionString + EndOfLine _
+		  + "• Aloe Express Version: " + Express.VERSION_STRING + EndOfLine _
 		  + "• Caching: " + If(CachingEnabled , "Enabled", "Disabled") + EndOfLine _
 		  + "• Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds" + EndOfLine _
 		  + "• Loopback: " + If(Loopback , "Enabled", "Disabled") + EndOfLine _
@@ -295,7 +302,7 @@ Inherits ServerSocket
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		CurrentSocketID As Integer
+		CurrentSocketID As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

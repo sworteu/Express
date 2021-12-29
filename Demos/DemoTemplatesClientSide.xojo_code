@@ -102,7 +102,7 @@ Protected Module DemoTemplatesClientSide
 		  // Add the Meta object.
 		  Dim MetaData As New Dictionary
 		  MetaData.Value("xojo-version") = XojoVersionString
-		  MetaData.Value("express-version") = Express.VersionString
+		  MetaData.Value("express-version") = Express.VERSION_STRING
 		  
 		  // Add the Request object.
 		  Dim RequestData As New Dictionary
