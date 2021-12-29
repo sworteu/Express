@@ -24,11 +24,6 @@ Protected Module DemoLogging
 		    
 		  End If
 		  
-		  // Log the request.
-		  Dim Logger As New Express.Logger
-		  Logger.Folder = App.ExecutableFile.Parent.Parent.Child("logs")
-		  Logger.Request = Request
-		  Logger.Start
 		End Sub
 	#tag EndMethod
 
