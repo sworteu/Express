@@ -46,6 +46,7 @@ Protected Class MustacheLite
 		    
 		    // Use introspection to determine the entry's value type.
 		    Dim ValueType As Introspection.TypeInfo = Introspection.GetType(Value)
+		    If ValueType = Nil Then Continue
 		    
 		    // If the value is a boolean, number, string, etc..
 		    If ValueType.IsPrimitive Then

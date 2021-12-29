@@ -13,10 +13,6 @@ Inherits ServerSocket
 		    Dim NewSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
-		    #If DebugBuild Then
-		      System.DebugLog CurrentMethodName + ", socket: " + CurrentSocketID.ToString
-		    #EndIf
-		    
 		    // Return the socket.
 		    Return NewSocket
 		    

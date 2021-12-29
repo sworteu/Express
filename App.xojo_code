@@ -64,9 +64,9 @@ Inherits ConsoleApplication
 		  
 		  // Processes an HTTP request.
 		  
-		  Var host As String = Request.Headers.Value("Host").StringValue
+		  'Var host As String = Request.Headers.Value("Host").StringValue
 		  // - This is the requested host (domain) name.
-		  Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
+		  'Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
 		  
 		  // Uncomment the demo module that you want to use.
 		  'Break
@@ -98,7 +98,7 @@ Inherits ConsoleApplication
 		  'DemoWebSockets.RequestProcess(Request)
 		  
 		  // Demonstrates Xojoscript support.
-		  'DemoXojoScript.RequestProcess(Request)
+		  DemoXojoScript.RequestProcess(Request)
 		  
 		  // Express.ServerThread demo.
 		  // *** Before using this demo... *** 
