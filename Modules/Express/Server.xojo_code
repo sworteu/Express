@@ -13,9 +13,6 @@ Inherits ServerSocket
 		    Dim NewSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
-		    // Append the socket to the array.
-		    'Sockets.AddRow(NewSocket)
-		    
 		    // Return the socket.
 		    Return NewSocket
 		    
