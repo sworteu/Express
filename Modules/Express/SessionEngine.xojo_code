@@ -4,7 +4,49 @@ Inherits Timer
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Event
 		Sub Action()
-		  SessionsSweep
+		  // Removes any expired sessions from the Sessions array.
+		  // This prevents the array from growing unnecessarily due to orphaned sessions.
+		  
+		  #If Not DebugBuild Then
+		    #Pragma BackgroundTasks False
+		  #EndIf
+		  
+		  // Get the current date/time.
+		  Dim Now As DateTime = DateTime.Now
+		  
+		  // This is an array of the session IDs that have expired.
+		  Dim ExpiredSessionIDs() As String
+		  
+		  // Prepare variables outside of the loops to improve speed.
+		  Var SessionKeys() As Variant = Sessions.Keys
+		  Var Key As Variant, Session As Dictionary, LastRequestTimestamp As DateTime, TimeElapsedSecs As Double
+		  
+		  // Loop over the dictionary entries...
+		  For Each Key In SessionKeys
+		    
+		    // Get the entry's value.
+		    Session = Sessions.Value(Key)
+		    
+		    // Get the session's LastRequestTimestamp.
+		    LastRequestTimestamp = Session.Value("LastRequestTimestamp")
+		    
+		    // Determine the time that has elapsed since the last request.
+		    TimeElapsedSecs = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
+		    
+		    // If the session has expired...
+		    If TimeElapsedSecs > SessionsTimeOutSecs Then
+		      
+		      // Append the session's key to the array.
+		      ExpiredSessionIDs.Add(Key)
+		      
+		    End If
+		    
+		  Next
+		  
+		  // Removed the expired sessions...
+		  For Each SessionID As String In ExpiredSessionIDs
+		    Sessions.Remove(SessionID)
+		  Next
 		  
 		  
 		End Sub
@@ -43,22 +85,17 @@ Inherits Timer
 		  // If an existing session is available, then it is returned.
 		  // Otherwise a new session is created and returned.
 		  
-		  
 		  // This is the session that we'll return.
 		  Dim Session As Dictionary
-		  
 		  
 		  // This will be used if a new SessionID is assigned.
 		  Dim NewSessionID As String
 		  
-		  
 		  // Get the current date/time.
 		  Dim Now As DateTime = DateTime.Now
 		  
-		  
 		  // Get the original Session ID, if applicable.
 		  Dim OriginalSessionID As String = Request.Cookies.Lookup("SessionID", "")
-		  
 		  
 		  // If the user has a Session ID cookie...
 		  If OriginalSessionID <> "" Then
@@ -89,7 +126,6 @@ Inherits Timer
 		    End If
 		    
 		  End If
-		  
 		  
 		  // If an existing session is available...
 		  If Session <> Nil Then
@@ -140,20 +176,16 @@ Inherits Timer
 		    
 		  End If
 		  
-		  
 		  // Add the session to the Sessions dictionary.
 		  Sessions.Value(NewSessionID) = Session
-		  
 		  
 		  // Set the cookie expiration date.
 		  Dim CookieExpiration As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
 		  CookieExpiration = CookieExpiration.AddInterval( 0, 0, 0, 0, 0, SessionsTimeOutSecs )
 		  
-		  
 		  // Drop the SessionID cookie.
 		  Request.Response.CookieSet("SessionID", NewSessionID, CookieExpiration)
-		  
 		  
 		  // Return the session to the caller.
 		  Return Session
@@ -165,53 +197,9 @@ Inherits Timer
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub SessionsSweep()
-		  // Removes any expired sessions from the Sessions array.
-		  // This prevents the array from growing unnecessarily due to orphaned sessions.
-		  
-		  
-		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
-		  
-		  // This is an array of the session IDs that have expired.
-		  Dim ExpiredSessionIDs() As String
-		  
-		  // Loop over the dictionary entries...
-		  For Each Key As Variant in Sessions.Keys
-		    
-		    // Get the entry's value.
-		    Dim Session As Dictionary = Sessions.Value(Key)
-		    
-		    // Get the session's LastRequestTimestamp.
-		    Dim LastRequestTimestamp As DateTime = Session.Value("LastRequestTimestamp")
-		    
-		    // Determine the time that has elapsed since the last request.
-		    Dim TimeElapsedSecs As Double = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
-		    
-		    // If the session has expired...
-		    If TimeElapsedSecs > SessionsTimeOutSecs Then
-		      
-		      // Append the session's key to the array.
-		      ExpiredSessionIDs.Add(Key)
-		      
-		    End If
-		    
-		  Next
-		  
-		  // Removed the expired sessions...
-		  For Each SessionID As String in ExpiredSessionIDs
-		    Sessions.Remove(SessionID)
-		  Next
-		  
-		  
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub SessionTerminate(Session As Dictionary)
 		  // Terminates a given session.
-		  
 		  
 		  // If the session still exists...
 		  If Sessions.HasKey(Session.Value("SessionID")) Then
