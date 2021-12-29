@@ -197,7 +197,6 @@ Protected Class Response
 		Private Function HeadersToString() As String
 		  // Converts the ResponseHeaders from a dictionary to a string
 		  
-		  
 		  // This is the string that will be returned.
 		  Dim RH As String
 		  
@@ -212,6 +211,10 @@ Protected Class Response
 		  
 		  // Loop over the dictionary entries...
 		  For Each Key As Variant in Headers.Keys
+		    
+		    If key = "" Or Headers.Value(key).StringValue = "" Then
+		      Continue
+		    End If
 		    
 		    // Add the value.
 		    RH = RH + Key + ": " + Headers.Value(Key).StringValue + EndOfLine.Windows
