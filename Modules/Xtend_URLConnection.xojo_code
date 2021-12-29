@@ -1,9 +1,10 @@
-#tag Class
-Protected Class xURLConnection
-Inherits URLConnection
+#tag Module
+Protected Module Xtend_URLConnection
 	#tag Method, Flags = &h0
-		Sub SetMultipartFormData(FormData As Dictionary, Boundary As String = "")
-		  ' Pass the xURLConnection
+		Sub xSetMultipartFormData(Extends con As URLConnection, FormData As Dictionary, Boundary As String = "")
+		  // Code based on 
+		  
+		  ' Pass the URLConnection1
 		  ' a Dictionary containg "Name":"StringValue" Or "Name":FolderItem pairs To be encoded, 
 		  ' along With the boundary String To be used. 
 		  ' To have a boundary generated For you, pass the empty String.
@@ -11,8 +12,8 @@ Inherits URLConnection
 		  ' Dim HTMLForm As New Dictionary
 		  ' HTMLForm.Value("UserName") = "Bob Smith"
 		  ' HTMLForm.Value("Upload") = SpecialFolder.Desktop.Child("Somefile.zip")
-		  ' xURLConnection.SetMultipartFormData(HTMLForm, "") ' pass an empty boundary to generate a new one (default = "")
-		  ' xURLConnection.Send("POST", "www.example.com/uploads.php", 60)
+		  ' URLConnection1.xSetMultipartFormData(HTMLForm, "") ' pass an empty boundary to generate a new one (default = "")
+		  ' URLConnection1.Send("POST", "www.example.com/uploads.php", 60)
 		  ' // Note: handle IOExceptions in the caller of SetMultipartFormData since folderitems can cause such exceptions.
 		  
 		  If Boundary.Trim = "" Then
@@ -50,18 +51,11 @@ Inherits URLConnection
 		  out.Write("--" + Boundary + "--" + CRLF)
 		  out.Close
 		  
-		  Self.SetRequestContent(data, "multipart/form-data; boundary=" + Boundary)
+		  con.SetRequestContent(data, "multipart/form-data; boundary=" + Boundary)
 		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag Note, Name = xURLConnection Xtends
-		
-		This class is part of Xtends (github repo) which contains modules with 
-		extentions for xojo classes, datatypes etc.
-	#tag EndNote
-
-
-End Class
-#tag EndClass
+End Module
+#tag EndModule
