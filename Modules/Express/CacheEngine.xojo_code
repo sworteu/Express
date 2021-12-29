@@ -3,13 +3,56 @@ Protected Class CacheEngine
 Inherits Timer
 	#tag Event
 		Sub Action()
-		  // Removes expired entries from the cache.
-		  Sweep
+		  // Removes expired objects from the cache.
+		  // This prevents the cache from growing unnecessarily due to orphaned objects.
 		  
+		  // Get the current date/time.
+		  Dim Now As DateTime = DateTime.Now
+		  
+		  // This is an array of the cache names that have expired.
+		  Dim ExpiredCacheNames() As String
+		  
+		  // Loop over the entries in the cache array...
+		  For Each Key As Variant In Cache.Keys
+		    
+		    // Get the entry's value.
+		    Dim CacheEntry As Dictionary = Cache.Value(Key)
+		    
+		    // Set the expiration date.
+		    Dim Expiration As DateTime = CacheEntry.Value("Expiration")
+		    
+		    // If the session has expired...
+		    If Now > Expiration Then
+		      
+		      // Append the cache name to the array.
+		      ExpiredCacheNames.Add(Key)
+		      
+		    End If
+		    
+		  Next
+		  
+		  // Removed the cache entries...
+		  For Each CacheName As String In ExpiredCacheNames
+		    Cache.Remove(CacheName)
+		  Next
 		  
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h0
+		Sub Clear()
+		  // Clears the cache.
+		  
+		  Cache = New Dictionary
+		  
+		  
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(SweepIntervalSecs As Integer = 300)
@@ -126,58 +169,6 @@ Inherits Timer
 		  
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Reset()
-		  // Resets the cache.
-		  
-		  Cache = New Dictionary
-		  
-		  
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Sweep()
-		  // Removes expired objects from the cache.
-		  // This prevents the cache from growing unnecessarily due to orphaned objects.
-		  
-		  
-		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
-		  
-		  // This is an array of the cache names that have expired.
-		  Dim ExpiredCacheNames() As String
-		  
-		  // Loop over the entries in the cache array...
-		  For Each Key As Variant in Cache.Keys
-		    
-		    // Get the entry's value.
-		    Dim CacheEntry As Dictionary = Cache.Value(Key)
-		    
-		    // Set the expiration date.
-		    Dim Expiration As DateTime = CacheEntry.Value("Expiration")
-		    
-		    // If the session has expired...
-		    If Now > Expiration Then
-		      
-		      // Append the cache name to the array.
-		      ExpiredCacheNames.Add(Key)
-		      
-		    End If
-		    
-		  Next
-		  
-		  // Removed the cache entries...
-		  For Each CacheName As String in ExpiredCacheNames
-		    Cache.Remove(CacheName)
-		  Next
 		End Sub
 	#tag EndMethod
 
