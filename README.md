@@ -8,8 +8,9 @@ Improvements to code efficiency is in the works and will be the main target for 
 in combination with URLConnection (in for example desktop/ios etc). This improves connectivity 
 and drastically speeds up the connections. This allows for the removal of SSE (server sent events) etc
 and just keep the connection itself (single connection) alive allowing for much more clients to remain
-connected. This directly competes agains Xojo's WebApplication that does NOT allow http Keep-Alive and thus
-is not HTTP/1.1 compilant. Express aims to be as much as we can to be HTTP 1.1 compilant, if something is missing
+connected. This directly competes agains Xojo's WebApplication that does NOT allow http Keep-Alive 
+(at least not in the same App.HandleURL context) and thus is not HTTP/1.1 compilant. 
+Express aims to be as much as we can to be HTTP 1.1 compilant, if something is missing
 please create an issue. 
 
 
