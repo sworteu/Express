@@ -34,7 +34,7 @@ Protected Class MustacheLite
 		  End If
 		  
 		  // Loop over the data object's values...
-		  For Each Key As String In Data.Names
+		  For Each Key As String In Data.Keys
 		    
 		    // Get the value.
 		    Dim Value As Variant = Data.Value(Key)
