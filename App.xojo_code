@@ -19,7 +19,7 @@ Inherits ConsoleApplication
 		  server.KeepAlive = True
 		  
 		  //Pass any additional information to be displayed with Server.ServerInfoDisplay
-		  //Dim info As New Dictionary
+		  //Var info As New Dictionary
 		  //info.Value( "My App Version" ) = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
 		  //Server.AdditionalServerDisplayInfo = info
 		  
