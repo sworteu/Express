@@ -37,7 +37,7 @@ Protected Class Response
 		  
 		  
 		  // Create a dictionary for the cookie's settings.
-		  Dim Cookie As New Dictionary
+		  Var Cookie As New Dictionary
 		  Cookie.Value("Value") = Value
 		  Cookie.Value("Expiration") = Expiration
 		  Cookie.Value("Domain") = Domain
@@ -60,13 +60,13 @@ Protected Class Response
 		  // Adds a cookie to the dictionary.
 		  
 		  // Create the cookie's expiration date.
-		  Dim ExpirationDate As DateTime = DateTime.Now
+		  Var ExpirationDate As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
 		  ExpirationDate = ExpirationDate.AddInterval( 0, 0, ExpirationDate.Day + ExpirationDays, ExpirationDate.Hour + ExpirationHours, ExpirationDate.Minute + ExpirationMinutes, ExpirationDate.Second + ExpirationSeconds )
 		  
 		  
 		  // Create a dictionary for the cookie's settings.
-		  Dim Cookie As New Dictionary
+		  Var Cookie As New Dictionary
 		  Cookie.Value("Value") = Value
 		  Cookie.Value("Expiration") = ExpirationDate
 		  Cookie.Value("Domain") = Domain
@@ -89,20 +89,20 @@ Protected Class Response
 		  // Converts the cookie dictionary entries into header dictionary entries.
 		  
 		  
-		  Dim HeadersString As String
+		  Var HeadersString As String
 		  
 		  // Loop over the dictionary entries...
 		  For Each Key As Variant in Cookies.Keys
 		    
 		    // Get the entry's key and value.
-		    Dim Name As String = Key
-		    Dim Settings As Dictionary = Cookies.Value(Key)
+		    Var Name As String = Key
+		    Var Settings As Dictionary = Cookies.Value(Key)
 		    
 		    // Create the cookie sting.
-		    Dim CookieString As String 
+		    Var CookieString As String 
 		    CookieString = CookieString + URLEncode(Name) + "=" + URLEncode(Settings.Value("Value")) + "; "
 		    If Settings.Value("Expiration") <> Nil Then
-		      Dim ExpirationDate As String = Express.DateToRFC1123(Settings.Value("Expiration"))
+		      Var ExpirationDate As String = Express.DateToRFC1123(Settings.Value("Expiration"))
 		      CookieString = CookieString + "expires=" + ExpirationDate + "; "
 		    End If 
 		    If Settings.Value("Domain") <> Nil Then
@@ -131,7 +131,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h0
 		Function Dump() As String
-		  Dim HTML As String
+		  Var HTML As String
 		  
 		  HTML = HTML + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
 		  
@@ -198,7 +198,7 @@ Protected Class Response
 		  // Converts the ResponseHeaders from a dictionary to a string
 		  
 		  // This is the string that will be returned.
-		  Dim RH As String
+		  Var RH As String
 		  
 		  // Define the encoding for the response headers.
 		  RH = RH.DefineEncoding(Encodings.UTF8)

@@ -11,7 +11,7 @@ Protected Module DemoMultipartForms
 		  If Request.Method = "POST" Then
 		    
 		    // Hand the request off to the form processor.
-		    Dim FP As New FormProcessor(Request)
+		    Var FP As New FormProcessor(Request)
 		    
 		    // This is the folder that files will be uploaded to.
 		    FP.UploadFolder = App.ExecutableFile.Parent.Parent.Child("uploads")
@@ -23,8 +23,8 @@ Protected Module DemoMultipartForms
 		    FP.Process
 		    
 		    // Load the template...
-		    Dim FI as FolderItem = Request.StaticPath.Child("templates").Child("upload-response.html")
-		    Dim Template As String = Express.FileRead(FI)
+		    Var FI as FolderItem = Request.StaticPath.Child("templates").Child("upload-response.html")
+		    Var Template As String = Express.FileRead(FI)
 		    
 		    // Replace tokens.
 		    Template = Template.ReplaceAll("[[data]]", FP.FormData.ToString)

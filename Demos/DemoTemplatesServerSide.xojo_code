@@ -10,7 +10,7 @@ Protected Module DemoTemplatesServerSide
 		  // Process the request based on the path of the requested resource...
 		  If Request.Path = "/" or Request.Path = "/index.html" Then
 		    
-		    Dim Page As New IndexPage
+		    Var Page As New IndexPage
 		    Page.Request = Request
 		    Page.Generate
 		    

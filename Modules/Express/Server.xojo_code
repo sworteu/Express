@@ -10,7 +10,7 @@ Inherits ServerSocket
 		    CurrentSocketID = CurrentSocketID + 1
 		    
 		    // Create a new instance of Request to act as the socket, and assign it an ID.
-		    Dim NewSocket As New Request(Self)
+		    Var NewSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
 		    // Return the socket.
@@ -18,7 +18,7 @@ Inherits ServerSocket
 		    
 		  Catch e As RunTimeException
 		    
-		    Dim TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		    Var TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		    #Pragma Unused TypeInfo
 		    
 		    System.DebugLog "Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
@@ -79,7 +79,7 @@ Inherits ServerSocket
 		  If Args <> Nil Then
 		    
 		    // Convert any command line arguments into a dictionary.
-		    Dim Arguments As Dictionary = ArgsToDictionary(Args)
+		    Var Arguments As Dictionary = ArgsToDictionary(Args)
 		    
 		    // Assign valid arguments to their corresponding properties...
 		    
@@ -123,7 +123,7 @@ Inherits ServerSocket
 		    
 		    //Check for VerboseLogging argument
 		    If Arguments.HasKey("--VerboseLogging") Then
-		      Dim level As String = Arguments.Value("--VerboseLogging")
+		      Var level As String = Arguments.Value("--VerboseLogging")
 		      //If a value has been passed, assign it otherwise we have a default value for the parameter of Debug
 		      //You can call "--VerboseLogging" and get LogLevel.Debug or pass a parameter such as critical to the argument "--VerboseLogging=Critical"
 		      If level <> "" Then
@@ -147,7 +147,7 @@ Inherits ServerSocket
 		Sub ServerInfoDisplay()
 		  // Displays server configuration info.
 		  
-		  Dim Info As String = EndOfLine + EndOfLine _
+		  Var Info As String = EndOfLine + EndOfLine _
 		  + Name + " has started... " + EndOfLine _
 		  + "• Xojo Version: " + XojoVersionString + EndOfLine _
 		  + "• Aloe Express Version: " + Express.VERSION_STRING + EndOfLine _
@@ -170,7 +170,7 @@ Inherits ServerSocket
 		  + "• WebSocket Timeout: " + WSTimeout.ToString + " seconds" + EndOfLine '_
 		  '+ "• Log Level: " + MinimumLogLevel.ToString + EndOfLine
 		  If AdditionalServerDisplayInfo <> Nil Then
-		    Dim keys() As Variant = AdditionalServerDisplayInfo.Keys
+		    Var keys() As Variant = AdditionalServerDisplayInfo.Keys
 		    Var lastKeyIndex As Integer = keys.LastIndex
 		    For i As Integer = 0 To lastKeyIndex
 		      info = info + "• " + keys( i ).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
@@ -194,7 +194,7 @@ Inherits ServerSocket
 		  End If
 		  
 		  // Create a ConnectionSweeper timer object for this server.
-		  Dim Sweeper As New ConnectionSweeper(Self)
+		  Var Sweeper As New ConnectionSweeper(Self)
 		  #Pragma Unused Sweeper
 		  
 		  // If caching is enabled...
@@ -411,7 +411,7 @@ Inherits ServerSocket
 			Name="CurrentSocketID"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

@@ -13,7 +13,7 @@ Protected Module DemoHelloWorld
 		    // Dynamically generate a response.
 		    
 		    // Get the current time in RFC1123 format.
-		    Dim Now As String = Express.DateToRFC1123
+		    Var Now As String = Express.DateToRFC1123
 		    
 		    Request.Response.Content = "<link rel=""stylesheet"" type=""text/css"" media=""all"" href=""/stylesheets/stylesheet.css"" />" _
 		    + "<p style=""margin-top: 24px; text-align: center; font-size: 24pt;"">Hello again!</p>" _

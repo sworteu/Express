@@ -30,15 +30,15 @@ Protected Class Chat
 		Sub JoinProcess()
 		  
 		  // Get the username.
-		  Dim NewUsername As String = Express.URLDecode(Payload.Lookup("username", ""))
+		  Var NewUsername As String = Express.URLDecode(Payload.Lookup("username", ""))
 		  
 		  // Associate the username with the socket.
 		  Request.Custom.Value("username") = NewUsername
 		  
 		  // Get the names of the other users that are online...
-		  Dim Usernames() As String
+		  Var Usernames() As String
 		  For Each WebSockets As Express.Request In Request.Server.WebSockets
-		    Dim Username As String = WebSockets.Custom.Lookup("username", "")
+		    Var Username As String = WebSockets.Custom.Lookup("username", "")
 		    If Username <> NewUsername Then
 		      Usernames.Add(Express.URLEncode(username))
 		    End If
@@ -48,7 +48,7 @@ Protected Class Chat
 		  If Usernames.LastIndex = -1 Then
 		    
 		    // Return the list.
-		    Dim ResponseJSON As New JSONItem
+		    Var ResponseJSON As New JSONItem
 		    ResponseJSON.Value("type") = "message"
 		    ResponseJSON.Value("username") = "Server"
 		    ResponseJSON.Value("message") = "Welcome, " + Express.URLEncode(NewUsername) + ". You are the first user in the chat."
@@ -57,7 +57,7 @@ Protected Class Chat
 		  Else
 		    
 		    // Return the list of users.
-		    Dim ResponseJSON As New JSONItem
+		    Var ResponseJSON As New JSONItem
 		    ResponseJSON.Value("type") = "message"
 		    ResponseJSON.Value("username") = "Server"
 		    ResponseJSON.Value("message") = "Welcome, " + Express.URLEncode(NewUsername) + ". You are joining " + String.FromArray(Usernames, ", ") + " in the chat."
@@ -90,10 +90,10 @@ Protected Class Chat
 		  Request.WSConnectionClose
 		  
 		  // Get the username.
-		  Dim Username As String = Express.URLDecode(Payload.Lookup("username", ""))
+		  Var Username As String = Express.URLDecode(Payload.Lookup("username", ""))
 		  
 		  // Broadcast a message announcing the departure of the user.
-		  Dim ResponseJSON As New JSONItem
+		  Var ResponseJSON As New JSONItem
 		  ResponseJSON.Value("type") = "message"
 		  ResponseJSON.Value("username") = "Server"
 		  ResponseJSON.Value("message") = Express.URLEncode(Username) + " has left the chat."
@@ -140,7 +140,7 @@ Protected Class Chat
 		  End Try
 		  
 		  // Get the payload type.
-		  Dim PayloadType As String = Payload.Lookup("type", "message")
+		  Var PayloadType As String = Payload.Lookup("type", "message")
 		  
 		  // Process the request...
 		  Select Case PayloadType
@@ -163,16 +163,16 @@ Protected Class Chat
 		  // If this is a request to get a list of users...
 		  
 		  // Get the names of the users that are online...
-		  Dim Usernames() As String
+		  Var Usernames() As String
 		  For Each Request As Express.Request In Request.Server.WebSockets
-		    Dim Username As String = Request.Custom.Lookup("username", "")
+		    Var Username As String = Request.Custom.Lookup("username", "")
 		    If Username <> "" Then
 		      Usernames.Add(Express.URLEncode(username))
 		    End If
 		  Next
 		  
 		  // Return the list.
-		  Dim ResponseJSON As New JSONItem
+		  Var ResponseJSON As New JSONItem
 		  ResponseJSON.Value("type") = "message"
 		  ResponseJSON.Value("username") = "Server"
 		  ResponseJSON.Value("message") ="These users are currently online: " + String.FromArray(Usernames, ", ")

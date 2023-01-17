@@ -17,7 +17,7 @@ Protected Class FormProcessor
 		  For Each FieldName As String In Request.POST.Keys
 		    
 		    // Create a JSONItem for this field.
-		    Dim FieldInfo As New JSONItem
+		    Var FieldInfo As New JSONItem
 		    FieldInfo.Value("Name") = FieldName
 		    FieldInfo.Value("Value") = Request.POST.Value(FieldName)
 		    
@@ -45,10 +45,10 @@ Protected Class FormProcessor
 		    For Each FileFieldName As String In Request.Files.Keys
 		      
 		      // Get the file field's dictionary.
-		      Dim File As Dictionary = Request.Files.Value(FileFieldName)
+		      Var File As Dictionary = Request.Files.Value(FileFieldName)
 		      
 		      // Create a JSONItem for this file.
-		      Dim FileInfo As New JSONItem
+		      Var FileInfo As New JSONItem
 		      FileInfo.Value("FieldName") = FileFieldName
 		      
 		      // If a file was uploaded...
@@ -63,16 +63,16 @@ Protected Class FormProcessor
 		        If UploadFolder <> Nil Then
 		          
 		          // Get the filename to use when saving the file.
-		          Dim FileName As String = File.Value("Filename")
+		          Var FileName As String = File.Value("Filename")
 		          If FilenamePrefix <> "" Then
 		            FileName = FilenamePrefix + "-" + FileName
 		          End If
 		          
 		          // Create a folderitem for the file.
-		          Dim F As FolderItem = UploadFolder.Child(FileName)
+		          Var F As FolderItem = UploadFolder.Child(FileName)
 		          
 		          // Write the file content.
-		          Dim TOS As TextOutputStream
+		          Var TOS As TextOutputStream
 		          TOS = TextOutputStream.Create(F)
 		          TOS.WriteLine(File.Value("content"))
 		          TOS.Close

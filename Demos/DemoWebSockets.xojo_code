@@ -11,7 +11,7 @@ Protected Module DemoWebSockets
 		  If Request.Path = "/chat" Then
 		    
 		    // Hand the request off to an instance of the Chat class.
-		    Dim Chat As New Chat(Request)
+		    Var Chat As New Chat(Request)
 		    #Pragma Unused Chat
 		    
 		  Else

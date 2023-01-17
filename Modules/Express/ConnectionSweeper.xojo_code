@@ -58,10 +58,10 @@ Inherits Timer
 		      End If
 		      
 		      // Get the current date/time.
-		      Dim Now As DateTime = DateTime.Now
+		      Var Now As DateTime = DateTime.Now
 		      
 		      // Get the socket's last connection timestamp.
-		      Dim Timeout As DateTime = Socket.LastConnect
+		      Var Timeout As DateTime = Socket.LastConnect
 		      
 		      // Determine when the connection will timeout due to inactivity.
 		      //years, months, days, hours, minutes, seconds
@@ -99,13 +99,13 @@ Inherits Timer
 		  For i = Server.WebSockets.LastIndex DownTo 0
 		    
 		    // Get the socket.
-		    Dim Socket As Express.Request = Server.WebSockets(i)
+		    Var Socket As Express.Request = Server.WebSockets(i)
 		    
 		    // Get the current date/time.
-		    Dim Now As DateTime = DateTime.Now
+		    Var Now As DateTime = DateTime.Now
 		    
 		    // Get the socket's last connection timestamp.
-		    Dim Timeout As DateTime = Socket.LastConnect
+		    Var Timeout As DateTime = Socket.LastConnect
 		    
 		    // Determine when the connection will timeout due to inactivity.
 		    //years, months, days, hours, minutes, seconds

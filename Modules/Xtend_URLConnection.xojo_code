@@ -9,7 +9,7 @@ Protected Module Xtend_URLConnection
 		  ' along With the boundary String To be used. 
 		  ' To have a boundary generated For you, pass the empty String.
 		  ' 
-		  ' Dim HTMLForm As New Dictionary
+		  ' Var HTMLForm As New Dictionary
 		  ' HTMLForm.Value("UserName") = "Bob Smith"
 		  ' HTMLForm.Value("Upload") = SpecialFolder.Desktop.Child("Somefile.zip")
 		  ' URLConnection1.xSetMultipartFormData(HTMLForm, "") ' pass an empty boundary to generate a new one (default = "")
@@ -22,8 +22,8 @@ Protected Module Xtend_URLConnection
 		  End If
 		  
 		  Static CRLF As String = EndOfLine.Windows
-		  Dim data As New MemoryBlock(0)
-		  Dim out As New BinaryStream(data)
+		  Var data As New MemoryBlock(0)
+		  Var out As New BinaryStream(data)
 		  
 		  For Each key As String In FormData.Keys
 		    
@@ -37,10 +37,10 @@ Protected Module Xtend_URLConnection
 		      
 		    Elseif FormData.Value(Key) IsA FolderItem Then
 		      
-		      Dim file As FolderItem = FormData.Value(key)
+		      Var file As FolderItem = FormData.Value(key)
 		      out.Write("Content-Disposition: form-data; name=""" + key + """; filename=""" + File.Name + """" + CRLF)
 		      out.Write("Content-Type: application/octet-stream" + CRLF + CRLF) ' replace with actual MIME Type
-		      Dim bs As BinaryStream = BinaryStream.Open(File)
+		      Var bs As BinaryStream = BinaryStream.Open(File)
 		      out.Write(bs.Read(bs.Length) + CRLF)
 		      bs.Close
 		      

@@ -20,8 +20,8 @@ Protected Class MustacheLite
 		  Expanded = Source
 		  
 		  // Regex used for removal of comments and orphans.
-		  Dim rg As New RegEx
-		  Dim rgMatch As RegExMatch
+		  Var rg As New RegEx
+		  Var rgMatch As RegExMatch
 		  
 		  // Remove comments.
 		  If RemoveComments = True Then
@@ -37,7 +37,7 @@ Protected Class MustacheLite
 		  For Each Key As String In Data.Keys
 		    
 		    // Get the value.
-		    Dim Value As Variant = Data.Value(Key)
+		    Var Value As Variant = Data.Value(Key)
 		    
 		    // If the value is null...
 		    If Value = Nil Then
@@ -45,17 +45,17 @@ Protected Class MustacheLite
 		    End If
 		    
 		    // Use introspection to determine the entry's value type.
-		    Dim ValueType As Introspection.TypeInfo = Introspection.GetType(Value)
+		    Var ValueType As Introspection.TypeInfo = Introspection.GetType(Value)
 		    If ValueType = Nil Then Continue
 		    
 		    // If the value is a boolean, number, string, etc..
 		    If ValueType.IsPrimitive Then
 		      
 		      // Convert the primitive value to a string.
-		      Dim ValueString As String = Value.StringValue
+		      Var ValueString As String = Value.StringValue
 		      
 		      // Using the object's name and the entry's key, generate the token to replace.
-		      Dim Token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
+		      Var Token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
 		      
 		      // Replace all occurrences of the token with the value.
 		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", ValueString)
@@ -68,13 +68,13 @@ Protected Class MustacheLite
 		    If ValueType.Name = "JSONItem" Then
 		      
 		      // Get the nested JSONItem.
-		      Dim NestedJSON As JSONItem = Value
+		      Var NestedJSON As JSONItem = Value
 		      
 		      // If the nested JSONItem is not an array...
 		      If NestedJSON.IsArray = False Then
 		        
 		        // Process the nested JSON using another Template instance. 
-		        Dim Engine As New MustacheLite
+		        Var Engine As New MustacheLite
 		        Engine.Source = Expanded
 		        Engine.Data = NestedJSON
 		        Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
@@ -87,14 +87,14 @@ Protected Class MustacheLite
 		      Else
 		        
 		        // Get the beginning and ending tokens for this array.
-		        Dim TokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
-		        Dim TokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
+		        Var TokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
+		        Var TokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
 		        
 		        // Get the start position of the beginning token.
-		        Dim StartPosition As Integer = Source.IndexOf(0, TokenBegin) 
+		        Var StartPosition As Integer = Source.IndexOf(0, TokenBegin) 
 		        
 		        // Get the position of the ending token.
-		        Dim StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
+		        Var StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
 		        
 		        // If the template does not include both the beginning and ending tokens...
 		        If ( (StartPosition = -1) Or (StopPosition = -1) ) Then
@@ -103,18 +103,18 @@ Protected Class MustacheLite
 		        End If
 		        
 		        // Get the content between the beginning and ending tokens.
-		        Dim LoopSource As String = Source.Middle( StartPosition + TokenBegin.Length, StopPosition - StartPosition - TokenBegin.Length)
+		        Var LoopSource As String = Source.Middle( StartPosition + TokenBegin.Length, StopPosition - StartPosition - TokenBegin.Length)
 		        
 		        // LoopContent is the content created by looping over the array and merging each value.
-		        Dim LoopContent As String
+		        Var LoopContent As String
 		        
 		        // Loop over the array elements...
 		        For i As Integer = 0 to NestedJSON.Count - 1
 		          
-		          Dim ArrayValue As Variant = NestedJSON.ValueAt(i)
+		          Var ArrayValue As Variant = NestedJSON.ValueAt(i)
 		          
 		          // Process the value using another instance of Template. 
-		          Dim Engine As New MustacheLite
+		          Var Engine As New MustacheLite
 		          Engine.Source = LoopSource
 		          Engine.Data = ArrayValue
 		          Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
@@ -129,7 +129,7 @@ Protected Class MustacheLite
 		        Next
 		        
 		        // Substitute the loop content block of the template with the expanded content.
-		        Dim LoopBlock As String = TokenBegin + LoopSource + TokenEnd
+		        Var LoopBlock As String = TokenBegin + LoopSource + TokenEnd
 		        Expanded = Expanded.ReplaceAll(LoopBlock, LoopContent)
 		        
 		      End If
@@ -160,19 +160,19 @@ Protected Class MustacheLite
 	#tag Method, Flags = &h0
 		Sub SystemDataAppend()
 		  // Initialize the system object, which is used to merge system tokens.
-		  Dim SystemData As New JSONItem
+		  Var SystemData As New JSONItem
 		  
 		  // Append the system object to the data object.
 		  Data.Value("system") = SystemData
 		  
 		  // Add the Date object.
-		  Dim DateData As New JSONItem
-		  Dim Today As DateTime = DateTime.Now
+		  Var DateData As New JSONItem
+		  Var Today As DateTime = DateTime.Now
 		  DateData.Value("abbreviateddate") = Today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
 		  DateData.Value("day") = Today.Day.ToString
 		  DateData.Value("dayofweek") = Today.DayOfWeek.ToString
 		  DateData.Value("dayofyear") = Today.DayOfYear.ToString
-		  Dim GMTOffset As Double = Today.Timezone.SecondsFromGMT / 3600 //3600 seconds in an hour
+		  Var GMTOffset As Double = Today.Timezone.SecondsFromGMT / 3600 //3600 seconds in an hour
 		  DateData.Value("gmtoffset") = GMTOffset.ToString
 		  DateData.Value("hour") = Today.Hour.ToString
 		  DateData.Value("longdate") = Today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
@@ -191,13 +191,13 @@ Protected Class MustacheLite
 		  SystemData.Value("date") = DateData
 		  
 		  // Add the Meta object.
-		  Dim MetaData As New JSONItem
+		  Var MetaData As New JSONItem
 		  MetaData.Value("xojo-version") = XojoVersionString
 		  MetaData.Value("express-version") = Express.VERSION_STRING
 		  SystemData.Value("meta") = MetaData
 		  
 		  // Add the Request object.
-		  Dim RequestData As New JSONItem
+		  Var RequestData As New JSONItem
 		  Var cookiesJSON As JSONItem = Request.Cookies
 		  RequestData.Value("cookies") = cookiesJSON
 		  RequestData.Value("data") = Request.Data

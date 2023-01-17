@@ -10,7 +10,7 @@ Protected Class Login
 		    BodyContent = ErrorsIntro
 		    
 		    // Build the list of errors...
-		    Dim ErrorsList As String
+		    Var ErrorsList As String
 		    For i As integer = 0 to ValidationErrors.LastIndex
 		      ErrorsList = ErrorsList _
 		      + "<li>" + ValidationErrors(i) + "</li>" + EndOfLine
@@ -72,12 +72,12 @@ Protected Class Login
 	#tag Method, Flags = &h0
 		Sub FormValidate()
 		  
-		  Dim Username As String = Request.POST.Lookup("username", "")
+		  Var Username As String = Request.POST.Lookup("username", "")
 		  If Username = "" Then
 		    ValidationErrors.Add("You did not enter your username.")
 		  End If
 		  
-		  Dim Password As String = Request.POST.Lookup("password", "")
+		  Var Password As String = Request.POST.Lookup("password", "")
 		  If Password = "" Then
 		    ValidationErrors.Add("You did not enter your password.")
 		  End If
@@ -108,7 +108,7 @@ Protected Class Login
 		  // Loads the template file.
 		  
 		  // Create a folderitem that points to the template file.
-		  Dim FI as FolderItem = Request.StaticPath.Child("template.html")
+		  Var FI as FolderItem = Request.StaticPath.Child("template.html")
 		  
 		  // Use Aloe's FileRead method to load the file.
 		  HTML = Express.FileRead(FI)
@@ -119,7 +119,7 @@ Protected Class Login
 	#tag Method, Flags = &h0
 		Sub UserAuthenticate()
 		  // If the password was incorrect...
-		  Dim Password As String = Request.POST.Lookup("password", "")
+		  Var Password As String = Request.POST.Lookup("password", "")
 		  If Password <> "secret" Then
 		    ValidationErrors.Add("The password that you provided is incorrect.")
 		    Return

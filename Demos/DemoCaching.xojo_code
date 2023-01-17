@@ -9,7 +9,7 @@ Protected Module DemoCaching
 		  
 		  // If this is a request for the root...
 		  If Request.Path = "/" or Request.Path = "/index.html" Then
-		    Dim DrummersList As New DrummersList(Request)
+		    Var DrummersList As New DrummersList(Request)
 		    #Pragma Unused DrummersList
 		  Else
 		    

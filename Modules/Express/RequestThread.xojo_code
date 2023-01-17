@@ -6,7 +6,7 @@ Inherits Thread
 		  // Processes a request.
 		  
 		  
-		  Dim Request As Express.Request
+		  Var Request As Express.Request
 		  
 		  If ( RequestWR <> Nil ) And ( RequestWR.Value <> Nil ) And ( RequestWR.Value IsA Express.Request ) Then
 		    

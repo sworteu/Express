@@ -7,19 +7,19 @@ Inherits Timer
 		  // This prevents the cache from growing unnecessarily due to orphaned objects.
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var Now As DateTime = DateTime.Now
 		  
 		  // This is an array of the cache names that have expired.
-		  Dim ExpiredCacheNames() As String
+		  Var ExpiredCacheNames() As String
 		  
 		  // Loop over the entries in the cache array...
 		  For Each Key As Variant In Cache.Keys
 		    
 		    // Get the entry's value.
-		    Dim CacheEntry As Dictionary = Cache.Value(Key)
+		    Var CacheEntry As Dictionary = Cache.Value(Key)
 		    
 		    // Set the expiration date.
-		    Dim Expiration As DateTime = CacheEntry.Value("Expiration")
+		    Var Expiration As DateTime = CacheEntry.Value("Expiration")
 		    
 		    // If the session has expired...
 		    If Now > Expiration Then
@@ -107,13 +107,13 @@ Inherits Timer
 		  If Cache.HasKey(Name) Then
 		    
 		    // Get the cache entry.
-		    Dim CacheEntry As Dictionary = Cache.Value(Name)
+		    Var CacheEntry As Dictionary = Cache.Value(Name)
 		    
 		    // Get the cache's expiration date.
-		    Dim Expiration As DateTime = CacheEntry.Value("Expiration")
+		    Var Expiration As DateTime = CacheEntry.Value("Expiration")
 		    
 		    // Get the current date.
-		    Dim Now As DateTime = DateTime.Now
+		    Var Now As DateTime = DateTime.Now
 		    
 		    // If the cache has not expired...
 		    If Expiration > Now Then
@@ -148,15 +148,15 @@ Inherits Timer
 		  
 		  
 		  // Create the expiration date/time.
-		  Dim Expiration As DateTime = DateTime.Now
+		  Var Expiration As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
 		  Expiration = Expiration.AddInterval( 0, 0, 0, 0, 0, ExpirationSecs )
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var Now As DateTime = DateTime.Now
 		  
 		  // Create the cache entry.
-		  Dim CacheEntry As New Dictionary
+		  Var CacheEntry As New Dictionary
 		  CacheEntry.Value("Content") = Content
 		  CacheEntry.Value("Expiration") = Expiration
 		  CacheEntry.Value("Entered") = Now

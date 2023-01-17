@@ -18,7 +18,7 @@ Protected Module DemoTemplatesClientSide
 		    'Thread.SleepCurrent(10)
 		    
 		    // Get the orders.
-		    Dim Orders As String 
+		    Var Orders As String 
 		    #If DebugBuild Then
 		      orders = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
 		    #Else
@@ -28,7 +28,7 @@ Protected Module DemoTemplatesClientSide
 		    Try
 		      
 		      // Create the data object.
-		      Dim Data As Dictionary = ParseJSON(Orders)
+		      Var Data As Dictionary = ParseJSON(Orders)
 		      Data.Value("system") = SystemDataGet(Request)
 		      
 		      // Return the data as a JSON string.
@@ -75,14 +75,14 @@ Protected Module DemoTemplatesClientSide
 	#tag Method, Flags = &h0
 		Function SystemDataGet(Request As Express.Request) As Dictionary
 		  // Add the Date object.
-		  Dim DateData As New Dictionary
+		  Var DateData As New Dictionary
 		  
-		  Dim Today As DateTime = DateTime.Now
+		  Var Today As DateTime = DateTime.Now
 		  DateData.Value("abbreviateddate") = Today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
 		  DateData.Value("day") = Today.Day
 		  DateData.Value("dayofweek") = Today.DayOfWeek
 		  DateData.Value("dayofyear") = Today.DayOfYear
-		  Dim GMTOffset As Double = Today.Timezone.SecondsFromGMT // The actual offset
+		  Var GMTOffset As Double = Today.Timezone.SecondsFromGMT // The actual offset
 		  DateData.Value("gmtoffset") = GMTOffset
 		  DateData.Value("hour") = Today.Hour
 		  DateData.Value("longdate") = Today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
@@ -100,12 +100,12 @@ Protected Module DemoTemplatesClientSide
 		  DateData.Value("year") = Today.Year
 		  
 		  // Add the Meta object.
-		  Dim MetaData As New Dictionary
+		  Var MetaData As New Dictionary
 		  MetaData.Value("xojo-version") = XojoVersionString
 		  MetaData.Value("express-version") = Express.VERSION_STRING
 		  
 		  // Add the Request object.
-		  Dim RequestData As New Dictionary
+		  Var RequestData As New Dictionary
 		  RequestData.Value("cookies") = Request.Cookies
 		  RequestData.Value("data") = Request.Data
 		  RequestData.Value("get") = Request.GET
@@ -118,7 +118,7 @@ Protected Module DemoTemplatesClientSide
 		  RequestData.Value("urlparams") = Request.URLParams
 		  
 		  // Create the system object.
-		  Dim SystemData As New Dictionary
+		  Var SystemData As New Dictionary
 		  SystemData.Value("date") = DateData
 		  SystemData.Value("meta") = MetaData
 		  SystemData.Value("request") = RequestData

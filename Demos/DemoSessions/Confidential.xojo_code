@@ -17,11 +17,11 @@ Protected Class Confidential
 		  
 		  
 		  // Create a folderitem that points to the template file.
-		  Dim FI as FolderItem = Request.StaticPath.Child("protected").Child("confidential.pdf")
+		  Var FI as FolderItem = Request.StaticPath.Child("protected").Child("confidential.pdf")
 		  
 		  
 		  // Use Aloe's FileRead method to load the file.
-		  Dim PDFContent As String = Express.FileRead(FI)
+		  Var PDFContent As String = Express.FileRead(FI)
 		  
 		  
 		  // Update the response content.

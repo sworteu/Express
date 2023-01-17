@@ -183,7 +183,7 @@ Inherits XojoScript
 		  XojoScript.Errors.GlobalItemInClass: "Class members cannot be global.", _
 		  XojoScript.Errors.ProtectedItemInModule: "Module members must be public or private; they cannot be protected.", _
 		  XojoScript.Errors.GlobalItemInInnerModule: "Members of inner modules cannot be global.", _
-		  XojoScript.Errors.DimMultipleUsingNewObjectShortcut: "A Dim statement creates only one new object at a time.", _
+		  XojoScript.Errors.DimMultipleUsingNewObjectShortcut: "A Var statement creates only one new object at a time.", _
 		  XojoScript.Errors.ConstValueExpected: "A constant was expected here, but this is some other kind of expression.", _
 		  XojoScript.Errors.AccessPrivateModule: "This module is private, and can only be used within its containing module.", _
 		  XojoScript.Errors.DuplicatePropertyDeclaration: "Duplicate property definition.", _

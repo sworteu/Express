@@ -3,10 +3,10 @@ Protected Class IndexPage
 	#tag Method, Flags = &h0
 		Sub Generate()
 		  // Get the orders as a JSON string.
-		  Dim Orders As String = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
+		  Var Orders As String = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
 		  
 		  // Create a Template instance.  
-		  Dim Template As New Templates.MustacheLite
+		  Var Template As New Templates.MustacheLite
 		  
 		  // Load the template file and use it as the source.
 		  Template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))

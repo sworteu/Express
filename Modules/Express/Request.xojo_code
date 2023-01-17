@@ -64,7 +64,7 @@ Inherits SSLSocket
 		  BodyGet
 		  
 		  // Get the length of the content that has been received.
-		  Dim ContentReceivedLength As Integer = Body.Bytes
+		  Var ContentReceivedLength As Integer = Body.Bytes
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
@@ -153,7 +153,7 @@ Inherits SSLSocket
 		  // Gets the request body.
 		  
 		  // Split the data into headers and the body.
-		  Dim RequestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var RequestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  // We no longer need the data that was received, so clear it.
 		  Data = ""
@@ -278,16 +278,16 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the cookie header value as a string.
-		  Dim CookiesRaw As String = Headers.Value("Cookie")
+		  Var CookiesRaw As String = Headers.Value("Cookie")
 		  
 		  // Create an array of cookies.
-		  Dim CookiesRawArray() As String = CookiesRaw.Split("; ")
+		  Var CookiesRawArray() As String = CookiesRaw.Split("; ")
 		  
 		  // Loop over the cookies...
 		  For i As Integer = 0 To CookiesRawArray.LastIndex
-		    Dim ThisCookie As String = CookiesRawArray(i)
-		    Dim Key As String = Express.URLDecode(ThisCookie.NthField("=", 1))
-		    Dim Value As String = Express.URLDecode(ThisCookie.NthField("=", 2))
+		    Var ThisCookie As String = CookiesRawArray(i)
+		    Var Key As String = Express.URLDecode(ThisCookie.NthField("=", 1))
+		    Var Value As String = Express.URLDecode(ThisCookie.NthField("=", 2))
 		    Cookies.Value(Key) = Value
 		  Next
 		End Sub
@@ -304,7 +304,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Function Dump() As String
-		  Dim HTML As String
+		  Var HTML As String
 		  
 		  HTML = HTML + "<p>Method: " + Method + "</p>" + EndOfLine.Windows
 		  HTML = HTML + "<p>Path: " + Path + "</p>" + EndOfLine.Windows
@@ -396,14 +396,14 @@ Inherits SSLSocket
 		  
 		  // Split the Params string into an array of strings.
 		  // Example: a=123&b=456&c=999
-		  Dim GETParams() As String = URLParams.Split( "&" )
+		  Var GETParams() As String = URLParams.Split( "&" )
 		  
 		  // Loop over the URL params to create the GET dictionary.
 		  For i As Integer = 0 To GETParams.LastIndex
 		    
-		    Dim ThisParam As String = GETParams( i )
-		    Dim Key As String = ThisParam.NthField( "=", 1 )
-		    Dim Value As String = ThisParam.NthField( "=", 2 )
+		    Var ThisParam As String = GETParams( i )
+		    Var Key As String = ThisParam.NthField( "=", 1 )
+		    Var Value As String = ThisParam.NthField( "=", 2 )
 		    Value = URLDecode( Value) 
 		    
 		    // If the key does not already exist in the GET dictionary...
@@ -411,10 +411,10 @@ Inherits SSLSocket
 		      GET.Value( Key ) = URLDecode( Value )
 		    Else
 		      
-		      Dim Temp() As String
+		      Var Temp() As String
 		      
 		      // Get the existing value from the GET dictionary.
-		      Dim ExistingValue As Variant = GET.Value( Key )
+		      Var ExistingValue As Variant = GET.Value( Key )
 		      
 		      // If that value is already an array...
 		      If ExistingValue.IsArray Then
@@ -455,9 +455,9 @@ Inherits SSLSocket
 		  // Loop over the other header array elements to create the request headers dictionary.
 		  For i As Integer = 1 To HeadersRawArray.LastIndex
 		    
-		    Dim ThisHeader As String = HeadersRawArray(i)
-		    Dim Key As String = ThisHeader.NthField(": ", 1)
-		    Dim Value As String = ThisHeader.NthField(": ", 2)
+		    Var ThisHeader As String = HeadersRawArray(i)
+		    Var Key As String = ThisHeader.NthField(": ", 1)
+		    Var Value As String = ThisHeader.NthField(": ", 2)
 		    Headers.Value(Key) = Value
 		    
 		  Next
@@ -471,7 +471,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the first header.
-		  Dim Header As String = HeadersRawArray(0)
+		  Var Header As String = HeadersRawArray(0)
 		  
 		  // Get the HTTP version that was used to make the request.
 		  HTTPVersion = Header.NthField(" ", 3).NthField("/", 2)
@@ -505,7 +505,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Create a folder item based on the location of the static files.
-		  Dim FI As FolderItem = StaticPath
+		  Var FI As FolderItem = StaticPath
 		  
 		  
 		  // Create a folder item for the file that was requested...
@@ -564,14 +564,14 @@ Inherits SSLSocket
 		      
 		      // Generate the current Etag for the file.
 		      Const quote As String = """"
-		      Dim CurrentEtag As String 
+		      Var CurrentEtag As String 
 		      CurrentEtag = MD5(FI.NativePath)
 		      CurrentEtag = EncodeHex(CurrentEtag)
 		      CurrentEtag = CurrentEtag + "-" + FI.ModificationDateTime.SecondsFrom1970.ToString
 		      CurrentEtag = CurrentEtag.NthField(".", 1)
 		      
 		      // Get any Etag that the client sent in the request.
-		      Dim ClientEtag As String = Headers.Lookup("If-None-Match", "")
+		      Var ClientEtag As String = Headers.Lookup("If-None-Match", "")
 		      
 		      // If the client has the current resource...
 		      If ClientEtag = CurrentEtag Then
@@ -595,7 +595,7 @@ Inherits SSLSocket
 		    Response.Content = Response.Content.DefineEncoding(Encodings.UTF8)
 		    
 		    // Get the file's extension.
-		    Dim Extension As String = FI.Name.NthField( ".", FI.Name.CountFields( "."))
+		    Var Extension As String = FI.Name.NthField( ".", FI.Name.CountFields( "."))
 		    
 		    // Map the file extension to a mime type, and use that as the content type.
 		    Response.Headers.Value("Content-Type") = MimeTypeGet(Extension)
@@ -625,7 +625,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the first header.
-		  Dim Header As String = HeadersRawArray(0)
+		  Var Header As String = HeadersRawArray(0)
 		  
 		  // Get the request method.
 		  Method = Header.NthField(" ", 1)
@@ -635,7 +635,7 @@ Inherits SSLSocket
 	#tag Method, Flags = &h21
 		Private Sub MultipartFormHandle()
 		  // Split the content type at the boundary.
-		  Dim ContentTypeParts() As String = ContentType.Split("boundary=")
+		  Var ContentTypeParts() As String = ContentType.Split("boundary=")
 		  
 		  // If the content does not have a boundary...
 		  If ContentTypeParts.LastIndex < 1 Then
@@ -643,17 +643,17 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the boundary.
-		  Dim Boundary As String = ContentTypeParts(1)
+		  Var Boundary As String = ContentTypeParts(1)
 		  
 		  // Split the content into parts based on the boundary.
-		  Dim Parts() As String = Body.Split("--" + Boundary)
+		  Var Parts() As String = Body.Split("--" + Boundary)
 		  
 		  // Loop over the parts, skipping the header...
 		  Var LastPartsIndex As Integer = Parts.LastIndex
 		  For i As Integer = 1 To LastPartsIndex
 		    
 		    // Split the part into its header and content.
-		    Dim PartComponents() As String = Parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
+		    Var PartComponents() As String = Parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
 		    
 		    // If this part has no content...
 		    If PartComponents.LastIndex < 1 Then
@@ -661,19 +661,19 @@ Inherits SSLSocket
 		    End If
 		    
 		    // Get the part content.
-		    Dim PartContent As String = PartComponents(1)
+		    Var PartContent As String = PartComponents(1)
 		    
 		    // Additional info about the part will be stored in these vars.
-		    Dim Fieldname As String
-		    Dim Filename As String
-		    Dim FileContentType As String
-		    Dim FieldIsAFile As Boolean = False
+		    Var Fieldname As String
+		    Var Filename As String
+		    Var FileContentType As String
+		    Var FieldIsAFile As Boolean = False
 		    
 		    // Split the part headers into an array.
 		    // Example Header...
 		    // Content-Disposition: form-data; name="file1"; filename="woot.png"
 		    // Content-Type: image/png
-		    Dim PartHeaders() As String = PartComponents(0).Split(EndOfLine.Windows)
+		    Var PartHeaders() As String = PartComponents(0).Split(EndOfLine.Windows)
 		    
 		    // Loop over the part headers...
 		    For Each PartHeader As String In PartHeaders
@@ -683,8 +683,8 @@ Inherits SSLSocket
 		        Continue
 		      End If
 		      
-		      Dim HeaderName As String = PartHeader.NthField(": ", 1)
-		      Dim HeaderValue As String = PartHeader.NthField(": ", 2)
+		      Var HeaderName As String = PartHeader.NthField(": ", 1)
+		      Var HeaderValue As String = PartHeader.NthField(": ", 2)
 		      
 		      If HeaderName = "Content-Type" Then
 		        FileContentType = HeaderValue
@@ -694,13 +694,13 @@ Inherits SSLSocket
 		      If HeaderName = "Content-Disposition" Then
 		        
 		        // Split the disposition into its parts.
-		        Dim DispositionParts() As String = HeaderValue.Split("; ")
+		        Var DispositionParts() As String = HeaderValue.Split("; ")
 		        
 		        // Loop over the disposition parts to get the field name and file name.
 		        For Each DispPart As String In DispositionParts
 		          
 		          // Split the disposition part into name / value pairs.
-		          Dim NameValue() As String = DispPart.Split("=")
+		          Var NameValue() As String = DispPart.Split("=")
 		          
 		          If NameValue.LastIndex < 0 Then
 		            Continue
@@ -730,7 +730,7 @@ Inherits SSLSocket
 		    
 		    // If this is a file...
 		    If FieldIsAFile Then
-		      Dim FileDictionary As New Dictionary
+		      Var FileDictionary As New Dictionary
 		      FileDictionary.Value("ContentType") = FileContentType
 		      FileDictionary.Value("Content") = PartContent
 		      FileDictionary.Value("Filename") = Filename
@@ -765,7 +765,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the first header.
-		  Dim Header As String = HeadersRawArray(0)
+		  Var Header As String = HeadersRawArray(0)
 		  
 		  // Get the request path.
 		  Path = Header.NthField(" ", 2).NthField("?", 1)
@@ -802,7 +802,7 @@ Inherits SSLSocket
 		  // This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
-		  Dim RequestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var RequestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  // If the request is valid...
 		  If RequestParts.LastIndex > -1 Then
@@ -901,7 +901,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the first header.
-		  Dim Header As String = HeadersRawArray(0)
+		  Var Header As String = HeadersRawArray(0)
 		  
 		  // Get the protocol that was used to make the request.
 		  Protocol = Header.NthField(" ", 3).NthField("/", 1)
@@ -960,10 +960,10 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the "Accept-Encoding" header.
-		  Dim AcceptEncoding As String = Headers.Lookup("Accept-Encoding", "")
+		  Var AcceptEncoding As String = Headers.Lookup("Accept-Encoding", "")
 		  
 		  // Split the header value to see if "gzip" is specified.
-		  Dim AcceptEncodingParts() As String = AcceptEncoding.Split("gzip")
+		  Var AcceptEncodingParts() As String = AcceptEncoding.Split("gzip")
 		  
 		  // If gzip is accepted...
 		  If AcceptEncodingParts.LastIndex > 0 Then
@@ -990,7 +990,7 @@ Inherits SSLSocket
 		      
 		    Catch e As RunTimeException
 		      
-		      Dim TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		      Var TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		      
 		      System.DebugLog "ResponseReturn Exception: Socket " + SocketID.ToString _
 		      + ", Last Error: " + LastErrorCode.ToString _
@@ -1026,7 +1026,7 @@ Inherits SSLSocket
 		Private Sub URLEncodedFormHandle()
 		  // Split the content string into an array of strings.
 		  // Example: a=123&b=456&c=999
-		  Dim POSTParams() As String = Body.Split("&")
+		  Var POSTParams() As String = Body.Split("&")
 		  
 		  If POSTParams.Count > 0 Then
 		    
@@ -1034,9 +1034,9 @@ Inherits SSLSocket
 		    Var lastPostParamIndex As Integer = POSTParams.LastIndex
 		    
 		    For i As Integer = 0 To lastPostParamIndex
-		      Dim ThisParam As String = POSTParams(i)
-		      Dim Key As String = ThisParam.NthField("=", 1)
-		      Dim Value As String = ThisParam.NthField("=", 2)
+		      Var ThisParam As String = POSTParams(i)
+		      Var Key As String = ThisParam.NthField("=", 1)
+		      Var Value As String = ThisParam.NthField("=", 2)
 		      POST.Value(Key) = URLDecode(Value)
 		    Next
 		    
@@ -1053,10 +1053,10 @@ Inherits SSLSocket
 		  // Example: GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
 		  
 		  // Get the first header.
-		  Dim Header As String = HeadersRawArray(0)
+		  Var Header As String = HeadersRawArray(0)
 		  
 		  // Split the header on ?s.
-		  Dim URLParamParts() As String = Header.Split("?")
+		  Var URLParamParts() As String = Header.Split("?")
 		  
 		  // Remove the first element, which should be the method and path.
 		  URLParamParts.RemoveAt(0)
@@ -1098,7 +1098,7 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Create the SecWebSocketKey for the response.
-		  Dim SecWebSocketKey As String = Headers.Value("Sec-WebSocket-Key") 
+		  Var SecWebSocketKey As String = Headers.Value("Sec-WebSocket-Key") 
 		  SecWebSocketKey = SecWebSocketKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 		  SecWebSocketKey = Crypto.Hash(SecWebSocketKey, Crypto.HashAlgorithms.SHA1)
 		  SecWebSocketKey = EncodeBase64(SecWebSocketKey, 0)
@@ -1126,29 +1126,29 @@ Inherits SSLSocket
 		  DataGet
 		  
 		  // Convert the message to a memoryblock.
-		  Dim DataRaw As MemoryBlock = Data
+		  Var DataRaw As MemoryBlock = Data
 		  DataRaw.LittleEndian = False
 		  
 		  // We'll use a pointer to get specific bytes from the memoryblock.
-		  Dim DataPtr As Ptr = DataRaw
+		  Var DataPtr As Ptr = DataRaw
 		  
 		  // Get the first byte.
-		  Dim FirstByte As UInteger = DataPtr.Byte(0)
+		  Var FirstByte As UInteger = DataPtr.Byte(0)
 		  
 		  // Is this the last message in the series?
-		  Dim FinBit As UInteger = FirstByte And &b10000000
+		  Var FinBit As UInteger = FirstByte And &b10000000
 		  #Pragma Unused FinBit
 		  
 		  // Get the reserved extension bits.
-		  Dim RSV1 As Integer = FirstByte And &b01000000
-		  Dim RSV2 As Integer = FirstByte And &b00100000
-		  Dim RSV3 As Integer = FirstByte And &b00010000
+		  Var RSV1 As Integer = FirstByte And &b01000000
+		  Var RSV2 As Integer = FirstByte And &b00100000
+		  Var RSV3 As Integer = FirstByte And &b00010000
 		  #Pragma Unused RSV1
 		  #Pragma Unused RSV2
 		  #Pragma Unused RSV3
 		  
 		  // Get the OpCode.
-		  Dim OpCode As UInteger = FirstByte And &b00001111
+		  Var OpCode As UInteger = FirstByte And &b00001111
 		  
 		  // If the client is closing the connection...
 		  If OpCode = 8 Then
@@ -1157,15 +1157,15 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the second byte from the frame.
-		  Dim SecondByte As UInteger = DataPtr.Byte(1)
+		  Var SecondByte As UInteger = DataPtr.Byte(1)
 		  
 		  // Is the payload masked?
-		  Dim MaskedBit As UInteger = SecondByte And &b10000000
+		  Var MaskedBit As UInteger = SecondByte And &b10000000
 		  #Pragma Unused MaskedBit
 		  
 		  // Get the payload size.
-		  Dim PayloadSize As UInteger = SecondByte And &b01111111
-		  Dim MaskKeyStartingByte As UInteger
+		  Var PayloadSize As UInteger = SecondByte And &b01111111
+		  Var MaskKeyStartingByte As UInteger
 		  If PayloadSize < 126 Then
 		    MaskKeyStartingByte = 2
 		  ElseIf PayloadSize = 126 Then
@@ -1177,16 +1177,16 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the masking key.
-		  Dim MaskKey() As UInteger
+		  Var MaskKey() As UInteger
 		  For i As Integer = 0 to 3
 		    MaskKey.Add(DataPtr.Byte(MaskKeyStartingByte + i))
 		  Next
 		  
 		  // Determine where the data bytes start.
-		  Dim DataStartingByte As UInteger = MaskKeyStartingByte + 4
+		  Var DataStartingByte As UInteger = MaskKeyStartingByte + 4
 		  
 		  // Get the masked data...
-		  Dim DataMasked() As UInteger
+		  Var DataMasked() As UInteger
 		  For i As Integer = 0 to PayloadSize - 1
 		    DataMasked.Add(DataPtr.Byte(DataStartingByte + i))
 		  Next
@@ -1206,11 +1206,11 @@ Inherits SSLSocket
 		  // Sends a WebSocket (text) message to a client.
 		  
 		  // Get the message length.
-		  Dim MessageLength As UInteger = Message.Length
+		  Var MessageLength As UInteger = Message.Length
 		  
 		  // If the entire message can be sent in a single frame...
 		  If MessageLength < 126 Then
-		    Dim mb As New MemoryBlock( 2 )
+		    Var mb As New MemoryBlock( 2 )
 		    mb.Byte( 0 ) = 129
 		    mb.Byte( 1 ) = MessageLength
 		    Write mb.StringValue( 0, 2 ) + Message
@@ -1219,7 +1219,7 @@ Inherits SSLSocket
 		  
 		  // Due to its length, the message needs to be sent in multiple frames...
 		  If MessageLength >= 126 and MessageLength < 65535 Then
-		    Dim mb As New MemoryBlock( 4 )
+		    Var mb As New MemoryBlock( 4 )
 		    mb.Byte( 0 ) = 129
 		    mb.Byte( 1 ) = 126
 		    mb.Byte( 2 ) = Bitwise.ShiftRight(MessageLength, 8) And 255
@@ -1229,7 +1229,7 @@ Inherits SSLSocket
 		  End If
 		  
 		  If MessageLength >= 65535 Then
-		    Dim mb As New MemoryBlock( 10 )
+		    Var mb As New MemoryBlock( 10 )
 		    mb.Byte( 0 ) = 129
 		    mb.Byte( 1 ) = 127
 		    mb.Byte( 2 ) = Bitwise.ShiftRight(MessageLength, 56) And 255
@@ -1251,7 +1251,7 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0
 		Sub XojoScriptsParse()
 		  // Determine the number of scripts in the content.
-		  Dim Scripts() As String = Response.Content.Split("<xojoscript>")
+		  Var Scripts() As String = Response.Content.Split("<xojoscript>")
 		  
 		  // If there are no scripts in the content.
 		  If Scripts.LastIndex = 0 Then
@@ -1259,7 +1259,7 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Create an instance of the XojoScript evaluator.
-		  Dim Evaluator As New XSProcessor
+		  Var Evaluator As New XSProcessor
 		  
 		  // Loop over the XojoScript blocks...
 		  Var lastScriptsIndex As Integer = Scripts.LastIndex

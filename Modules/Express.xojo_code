@@ -5,13 +5,13 @@ Protected Module Express
 		  // Converts command line arguments to a dictionary.
 		  
 		  
-		  Dim Arguments As New Dictionary
+		  Var Arguments As New Dictionary
 		  
 		  For Each Argument As String In Args
 		    
-		    Dim ArgParts() As String = Argument.Split("=")
-		    Dim Name As String = ArgParts(0)
-		    Dim Value As String  = If(ArgParts.LastIndex = 1,  ArgParts(1), "")
+		    Var ArgParts() As String = Argument.Split("=")
+		    Var Name As String = ArgParts(0)
+		    Var Value As String  = If(ArgParts.LastIndex = 1,  ArgParts(1), "")
 		    
 		    Arguments.Value(Name) = Value
 		    
@@ -24,13 +24,13 @@ Protected Module Express
 	#tag Method, Flags = &h0
 		Function BlockGet(Source As String, TokenBegin As String, TokenEnd As String, Start As Integer = 0) As String
 		  
-		  Dim Content As String
+		  Var Content As String
 		  
 		  // Get the start position of the beginning token.
-		  Dim StartPosition As Integer = Source.IndexOf(Start, TokenBegin) 
+		  Var StartPosition As Integer = Source.IndexOf(Start, TokenBegin) 
 		  
 		  // Get the position of the ending token.
-		  Dim StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
+		  Var StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
 		  
 		  // If the template includes both the beginning and ending tokens...
 		  If ( (StartPosition > -1) And (StopPosition > -1) ) Then
@@ -47,7 +47,7 @@ Protected Module Express
 	#tag Method, Flags = &h0
 		Function BlockReplace(Source As String, TokenBegin As String, TokenEnd As String, Start As Integer = 0, ReplacementContent As String = "") As String
 		  // Get the content block.
-		  Dim BlockContent As String = BlockGet(Source, TokenBegin, TokenEnd, Start)
+		  Var BlockContent As String = BlockGet(Source, TokenBegin, TokenEnd, Start)
 		  
 		  // Replace the content.
 		  Source = Source.ReplaceAll(TokenBegin + BlockContent + TokenEnd, ReplacementContent)
@@ -63,7 +63,7 @@ Protected Module Express
 		  // Special thanks to Norman Palardy.
 		  // See: https://forum.xojo.com/42908-current-date-time-stamp-in-rfc-822-1123-format
 		  
-		  Dim tmp As String
+		  Var tmp As String
 		  
 		  If TheDate = Nil Then
 		    TheDate = DateTime.Now
@@ -153,7 +153,7 @@ Protected Module Express
 		    
 		    If FI.Exists Then
 		      
-		      Dim TIS As TextInputStream
+		      Var TIS As TextInputStream
 		      
 		      Try
 		        
@@ -180,7 +180,7 @@ Protected Module Express
 		  
 		  
 		  // Return the decompressed string.
-		  Dim GzipContent As New _GzipString
+		  Var GzipContent As New _GzipString
 		  Return GzipContent.Decompress(Compressed)
 		End Function
 	#tag EndMethod
@@ -191,7 +191,7 @@ Protected Module Express
 		  // Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
 		  
 		  // Return the compressed string.
-		  Dim GzipContent As New _GzipString
+		  Var GzipContent As New _GzipString
 		  Return GzipContent.Compress(Uncompressed)
 		End Function
 	#tag EndMethod
@@ -201,7 +201,7 @@ Protected Module Express
 		  // Maps a file extension to its MIME type.
 		  // Source: https://github.com/samuelneff/MimeTypeMap
 		  
-		  Dim MimeTypes As New Dictionary
+		  Var MimeTypes As New Dictionary
 		  MimeTypes.Value("323") = "text/h323"
 		  MimeTypes.Value("3g2") = "video/3gpp2"
 		  MimeTypes.Value("3gp") = "video/3gpp"
@@ -813,12 +813,12 @@ Protected Module Express
 		  // Converts a recordset to JSONItem.
 		  
 		  
-		  Dim RecordsJSON As New JSONItem
+		  Var RecordsJSON As New JSONItem
 		  
 		  // Loop over each record...
 		  While Not Records.AfterLastRow
 		    
-		    Dim RecordJSON As New JSONItem
+		    Var RecordJSON As New JSONItem
 		    
 		    // Loop over each column...
 		    For i As Integer = 0 To Records.ColumnCount-1
@@ -849,7 +849,7 @@ Protected Module Express
 
 	#tag Method, Flags = &h0
 		Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
-		  Dim output As String
+		  Var output As String
 		  
 		  Select Case s
 		  Case SSLSocket.SSLConnectionTypes.SSLv23
@@ -909,9 +909,9 @@ Protected Module Express
 		  // Replace this with whatever UUID generation function that you prefer.
 		  
 		  
-		  Dim db As New SQLiteDatabase
+		  Var db As New SQLiteDatabase
 		  
-		  Dim SQL_Instruction As String= "select hex( randomblob(4)) " _
+		  Var SQL_Instruction As String= "select hex( randomblob(4)) " _
 		  + "|| '-' || hex( randomblob(2)) " _
 		  + "|| '-' || '4' || substr( hex( randomblob(2)), 2) " _
 		  + "|| '-' || substr('AB89', 1 + (abs(random()) % 4) , 1) " _
@@ -920,7 +920,7 @@ Protected Module Express
 		  
 		  Try
 		    db.Connect
-		    Dim GUID As String = db.SelectSQL(SQL_Instruction).Column("GUID")
+		    Var GUID As String = db.SelectSQL(SQL_Instruction).Column("GUID")
 		    db.Close
 		    Return  GUID
 		  Catch error As DatabaseException

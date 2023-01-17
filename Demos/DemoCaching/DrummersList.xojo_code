@@ -57,7 +57,7 @@ Protected Class DrummersList
 	#tag Method, Flags = &h0
 		Sub DrummersGet()
 		  // Try to get the data from the cache.
-		  Dim CacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
+		  Var CacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
 		  
 		  // If cached data is available...
 		  If CacheEntry <> Nil Then
@@ -108,10 +108,10 @@ Protected Class DrummersList
 		  Thread.SleepCurrent(3000)
 		  
 		  // Prepare a SQL statement.
-		  Dim SQL As String = "SELECT * FROM Drummers ORDER BY Votes DESC"
+		  Var SQL As String = "SELECT * FROM Drummers ORDER BY Votes DESC"
 		  
 		  // Create a prepared statement.
-		  Dim PS As SQLitePreparedStatement = Database.Prepare(SQL)
+		  Var PS As SQLitePreparedStatement = Database.Prepare(SQL)
 		  
 		  // Perform the query.
 		  Records = PS.SelectSQL
@@ -126,13 +126,13 @@ Protected Class DrummersList
 	#tag Method, Flags = &h0
 		Sub ResponseGenerate()
 		  // Prepare a JSON item for use with the Template.
-		  Dim TemplateData As New JSONItem
+		  Var TemplateData As New JSONItem
 		  TemplateData.Value("cached") = CacheUsed.ToString
 		  TemplateData.Value("cacheExpiration") = CacheExpiration.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
 		  TemplateData.Value("drummers") = Drummers
 		  
 		  // Create a Template instance.  
-		  Dim Template As New Templates.MustacheLite
+		  Var Template As New Templates.MustacheLite
 		  
 		  // Load the template file and use it as the source.
 		  Template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))

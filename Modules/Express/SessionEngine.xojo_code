@@ -12,10 +12,10 @@ Inherits Timer
 		  #EndIf
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var Now As DateTime = DateTime.Now
 		  
 		  // This is an array of the session IDs that have expired.
-		  Dim ExpiredSessionIDs() As String
+		  Var ExpiredSessionIDs() As String
 		  
 		  // Prepare variables outside of the loops to improve speed.
 		  Var SessionKeys() As Variant = Sessions.Keys
@@ -86,16 +86,16 @@ Inherits Timer
 		  // Otherwise a new session is created and returned.
 		  
 		  // This is the session that we'll return.
-		  Dim Session As Dictionary
+		  Var Session As Dictionary
 		  
 		  // This will be used if a new SessionID is assigned.
-		  Dim NewSessionID As String
+		  Var NewSessionID As String
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var Now As DateTime = DateTime.Now
 		  
 		  // Get the original Session ID, if applicable.
-		  Dim OriginalSessionID As String = Request.Cookies.Lookup("SessionID", "")
+		  Var OriginalSessionID As String = Request.Cookies.Lookup("SessionID", "")
 		  
 		  // If the user has a Session ID cookie...
 		  If OriginalSessionID <> "" Then
@@ -107,10 +107,10 @@ Inherits Timer
 		      Session = Sessions.Value(OriginalSessionID)
 		      
 		      // Get the session's LastRequestTimestamp.
-		      Dim LastRequestTimestamp As New DateTime( Session.Value("LastRequestTimestamp").DateTimeValue )
+		      Var LastRequestTimestamp As New DateTime( Session.Value("LastRequestTimestamp").DateTimeValue )
 		      
 		      // Determine the time that has elapsed since the last request.
-		      Dim TimeElapsed As Double = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
+		      Var TimeElapsed As Double = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
 		      
 		      // If the session has expired...
 		      If TimeElapsed > SessionsTimeOutSecs Then
@@ -180,7 +180,7 @@ Inherits Timer
 		  Sessions.Value(NewSessionID) = Session
 		  
 		  // Set the cookie expiration date.
-		  Dim CookieExpiration As DateTime = DateTime.Now
+		  Var CookieExpiration As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
 		  CookieExpiration = CookieExpiration.AddInterval( 0, 0, 0, 0, 0, SessionsTimeOutSecs )
 		  
