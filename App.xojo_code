@@ -69,7 +69,6 @@ Inherits ConsoleApplication
 		  'Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
 		  
 		  // Uncomment the demo module that you want to use.
-		  'Break
 		  
 		  // Hello, world demo.
 		  'DemoHelloWorld.RequestProcess(Request)
