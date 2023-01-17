@@ -60,7 +60,7 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h0
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
-		  //#Pragma Unused Response // For now unused
+		  #Pragma Unused Response // Keep marked as unused to prevent analyser warnings.
 		  
 		  // Processes an HTTP request.
 		  

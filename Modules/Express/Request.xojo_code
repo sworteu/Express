@@ -567,7 +567,7 @@ Inherits SSLSocket
 		      Dim CurrentEtag As String 
 		      CurrentEtag = MD5(FI.NativePath)
 		      CurrentEtag = EncodeHex(CurrentEtag)
-		      CurrentEtag = CurrentEtag + "-" + FI.ModificationDate.TotalSeconds.ToString
+		      CurrentEtag = CurrentEtag + "-" + FI.ModificationDateTime.SecondsFrom1970.ToString
 		      CurrentEtag = CurrentEtag.NthField(".", 1)
 		      
 		      // Get any Etag that the client sent in the request.
