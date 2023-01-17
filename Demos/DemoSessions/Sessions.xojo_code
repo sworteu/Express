@@ -85,11 +85,11 @@ Protected Class Sessions
 		  
 		  
 		  // Loop over the server's session keys...
-		  For Each Key As Variant in Request.Server.SessionEngine.Sessions.Keys
+		  For Each key As Variant in Request.Server.SessionEngine.Sessions.Keys
 		    
 		    // Get the entry's key and value.
-		    Var SessionID As String = Key
-		    Var Session As Dictionary = Request.Server.SessionEngine.Sessions.Value(Key)
+		    Var SessionID As String = key
+		    Var Session As Dictionary = Request.Server.SessionEngine.Sessions.Value(key)
 		    
 		    Var RemoteAddress As String = Session.Lookup("RemoteAddress", "")
 		    Var Username As String = Session.Lookup("Username", "n/a")
@@ -105,7 +105,7 @@ Protected Class Sessions
 		    + "<td>" + RequestCount.ToString + "</td>" + EndOfLine _
 		    + "<tr>" + EndOfLine
 		    
-		  Next
+		  Next key
 		  
 		  
 		  // Close the table.

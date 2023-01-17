@@ -14,7 +14,7 @@ Protected Class Login
 		    For i As integer = 0 to ValidationErrors.LastIndex
 		      ErrorsList = ErrorsList _
 		      + "<li>" + ValidationErrors(i) + "</li>" + EndOfLine
-		    Next
+		    Next i
 		    
 		    // Replace the token with the errors.
 		    BodyContent = BodyContent.ReplaceAll("[[Errors]]", ErrorsList)

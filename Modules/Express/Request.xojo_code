@@ -278,18 +278,18 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Get the cookie header value as a string.
-		  Var CookiesRaw As String = Headers.Value("Cookie")
+		  Var cookiesRaw As String = Headers.Value("Cookie")
 		  
 		  // Create an array of cookies.
-		  Var CookiesRawArray() As String = CookiesRaw.Split("; ")
+		  Var cookiesRawArray() As String = cookiesRaw.Split("; ")
 		  
 		  // Loop over the cookies...
-		  For i As Integer = 0 To CookiesRawArray.LastIndex
-		    Var ThisCookie As String = CookiesRawArray(i)
-		    Var Key As String = Express.URLDecode(ThisCookie.NthField("=", 1))
-		    Var Value As String = Express.URLDecode(ThisCookie.NthField("=", 2))
-		    Cookies.Value(Key) = Value
-		  Next
+		  For i As Integer = 0 To cookiesRawArray.LastIndex
+		    Var thisCookie As String = cookiesRawArray(i)
+		    Var key As String = Express.URLDecode(thisCookie.NthField("=", 1))
+		    Var value As String = Express.URLDecode(thisCookie.NthField("=", 2))
+		    Cookies.Value(key) = value
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -304,84 +304,84 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Function Dump() As String
-		  Var HTML As String
+		  Var html As String
 		  
-		  HTML = HTML + "<p>Method: " + Method + "</p>" + EndOfLine.Windows
-		  HTML = HTML + "<p>Path: " + Path + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Method: " + Method + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Path: " + Path + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Path Components: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>Path Components: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
 		  If PathComponents.LastIndex > -1 Then
 		    For i As Integer = 0 to PathComponents.LastIndex
-		      HTML = HTML + "<li>" + i.ToString + ". " + PathComponents(i) + "</li>"+ EndOfLine.Windows
-		    Next
+		      html = html + "<li>" + i.ToString + ". " + PathComponents(i) + "</li>"+ EndOfLine.Windows
+		    Next i
 		  Else
-		    HTML = HTML + "<li>None</li>"+ EndOfLine.Windows
+		    html = html + "<li>None</li>"+ EndOfLine.Windows
 		  End If
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
-		  HTML = HTML + "<p>Remote Address: " + RemoteAddress + "</p>" + EndOfLine.Windows
-		  HTML = HTML + "<p>Socket ID: " + SocketID.ToString + "</p>" + EndOfLine.Windows
+		  html = html + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Remote Address: " + RemoteAddress + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Socket ID: " + SocketID.ToString + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Headers: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>Headers: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
 		  If Headers.KeyCount > 0 Then
-		    For Each Key As Variant in Headers.Keys
-		      HTML = HTML + "<li>" + Key + "=" + Headers.Value(Key) + "</li>"+ EndOfLine.Windows
-		    Next
+		    For Each key As Variant in Headers.Keys
+		      html = html + "<li>" + key + "=" + Headers.Value(key) + "</li>"+ EndOfLine.Windows
+		    Next key
 		  Else
-		    HTML = HTML + "<li>None</li>"+ EndOfLine.Windows
+		    html = html + "<li>None</li>"+ EndOfLine.Windows
 		  End If
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Cookies: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>Cookies: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
 		  If Cookies.KeyCount > 0 Then
-		    For Each Key As Variant in Cookies.Keys
-		      HTML = HTML + "<li>" + Key + "=" + Cookies.Value(Key) + "</li>"+ EndOfLine.Windows
-		    Next
+		    For Each key As Variant in Cookies.Keys
+		      HTML = html + "<li>" + Key + "=" + Cookies.Value(key) + "</li>"+ EndOfLine.Windows
+		    Next key
 		  Else
-		    HTML = HTML + "<li>None</li>"+ EndOfLine.Windows
+		    html = html + "<li>None</li>"+ EndOfLine.Windows
 		  End If
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>GET Params: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>GET Params: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
 		  If GET.KeyCount > 0 Then
-		    For Each Key As Variant in GET.Keys
-		      HTML = HTML + "<li>" + Key + "=" + GET.Value(Key) + "</li>"+ EndOfLine.Windows
-		    Next
+		    For Each key As Variant in GET.Keys
+		      html = html + "<li>" + key + "=" + GET.Value(key) + "</li>"+ EndOfLine.Windows
+		    Next key
 		  Else
-		    HTML = HTML + "<li>None</li>"+ EndOfLine.Windows
+		    html = html + "<li>None</li>"+ EndOfLine.Windows
 		  End If
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>POST Params: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>POST Params: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
 		  If POST.KeyCount > 0 Then
-		    For Each Key As Variant in POST.Keys
-		      HTML = HTML + "<li>" + Key + "=" + POST.Value(Key) + "</li>"+ EndOfLine.Windows
-		    Next
+		    For Each key As Variant in POST.Keys
+		      HTML = html + "<li>" + key + "=" + POST.Value(key) + "</li>"+ EndOfLine.Windows
+		    Next key
 		  Else
-		    HTML = HTML + "<li>None</li>"+ EndOfLine.Windows
+		    html = html + "<li>None</li>"+ EndOfLine.Windows
 		  End If
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Body:<br /><br />" 
+		  html = html + "<p>Body:<br /><br />" 
 		  If Body <> "" Then
-		    HTML = HTML + Body
+		    html = html + Body
 		  Else
-		    HTML = HTML + "None"
+		    html = html + "None"
 		  End If
-		  HTML = HTML + Body + "</p>" + EndOfLine.Windows
+		  html = html + Body + "</p>" + EndOfLine.Windows
 		  
-		  Return HTML
+		  Return html
 		End Function
 	#tag EndMethod
 
@@ -401,39 +401,39 @@ Inherits SSLSocket
 		  // Loop over the URL params to create the GET dictionary.
 		  For i As Integer = 0 To GETParams.LastIndex
 		    
-		    Var ThisParam As String = GETParams( i )
-		    Var Key As String = ThisParam.NthField( "=", 1 )
-		    Var Value As String = ThisParam.NthField( "=", 2 )
-		    Value = URLDecode( Value) 
+		    Var thisParam As String = GETParams( i )
+		    Var key As String = thisParam.NthField( "=", 1 )
+		    Var value As String = thisParam.NthField( "=", 2 )
+		    value = URLDecode(value) 
 		    
 		    // If the key does not already exist in the GET dictionary...
-		    If Not Get.HasKey( Key ) Then
-		      GET.Value( Key ) = URLDecode( Value )
+		    If Not Get.HasKey(key) Then
+		      GET.Value(key) = URLDecode(value)
 		    Else
 		      
-		      Var Temp() As String
+		      Var temp() As String
 		      
 		      // Get the existing value from the GET dictionary.
-		      Var ExistingValue As Variant = GET.Value( Key )
+		      Var existingValue As Variant = GET.Value(key)
 		      
 		      // If that value is already an array...
-		      If ExistingValue.IsArray Then
+		      If existingValue.IsArray Then
 		        // Set the temp array to the existing array.
-		        Temp = GET.Value( Key )
+		        temp = GET.Value(key)
 		      Else
 		        // Add the first element to the temp array.
-		        Temp.Add( ExistingValue ) 
+		        temp.Add(existingValue) 
 		      End If
 		      
 		      // Append the new value to the temp array.
-		      Temp.Add( Value )
+		      temp.Add(value)
 		      
 		      // Update the GET dictionary.
-		      GET.Value( Key ) = Temp
+		      GET.Value(key) = temp
 		      
 		    End If
 		    
-		  Next
+		  Next i
 		  
 		  
 		End Sub
@@ -455,12 +455,12 @@ Inherits SSLSocket
 		  // Loop over the other header array elements to create the request headers dictionary.
 		  For i As Integer = 1 To HeadersRawArray.LastIndex
 		    
-		    Var ThisHeader As String = HeadersRawArray(i)
-		    Var Key As String = ThisHeader.NthField(": ", 1)
-		    Var Value As String = ThisHeader.NthField(": ", 2)
-		    Headers.Value(Key) = Value
+		    Var thisHeader As String = HeadersRawArray(i)
+		    Var key As String = thisHeader.NthField(": ", 1)
+		    Var value As String = thisHeader.NthField(": ", 2)
+		    Headers.Value(key) = value
 		    
-		  Next
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -509,18 +509,18 @@ Inherits SSLSocket
 		  
 		  
 		  // Create a folder item for the file that was requested...
-		  For Each PathComponent As String In PathComponents
+		  For Each pathComponent As String In PathComponents
 		    
 		    // If this is a blank component...
 		    // This might happen if the request is for a subfolder.
 		    // Example: http://127.0.0.1:64003/sub/
-		    If PathComponent = "" Then
+		    If pathComponent = "" Then
 		      Exit
 		    End If
 		    
 		    // Try to add the URL-decoded path component.
 		    Try
-		      FI = FI.Child( DecodeURLComponent( PathComponent ) )
+		      FI = FI.Child(DecodeURLComponent( pathComponent ))
 		    Catch e As NilObjectException
 		      Return
 		    Catch e As UnsupportedFormatException
@@ -532,17 +532,17 @@ Inherits SSLSocket
 		      Return
 		    End If
 		    
-		  Next
+		  Next pathComponent
 		  
 		  
 		  // If the requested resource is a directory...
 		  If FI.IsFolder Then
 		    
 		    // Loop over the index filenames to see if any exist...
-		    For Each IndexFilename As String In IndexFilenames
+		    For Each indexFilename As String In IndexFilenames
 		      
 		      // Add this index document to the FolderItem...
-		      FI = FI.Child(IndexFilename)
+		      FI = FI.Child(indexFilename)
 		      
 		      // If the FolderItem exists...
 		      If FI.Exists Then
@@ -552,7 +552,7 @@ Inherits SSLSocket
 		      // Remove the default document from the FolderItem.
 		      FI = FI.Parent
 		      
-		    Next
+		    Next indexFilename
 		    
 		  End If
 		  
@@ -564,24 +564,24 @@ Inherits SSLSocket
 		      
 		      // Generate the current Etag for the file.
 		      Const quote As String = """"
-		      Var CurrentEtag As String 
-		      CurrentEtag = MD5(FI.NativePath)
-		      CurrentEtag = EncodeHex(CurrentEtag)
-		      CurrentEtag = CurrentEtag + "-" + FI.ModificationDateTime.SecondsFrom1970.ToString
-		      CurrentEtag = CurrentEtag.NthField(".", 1)
+		      Var currentEtag As String 
+		      currentEtag = MD5(FI.NativePath)
+		      currentEtag = EncodeHex(currentEtag)
+		      currentEtag = currentEtag + "-" + FI.ModificationDateTime.SecondsFrom1970.ToString
+		      currentEtag = currentEtag.NthField(".", 1)
 		      
 		      // Get any Etag that the client sent in the request.
-		      Var ClientEtag As String = Headers.Lookup("If-None-Match", "")
+		      Var clientEtag As String = Headers.Lookup("If-None-Match", "")
 		      
 		      // If the client has the current resource...
-		      If ClientEtag = CurrentEtag Then
+		      If clientEtag = currentEtag Then
 		        // Return the "Not Modified" status.
 		        Response.Status = "304"
 		        Return
 		      End If
 		      
 		      // Add an Etag header. (rfc says the string must have quotes "")
-		      Response.Headers.Value("ETag") = quote + CurrentEtag +  quote
+		      Response.Headers.Value("ETag") = quote + currentEtag +  quote
 		      
 		    End If
 		    
@@ -595,10 +595,10 @@ Inherits SSLSocket
 		    Response.Content = Response.Content.DefineEncoding(Encodings.UTF8)
 		    
 		    // Get the file's extension.
-		    Var Extension As String = FI.Name.NthField( ".", FI.Name.CountFields( "."))
+		    Var extension As String = FI.Name.NthField( ".", FI.Name.CountFields( "."))
 		    
 		    // Map the file extension to a mime type, and use that as the content type.
-		    Response.Headers.Value("Content-Type") = MimeTypeGet(Extension)
+		    Response.Headers.Value("Content-Type") = MimeTypeGet(extension)
 		    
 		    // Set the Content-Length
 		    Response.Headers.Value("Content-Length") = Response.Content.Bytes.ToString
@@ -635,112 +635,112 @@ Inherits SSLSocket
 	#tag Method, Flags = &h21
 		Private Sub MultipartFormHandle()
 		  // Split the content type at the boundary.
-		  Var ContentTypeParts() As String = ContentType.Split("boundary=")
+		  Var contentTypeParts() As String = ContentType.Split("boundary=")
 		  
 		  // If the content does not have a boundary...
-		  If ContentTypeParts.LastIndex < 1 Then
+		  If contentTypeParts.LastIndex < 1 Then
 		    Return
 		  End If
 		  
 		  // Get the boundary.
-		  Var Boundary As String = ContentTypeParts(1)
+		  Var boundary As String = contentTypeParts(1)
 		  
 		  // Split the content into parts based on the boundary.
-		  Var Parts() As String = Body.Split("--" + Boundary)
+		  Var parts() As String = Body.Split("--" + boundary)
 		  
 		  // Loop over the parts, skipping the header...
-		  Var LastPartsIndex As Integer = Parts.LastIndex
-		  For i As Integer = 1 To LastPartsIndex
+		  Var lastPartsIndex As Integer = parts.LastIndex
+		  For i As Integer = 1 To lastPartsIndex
 		    
 		    // Split the part into its header and content.
-		    Var PartComponents() As String = Parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
+		    Var partComponents() As String = parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
 		    
 		    // If this part has no content...
-		    If PartComponents.LastIndex < 1 Then
+		    If partComponents.LastIndex < 1 Then
 		      Continue
 		    End If
 		    
 		    // Get the part content.
-		    Var PartContent As String = PartComponents(1)
+		    Var partContent As String = partComponents(1)
 		    
 		    // Additional info about the part will be stored in these vars.
-		    Var Fieldname As String
-		    Var Filename As String
-		    Var FileContentType As String
-		    Var FieldIsAFile As Boolean = False
+		    Var fieldname As String
+		    Var filename As String
+		    Var fileContentType As String
+		    Var fieldIsAFile As Boolean = False
 		    
 		    // Split the part headers into an array.
 		    // Example Header...
 		    // Content-Disposition: form-data; name="file1"; filename="woot.png"
 		    // Content-Type: image/png
-		    Var PartHeaders() As String = PartComponents(0).Split(EndOfLine.Windows)
+		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.Windows)
 		    
 		    // Loop over the part headers...
-		    For Each PartHeader As String In PartHeaders
+		    For Each partHeader As String In partHeaders
 		      
 		      // If this part header is empty...
-		      If PartHeader = "" Then
+		      If partHeader = "" Then
 		        Continue
 		      End If
 		      
-		      Var HeaderName As String = PartHeader.NthField(": ", 1)
-		      Var HeaderValue As String = PartHeader.NthField(": ", 2)
+		      Var headerName As String = partHeader.NthField(": ", 1)
+		      Var headerValue As String = partHeader.NthField(": ", 2)
 		      
-		      If HeaderName = "Content-Type" Then
-		        FileContentType = HeaderValue
+		      If headerName = "Content-Type" Then
+		        fileContentType = headerValue
 		        Continue
 		      End If
 		      
-		      If HeaderName = "Content-Disposition" Then
+		      If headerName = "Content-Disposition" Then
 		        
 		        // Split the disposition into its parts.
-		        Var DispositionParts() As String = HeaderValue.Split("; ")
+		        Var dispositionParts() As String = headerValue.Split("; ")
 		        
 		        // Loop over the disposition parts to get the field name and file name.
-		        For Each DispPart As String In DispositionParts
+		        For Each dispPart As String In dispositionParts
 		          
 		          // Split the disposition part into name / value pairs.
-		          Var NameValue() As String = DispPart.Split("=")
+		          Var nameValue() As String = dispPart.Split("=")
 		          
-		          If NameValue.LastIndex < 0 Then
+		          If nameValue.LastIndex < 0 Then
 		            Continue
 		          End If
 		          
 		          // If this is a field name...
-		          If NameValue(0) = "name" Then
-		            Fieldname = NameValue(1).ReplaceAll("""", "")
+		          If nameValue(0) = "name" Then
+		            Fieldname = nameValue(1).ReplaceAll("""", "")
 		          End If
 		          
 		          // If this is a file name...
-		          If NameValue(0) = "filename" Then
-		            FieldIsAFile = True
-		            Filename = NameValue(1).ReplaceAll("""", "")
+		          If nameValue(0) = "filename" Then
+		            fieldIsAFile = True
+		            filename = nameValue(1).ReplaceAll("""", "")
 		          End If
 		          
-		        Next
+		        Next dispPart
 		        
 		      End If
 		      
-		    Next
+		    Next partHeader
 		    
 		    // If we could not get a field name from the part...
-		    If Fieldname = "" Then
+		    If fieldname = "" Then
 		      Continue
 		    End If
 		    
 		    // If this is a file...
-		    If FieldIsAFile Then
-		      Var FileDictionary As New Dictionary
-		      FileDictionary.Value("ContentType") = FileContentType
-		      FileDictionary.Value("Content") = PartContent
-		      FileDictionary.Value("Filename") = Filename
-		      FileDictionary.Value("ContentLength") = PartContent.Length
-		      Files.Value(Fieldname) = FileDictionary
+		    If fieldIsAFile Then
+		      Var fileDictionary As New Dictionary
+		      fileDictionary.Value("ContentType") = fileContentType
+		      fileDictionary.Value("Content") = partContent
+		      fileDictionary.Value("Filename") = filename
+		      fileDictionary.Value("ContentLength") = partContent.Length
+		      Files.Value(fieldname) = fileDictionary
 		    Else
-		      POST.Value(Fieldname) = PartContent
+		      POST.Value(fieldname) = partContent
 		    End If
 		    
-		  Next
+		  Next i
 		  
 		End Sub
 	#tag EndMethod
@@ -789,7 +789,7 @@ Inherits SSLSocket
 		    
 		    For i As Integer = 0 To lastPathComponentsIndex
 		      PathItems.Value(i) = PathComponents(i)
-		    Next
+		    Next i
 		    
 		  End If
 		  
@@ -1034,11 +1034,11 @@ Inherits SSLSocket
 		    Var lastPostParamIndex As Integer = POSTParams.LastIndex
 		    
 		    For i As Integer = 0 To lastPostParamIndex
-		      Var ThisParam As String = POSTParams(i)
-		      Var Key As String = ThisParam.NthField("=", 1)
-		      Var Value As String = ThisParam.NthField("=", 2)
-		      POST.Value(Key) = URLDecode(Value)
-		    Next
+		      Var thisParam As String = POSTParams(i)
+		      Var key As String = thisParam.NthField("=", 1)
+		      Var value As String = thisParam.NthField("=", 2)
+		      POST.Value(Key) = URLDecode(value)
+		    Next i
 		    
 		  End If
 		End Sub
@@ -1121,81 +1121,80 @@ Inherits SSLSocket
 		Sub WSMessageGet()
 		  // Processes a WebSocket message.
 		  
-		  
 		  // Get the data.
 		  DataGet
 		  
 		  // Convert the message to a memoryblock.
-		  Var DataRaw As MemoryBlock = Data
-		  DataRaw.LittleEndian = False
+		  Var dataRaw As MemoryBlock = Data
+		  dataRaw.LittleEndian = False
 		  
 		  // We'll use a pointer to get specific bytes from the memoryblock.
-		  Var DataPtr As Ptr = DataRaw
+		  Var dataPtr As Ptr = dataRaw
 		  
 		  // Get the first byte.
-		  Var FirstByte As UInteger = DataPtr.Byte(0)
+		  Var firstByte As UInteger = dataPtr.Byte(0)
 		  
 		  // Is this the last message in the series?
-		  Var FinBit As UInteger = FirstByte And &b10000000
+		  Var finBit As UInteger = firstByte And &b10000000
 		  #Pragma Unused FinBit
 		  
 		  // Get the reserved extension bits.
-		  Var RSV1 As Integer = FirstByte And &b01000000
-		  Var RSV2 As Integer = FirstByte And &b00100000
-		  Var RSV3 As Integer = FirstByte And &b00010000
+		  Var RSV1 As Integer = firstByte And &b01000000
+		  Var RSV2 As Integer = firstByte And &b00100000
+		  Var RSV3 As Integer = firstByte And &b00010000
 		  #Pragma Unused RSV1
 		  #Pragma Unused RSV2
 		  #Pragma Unused RSV3
 		  
 		  // Get the OpCode.
-		  Var OpCode As UInteger = FirstByte And &b00001111
+		  Var opCode As UInteger = firstByte And &b00001111
 		  
 		  // If the client is closing the connection...
-		  If OpCode = 8 Then
+		  If opCode = 8 Then
 		    WSConnectionClose
 		    Return
 		  End If
 		  
 		  // Get the second byte from the frame.
-		  Var SecondByte As UInteger = DataPtr.Byte(1)
+		  Var secondByte As UInteger = dataPtr.Byte(1)
 		  
 		  // Is the payload masked?
-		  Var MaskedBit As UInteger = SecondByte And &b10000000
+		  Var maskedBit As UInteger = secondByte And &b10000000
 		  #Pragma Unused MaskedBit
 		  
 		  // Get the payload size.
-		  Var PayloadSize As UInteger = SecondByte And &b01111111
-		  Var MaskKeyStartingByte As UInteger
-		  If PayloadSize < 126 Then
-		    MaskKeyStartingByte = 2
-		  ElseIf PayloadSize = 126 Then
-		    PayloadSize = DataRaw.UInt16Value(2)
-		    MaskKeyStartingByte = 4
-		  ElseIf PayloadSize = 127 Then
-		    PayloadSize = DataRaw.UInt64Value(2)
-		    MaskKeyStartingByte = 10
+		  Var payloadSize As UInteger = secondByte And &b01111111
+		  Var maskKeyStartingByte As UInteger
+		  If payloadSize < 126 Then
+		    maskKeyStartingByte = 2
+		  ElseIf payloadSize = 126 Then
+		    payloadSize = dataRaw.UInt16Value(2)
+		    maskKeyStartingByte = 4
+		  ElseIf payloadSize = 127 Then
+		    payloadSize = dataRaw.UInt64Value(2)
+		    maskKeyStartingByte = 10
 		  End If
 		  
 		  // Get the masking key.
-		  Var MaskKey() As UInteger
+		  Var maskKey() As UInteger
 		  For i As Integer = 0 to 3
-		    MaskKey.Add(DataPtr.Byte(MaskKeyStartingByte + i))
-		  Next
+		    maskKey.Add(DataPtr.Byte(maskKeyStartingByte + i))
+		  Next i
 		  
 		  // Determine where the data bytes start.
-		  Var DataStartingByte As UInteger = MaskKeyStartingByte + 4
+		  Var dataStartingByte As UInteger = maskKeyStartingByte + 4
 		  
 		  // Get the masked data...
-		  Var DataMasked() As UInteger
-		  For i As Integer = 0 to PayloadSize - 1
-		    DataMasked.Add(DataPtr.Byte(DataStartingByte + i))
-		  Next
+		  Var dataMasked() As UInteger
+		  For i As Integer = 0 to payloadSize - 1
+		    dataMasked.Add(dataPtr.Byte(dataStartingByte + i))
+		  Next i
 		  
 		  // Unmask the data and store it in the Request body...
 		  Body = ""
-		  For i As Integer = 0 to PayloadSize - 1
-		    Body = Body + Chr(DataMasked(i) XOR MaskKey(i Mod 4))
-		  Next
+		  For i As Integer = 0 to payloadSize - 1
+		    Body = Body + Chr(dataMasked(i) XOR maskKey(i Mod 4))
+		  Next i
 		  
 		  
 		End Sub
@@ -1251,30 +1250,30 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0
 		Sub XojoScriptsParse()
 		  // Determine the number of scripts in the content.
-		  Var Scripts() As String = Response.Content.Split("<xojoscript>")
+		  Var scripts() As String = Response.Content.Split("<xojoscript>")
 		  
 		  // If there are no scripts in the content.
-		  If Scripts.LastIndex = 0 Then
+		  If scripts.LastIndex = 0 Then
 		    Return
 		  End If
 		  
 		  // Create an instance of the XojoScript evaluator.
-		  Var Evaluator As New XSProcessor
+		  Var evaluator As New XSProcessor
 		  
 		  // Loop over the XojoScript blocks...
-		  Var lastScriptsIndex As Integer = Scripts.LastIndex
+		  Var lastScriptsIndex As Integer = scripts.LastIndex
 		  For x As Integer = 0 To lastScriptsIndex
 		    
 		    // Get the next XojoScript block.
-		    Evaluator.Source = Express.BlockGet(Response.Content, "<xojoscript>", "</xojoscript>", 0)
+		    evaluator.Source = Express.BlockGet(Response.Content, "<xojoscript>", "</xojoscript>", 0)
 		    
 		    // Run the XojoScript.
-		    Evaluator.Run
+		    evaluator.Run
 		    
 		    // Replace the block with the result.
-		    Response.Content = Express.BlockReplace(Response.Content, "<xojoscript>", "</xojoscript>", 0, Evaluator.Result)
+		    Response.Content = Express.BlockReplace(Response.Content, "<xojoscript>", "</xojoscript>", 0, evaluator.Result)
 		    
-		  Next
+		  Next x
 		End Sub
 	#tag EndMethod
 

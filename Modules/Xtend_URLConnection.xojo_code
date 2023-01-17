@@ -46,7 +46,7 @@ Protected Module Xtend_URLConnection
 		      
 		    End If
 		    
-		  Next
+		  Next key
 		  
 		  out.Write("--" + Boundary + "--" + CRLF)
 		  out.Close

@@ -34,41 +34,41 @@ Protected Class MustacheLite
 		  End If
 		  
 		  // Loop over the data object's values...
-		  For Each Key As String In Data.Keys
+		  For Each key As String In Data.Keys
 		    
 		    // Get the value.
-		    Var Value As Variant = Data.Value(Key)
+		    Var value As Variant = Data.Value(key)
 		    
 		    // If the value is null...
-		    If Value = Nil Then
+		    If value = Nil Then
 		      Continue
 		    End If
 		    
 		    // Use introspection to determine the entry's value type.
-		    Var ValueType As Introspection.TypeInfo = Introspection.GetType(Value)
-		    If ValueType = Nil Then Continue
+		    Var valueType As Introspection.TypeInfo = Introspection.GetType(Value)
+		    If valueType = Nil Then Continue
 		    
 		    // If the value is a boolean, number, string, etc..
-		    If ValueType.IsPrimitive Then
+		    If valueType.IsPrimitive Then
 		      
 		      // Convert the primitive value to a string.
-		      Var ValueString As String = Value.StringValue
+		      Var valueString As String = value.StringValue
 		      
 		      // Using the object's name and the entry's key, generate the token to replace.
-		      Var Token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
+		      Var token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
 		      
 		      // Replace all occurrences of the token with the value.
-		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", ValueString)
+		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", valueString)
 		      
 		      Continue
 		      
 		    End If
 		    
 		    // If the value is a nested JSONItem...
-		    If ValueType.Name = "JSONItem" Then
+		    If valueType.Name = "JSONItem" Then
 		      
 		      // Get the nested JSONItem.
-		      Var NestedJSON As JSONItem = Value
+		      Var NestedJSON As JSONItem = value
 		      
 		      // If the nested JSONItem is not an array...
 		      If NestedJSON.IsArray = False Then
@@ -77,7 +77,7 @@ Protected Class MustacheLite
 		        Var Engine As New MustacheLite
 		        Engine.Source = Expanded
 		        Engine.Data = NestedJSON
-		        Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
+		        Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
 		        Engine.MergeSystemTokens = False
 		        Engine.RemoveComments = False
 		        Engine.RemoveOrphans = False
@@ -87,50 +87,50 @@ Protected Class MustacheLite
 		      Else
 		        
 		        // Get the beginning and ending tokens for this array.
-		        Var TokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
-		        Var TokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
+		        Var tokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
+		        Var tokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
 		        
 		        // Get the start position of the beginning token.
-		        Var StartPosition As Integer = Source.IndexOf(0, TokenBegin) 
+		        Var startPosition As Integer = Source.IndexOf(0, tokenBegin) 
 		        
 		        // Get the position of the ending token.
-		        Var StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
+		        Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
 		        
 		        // If the template does not include both the beginning and ending tokens...
-		        If ( (StartPosition = -1) Or (StopPosition = -1) ) Then
+		        If ( (startPosition = -1) Or (stopPosition = -1) ) Then
 		          // We do not need to merge the array.
 		          Continue
 		        End If
 		        
 		        // Get the content between the beginning and ending tokens.
-		        Var LoopSource As String = Source.Middle( StartPosition + TokenBegin.Length, StopPosition - StartPosition - TokenBegin.Length)
+		        Var loopSource As String = Source.Middle( startPosition + tokenBegin.Length, stopPosition - startPosition - tokenBegin.Length)
 		        
 		        // LoopContent is the content created by looping over the array and merging each value.
-		        Var LoopContent As String
+		        Var loopContent As String
 		        
 		        // Loop over the array elements...
 		        For i As Integer = 0 to NestedJSON.Count - 1
 		          
-		          Var ArrayValue As Variant = NestedJSON.ValueAt(i)
+		          Var arrayValue As Variant = NestedJSON.ValueAt(i)
 		          
 		          // Process the value using another instance of Template. 
-		          Var Engine As New MustacheLite
-		          Engine.Source = LoopSource
-		          Engine.Data = ArrayValue
-		          Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
-		          Engine.MergeSystemTokens = False
-		          Engine.RemoveComments = False
+		          Var engine As New MustacheLite
+		          engine.Source = loopSource
+		          engine.Data = arrayValue
+		          engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		          engine.MergeSystemTokens = False
+		          engine.RemoveComments = False
 		          Engine.RemoveOrphans = False
 		          Engine.Merge
 		          
 		          // Append the expanded content with the loop content.
-		          LoopContent = LoopContent + Engine.Expanded
+		          loopContent = loopContent + engine.Expanded
 		          
-		        Next
+		        Next i
 		        
 		        // Substitute the loop content block of the template with the expanded content.
-		        Var LoopBlock As String = TokenBegin + LoopSource + TokenEnd
-		        Expanded = Expanded.ReplaceAll(LoopBlock, LoopContent)
+		        Var loopBlock As String = tokenBegin + loopSource + tokenEnd
+		        Expanded = Expanded.ReplaceAll(loopBlock, loopContent)
 		        
 		      End If
 		      
@@ -143,7 +143,7 @@ Protected Class MustacheLite
 		    // Look at ValueType.Name to determine what the type is.
 		    Break
 		    
-		  Next
+		  Next key
 		  
 		  // Remove orphaned tokens.
 		  If RemoveOrphans = True Then

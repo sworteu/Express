@@ -7,15 +7,15 @@ Protected Module Express
 		  
 		  Var Arguments As New Dictionary
 		  
-		  For Each Argument As String In Args
+		  For Each argument As String In Args
 		    
-		    Var ArgParts() As String = Argument.Split("=")
+		    Var ArgParts() As String = argument.Split("=")
 		    Var Name As String = ArgParts(0)
 		    Var Value As String  = If(ArgParts.LastIndex = 1,  ArgParts(1), "")
 		    
-		    Arguments.Value(Name) = Value
+		    arguments.Value(Name) = Value
 		    
-		  Next
+		  Next argument
 		  
 		  Return Arguments
 		End Function
@@ -826,7 +826,7 @@ Protected Module Express
 		      // Add a name / value pair to the JSON record.
 		      RecordJSON.Value( Records.ColumnAt(i).Name ) = Records.ColumnAt(i).StringValue
 		      
-		    Next
+		    Next i
 		    
 		    // Add the JSON record to the JSON records object.
 		    RecordsJSON.Add(RecordJSON)

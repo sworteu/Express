@@ -52,7 +52,7 @@ Inherits ServerSocket
 		      count = count + 1
 		    End If
 		    
-		  Next
+		  Next i
 		  
 		  Return count
 		End Function
@@ -173,8 +173,8 @@ Inherits ServerSocket
 		    Var keys() As Variant = AdditionalServerDisplayInfo.Keys
 		    Var lastKeyIndex As Integer = keys.LastIndex
 		    For i As Integer = 0 To lastKeyIndex
-		      info = info + "• " + keys( i ).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
-		    Next
+		      info = info + "• " + keys(i).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
+		    Next i
 		  End If
 		  
 		  info = info + EndOfLine + EndOfLine
@@ -243,22 +243,22 @@ Inherits ServerSocket
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WSMessageBroadcast(Message As String)
+		Sub WSMessageBroadcast(message As String)
 		  // Broadcasts a message to all of the WebSockets that are connected to the server.
 		  
 		  
 		  // Loop over each WebSocket connection...
-		  For Each Socket As Express.Request In WebSockets
+		  For Each socket As Express.Request In WebSockets
 		    
 		    // If the WebSocket is still connected...
-		    If Socket.IsConnected Then
+		    If socket.IsConnected Then
 		      
 		      // Send it the message.
-		      Socket.WSMessageSend(Message)
+		      socket.WSMessageSend(message)
 		      
 		    End If
 		    
-		  Next
+		  Next socket
 		  
 		  
 		End Sub

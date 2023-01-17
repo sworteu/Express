@@ -12,42 +12,41 @@ Inherits Timer
 		  #EndIf
 		  
 		  // Get the current date/time.
-		  Var Now As DateTime = DateTime.Now
+		  Var now As DateTime = DateTime.Now
 		  
 		  // This is an array of the session IDs that have expired.
-		  Var ExpiredSessionIDs() As String
+		  Var expiredSessionIDs() As String
 		  
 		  // Prepare variables outside of the loops to improve speed.
-		  Var SessionKeys() As Variant = Sessions.Keys
-		  Var Key As Variant, Session As Dictionary, LastRequestTimestamp As DateTime, TimeElapsedSecs As Double
+		  Var sessionKeys() As Variant = Sessions.Keys
+		  Var key As Variant, session As Dictionary, lastRequestTimestamp As DateTime, timeElapsedSecs As Double
 		  
 		  // Loop over the dictionary entries...
-		  For Each Key In SessionKeys
+		  For Each key In sessionKeys
 		    
 		    // Get the entry's value.
-		    Session = Sessions.Value(Key)
+		    session = Sessions.Value(key)
 		    
 		    // Get the session's LastRequestTimestamp.
-		    LastRequestTimestamp = Session.Value("LastRequestTimestamp")
+		    lastRequestTimestamp = session.Value("LastRequestTimestamp")
 		    
 		    // Determine the time that has elapsed since the last request.
-		    TimeElapsedSecs = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
+		    timeElapsedSecs = Now.SecondsFrom1970 - lastRequestTimestamp.SecondsFrom1970
 		    
 		    // If the session has expired...
-		    If TimeElapsedSecs > SessionsTimeOutSecs Then
+		    If timeElapsedSecs > sessionsTimeOutSecs Then
 		      
 		      // Append the session's key to the array.
-		      ExpiredSessionIDs.Add(Key)
+		      expiredSessionIDs.Add(Key)
 		      
 		    End If
 		    
-		  Next
+		  Next key
 		  
 		  // Removed the expired sessions...
-		  For Each SessionID As String In ExpiredSessionIDs
-		    Sessions.Remove(SessionID)
-		  Next
-		  
+		  For Each sessionID As String In expiredSessionIDs
+		    sessions.Remove(sessionID)
+		  Next sessionID
 		  
 		End Sub
 	#tag EndEvent

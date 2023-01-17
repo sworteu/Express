@@ -47,7 +47,7 @@ Inherits ConsoleApplication
 		      
 		      System.Log System.LogLevelCritical, trace
 		      
-		    Next
+		    Next trace
 		    
 		    System.Log System.LogLevelCritical, "END STACK TRACE <"
 		    

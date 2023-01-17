@@ -88,64 +88,64 @@ Protected Class Response
 		Private Function CookiesToHeaders() As String
 		  // Converts the cookie dictionary entries into header dictionary entries.
 		  
-		  
-		  Var HeadersString As String
+		  Var headersString As String
 		  
 		  // Loop over the dictionary entries...
-		  For Each Key As Variant in Cookies.Keys
+		  For Each key As Variant in Cookies.Keys
 		    
 		    // Get the entry's key and value.
-		    Var Name As String = Key
-		    Var Settings As Dictionary = Cookies.Value(Key)
+		    Var name As String = key
+		    Var settings As Dictionary = Cookies.Value(key)
 		    
 		    // Create the cookie sting.
-		    Var CookieString As String 
-		    CookieString = CookieString + URLEncode(Name) + "=" + URLEncode(Settings.Value("Value")) + "; "
-		    If Settings.Value("Expiration") <> Nil Then
-		      Var ExpirationDate As String = Express.DateToRFC1123(Settings.Value("Expiration"))
-		      CookieString = CookieString + "expires=" + ExpirationDate + "; "
+		    Var cookieString As String 
+		    cookieString = cookieString + URLEncode(name) + "=" + URLEncode(settings.Value("Value")) + "; "
+		    If settings.Value("Expiration") <> Nil Then
+		      Var expirationDate As String = Express.DateToRFC1123(settings.Value("Expiration"))
+		      cookieString = cookieString + "expires=" + expirationDate + "; "
 		    End If 
-		    If Settings.Value("Domain") <> Nil Then
-		      CookieString = CookieString + "domain=" + Settings.Value("Domain") + "; "
+		    If settings.Value("Domain") <> Nil Then
+		      cookieString = cookieString + "domain=" + settings.Value("Domain") + "; "
 		    End If
-		    If Settings.Value("Path") <> Nil Then
-		      CookieString = CookieString + "path=" + Settings.Value("Path") + "; "
+		    If settings.Value("Path") <> Nil Then
+		      cookieString = cookieString + "path=" + settings.Value("Path") + "; "
 		    End If
-		    If Settings.Value("Secure") Then
-		      CookieString = CookieString + "secure; "
+		    If settings.Value("Secure") Then
+		      cookieString = cookieString + "secure; "
 		    End If
-		    If Settings.Value("HttpOnly") Then
-		      CookieString = CookieString + "HttpOnly;"
+		    If settings.Value("HttpOnly") Then
+		      cookieString = cookieString + "HttpOnly;"
 		    End If
 		    
 		    // Add the string representation of the cookie to the headers string.
-		    HeadersString = HeadersString _
-		    + "Set-Cookie: " + CookieString + EndOfLine.Windows
+		    headersString = headersString _
+		    + "Set-Cookie: " + cookieString + EndOfLine.Windows
 		    
-		  Next
+		  Next key
 		  
-		  Return HeadersString
+		  Return headersString
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Dump() As String
-		  Var HTML As String
+		  Var html As String
 		  
-		  HTML = HTML + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
+		  html = html + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Headers: " + EndOfLine.Windows
-		  HTML = HTML + "<ul>" + EndOfLine.Windows
-		  For Each Key As Variant in Headers.Keys
-		    HTML = HTML + "<li>" + Key + "=" + Headers.Value(Key) + "</li>"+ EndOfLine.Windows
-		  Next
-		  HTML = HTML + "</ul>" + EndOfLine.Windows
-		  HTML = HTML + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Headers: " + EndOfLine.Windows
+		  html = html + "<ul>" + EndOfLine.Windows
+		  For Each key As Variant in Headers.keys
+		    html = html + "<li>" + Key + "=" + Headers.Value(key) + "</li>"+ EndOfLine.Windows
+		  Next key
+		  html = html + "</ul>" + EndOfLine.Windows
+		  html = html + "</p>" + EndOfLine.Windows
 		  
-		  HTML = HTML + "<p>Response Content...<br /><br />" + Content + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Response Content...<br /><br />" + Content + "</p>" + EndOfLine.Windows
 		  
-		  Return HTML
+		  Return html
+		  
 		End Function
 	#tag EndMethod
 
@@ -210,7 +210,7 @@ Protected Class Response
 		  Headers.Value("Content-Length") = Content.Bytes.ToString
 		  
 		  // Loop over the dictionary entries...
-		  For Each Key As Variant in Headers.Keys
+		  For Each key As Variant in Headers.Keys
 		    
 		    If key = "" Or Headers.Value(key).StringValue = "" Then
 		      Continue
@@ -219,10 +219,9 @@ Protected Class Response
 		    // Add the value.
 		    RH = RH + Key + ": " + Headers.Value(Key).StringValue + EndOfLine.Windows
 		    
-		  Next
+		  Next key
 		  
 		  Return RH
-		  
 		  
 		  
 		End Function

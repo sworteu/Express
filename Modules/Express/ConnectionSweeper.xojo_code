@@ -43,42 +43,42 @@ Inherits Timer
 		      socket = Express.Request(socks(i))
 		      
 		      // If the socket isn't connected...
-		      If Socket.IsConnected = False Then
+		      If socket.IsConnected = False Then
 		        Continue
 		      End If
 		      
 		      // If the socket has not been connected to...
-		      If Socket.LastConnect = Nil Then
+		      If socket.LastConnect = Nil Then
 		        Continue
 		      End If
 		      
 		      // If the socket is actively servicing a WebSocket...
-		      If Socket.WSStatus = "Active" Then
+		      If socket.WSStatus = "Active" Then
 		        Continue
 		      End If
 		      
 		      // Get the current date/time.
-		      Var Now As DateTime = DateTime.Now
+		      Var now As DateTime = DateTime.Now
 		      
 		      // Get the socket's last connection timestamp.
-		      Var Timeout As DateTime = Socket.LastConnect
+		      Var timeout As DateTime = socket.LastConnect
 		      
 		      // Determine when the connection will timeout due to inactivity.
 		      //years, months, days, hours, minutes, seconds
-		      Timeout = Timeout.AddInterval(  0, 0, 0, 0, 0,  Server.KeepAliveTimeout )
+		      timeout = timeout.AddInterval(  0, 0, 0, 0, 0,  Server.KeepAliveTimeout )
 		      
 		      // If the socket's keep-alive has timed out...
-		      If Now > Timeout Then
+		      If now > timeout Then
 		        
 		        // Reset the socket's last connection time.
-		        Socket.LastConnect = Nil
+		        socket.LastConnect = Nil
 		        
 		        // Close the socket.
-		        Socket.Close
+		        socket.Close
 		        
 		      End If
 		      
-		    Next
+		    Next i
 		    
 		  End If
 		End Sub
@@ -99,36 +99,36 @@ Inherits Timer
 		  For i = Server.WebSockets.LastIndex DownTo 0
 		    
 		    // Get the socket.
-		    Var Socket As Express.Request = Server.WebSockets(i)
+		    Var socket As Express.Request = Server.WebSockets(i)
 		    
 		    // Get the current date/time.
-		    Var Now As DateTime = DateTime.Now
+		    Var now As DateTime = DateTime.Now
 		    
 		    // Get the socket's last connection timestamp.
-		    Var Timeout As DateTime = Socket.LastConnect
+		    Var timeout As DateTime = socket.LastConnect
 		    
 		    // Determine when the connection will timeout due to inactivity.
 		    //years, months, days, hours, minutes, seconds
-		    Timeout = Timeout.AddInterval( 0, 0, 0, 0, 0, Server.WSTimeout )
+		    timeout = timeout.AddInterval( 0, 0, 0, 0, 0, Server.WSTimeout )
 		    
 		    // If the socket has timed out...
-		    If Now > Timeout Then
+		    If now > timeout Then
 		      
 		      // Reset the socket's last connection time.
-		      Socket.LastConnect = Nil
+		      socket.LastConnect = Nil
 		      
 		      // Set the WebSocket status.
-		      Socket.WSStatus = "Inactive"
+		      socket.WSStatus = "Inactive"
 		      
 		      // Close the socket.
-		      Socket.Close
+		      socket.Close
 		      
 		      // Remove the socket from the array.
 		      Server.WebSockets.RemoveAt(i)
 		      
 		    End If
 		    
-		  Next
+		  Next i
 		End Sub
 	#tag EndMethod
 

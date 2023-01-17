@@ -30,54 +30,47 @@ Protected Class Chat
 		Sub JoinProcess()
 		  
 		  // Get the username.
-		  Var NewUsername As String = Express.URLDecode(Payload.Lookup("username", ""))
+		  Var newUsername As String = Express.URLDecode(Payload.Lookup("username", ""))
 		  
 		  // Associate the username with the socket.
-		  Request.Custom.Value("username") = NewUsername
+		  Request.Custom.Value("username") = newUsername
 		  
 		  // Get the names of the other users that are online...
-		  Var Usernames() As String
-		  For Each WebSockets As Express.Request In Request.Server.WebSockets
-		    Var Username As String = WebSockets.Custom.Lookup("username", "")
-		    If Username <> NewUsername Then
-		      Usernames.Add(Express.URLEncode(username))
+		  Var usernames() As String
+		  For Each webSockets As Express.Request In Request.Server.WebSockets
+		    Var username As String = webSockets.Custom.Lookup("username", "")
+		    If username <> newUsername Then
+		      usernames.Add(Express.URLEncode(username))
 		    End If
-		  Next
+		  Next webSockets
 		  
 		  // If this is the first user in the chat...
-		  If Usernames.LastIndex = -1 Then
+		  If usernames.LastIndex = -1 Then
 		    
 		    // Return the list.
-		    Var ResponseJSON As New JSONItem
-		    ResponseJSON.Value("type") = "message"
-		    ResponseJSON.Value("username") = "Server"
-		    ResponseJSON.Value("message") = "Welcome, " + Express.URLEncode(NewUsername) + ". You are the first user in the chat."
-		    Request.WSMessageSend(ResponseJSON.ToString)
+		    Var responseJSON As New JSONItem
+		    responseJSON.Value("type") = "message"
+		    responseJSON.Value("username") = "Server"
+		    responseJSON.Value("message") = "Welcome, " + Express.URLEncode(newUsername) + ". You are the first user in the chat."
+		    Request.WSMessageSend(responseJSON.ToString)
 		    
 		  Else
 		    
 		    // Return the list of users.
-		    Var ResponseJSON As New JSONItem
-		    ResponseJSON.Value("type") = "message"
-		    ResponseJSON.Value("username") = "Server"
-		    ResponseJSON.Value("message") = "Welcome, " + Express.URLEncode(NewUsername) + ". You are joining " + String.FromArray(Usernames, ", ") + " in the chat."
-		    Request.WSMessageSend(ResponseJSON.ToString)
+		    Var responseJSON As New JSONItem
+		    responseJSON.Value("type") = "message"
+		    responseJSON.Value("username") = "Server"
+		    responseJSON.Value("message") = "Welcome, " + Express.URLEncode(newUsername) + ". You are joining " + String.FromArray(usernames, ", ") + " in the chat."
+		    Request.WSMessageSend(responseJSON.ToString)
 		    
 		    // Broadcast a message announcing the new user.
-		    ResponseJSON = New JSONItem
-		    ResponseJSON.Value("type") = "message"
-		    ResponseJSON.Value("username") = "Server"
-		    ResponseJSON.Value("message") = Express.URLEncode(NewUsername + " has joined the chat.")
-		    Request.Server.WSMessageBroadcast(ResponseJSON.ToString)
+		    responseJSON = New JSONItem
+		    responseJSON.Value("type") = "message"
+		    responseJSON.Value("username") = "Server"
+		    responseJSON.Value("message") = Express.URLEncode(newUsername + " has joined the chat.")
+		    Request.Server.WSMessageBroadcast(responseJSON.ToString)
 		    
 		  End If
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		  
 		  
 		End Sub
@@ -163,20 +156,20 @@ Protected Class Chat
 		  // If this is a request to get a list of users...
 		  
 		  // Get the names of the users that are online...
-		  Var Usernames() As String
-		  For Each Request As Express.Request In Request.Server.WebSockets
-		    Var Username As String = Request.Custom.Lookup("username", "")
-		    If Username <> "" Then
-		      Usernames.Add(Express.URLEncode(username))
+		  Var usernames() As String
+		  For Each req As Express.Request In Request.Server.WebSockets
+		    Var username As String = req.Custom.Lookup("username", "")
+		    If username <> "" Then
+		      usernames.Add(Express.URLEncode(username))
 		    End If
-		  Next
+		  Next req
 		  
 		  // Return the list.
-		  Var ResponseJSON As New JSONItem
-		  ResponseJSON.Value("type") = "message"
-		  ResponseJSON.Value("username") = "Server"
-		  ResponseJSON.Value("message") ="These users are currently online: " + String.FromArray(Usernames, ", ")
-		  Request.WSMessageSend(ResponseJSON.ToString)
+		  Var responseJSON As New JSONItem
+		  responseJSON.Value("type") = "message"
+		  responseJSON.Value("username") = "Server"
+		  responseJSON.Value("message") ="These users are currently online: " + String.FromArray(usernames, ", ")
+		  Request.WSMessageSend(responseJSON.ToString)
 		End Sub
 	#tag EndMethod
 

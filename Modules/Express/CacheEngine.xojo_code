@@ -7,34 +7,34 @@ Inherits Timer
 		  // This prevents the cache from growing unnecessarily due to orphaned objects.
 		  
 		  // Get the current date/time.
-		  Var Now As DateTime = DateTime.Now
+		  Var now As DateTime = DateTime.Now
 		  
 		  // This is an array of the cache names that have expired.
-		  Var ExpiredCacheNames() As String
+		  Var expiredCacheNames() As String
 		  
 		  // Loop over the entries in the cache array...
-		  For Each Key As Variant In Cache.Keys
+		  For Each key As Variant In Cache.Keys
 		    
 		    // Get the entry's value.
-		    Var CacheEntry As Dictionary = Cache.Value(Key)
+		    Var cacheEntry As Dictionary = Cache.Value(key)
 		    
 		    // Set the expiration date.
-		    Var Expiration As DateTime = CacheEntry.Value("Expiration")
+		    Var expiration As DateTime = cacheEntry.Value("Expiration")
 		    
 		    // If the session has expired...
-		    If Now > Expiration Then
+		    If now > expiration Then
 		      
 		      // Append the cache name to the array.
-		      ExpiredCacheNames.Add(Key)
+		      expiredCacheNames.Add(key)
 		      
 		    End If
 		    
-		  Next
+		  Next key
 		  
 		  // Removed the cache entries...
-		  For Each CacheName As String In ExpiredCacheNames
-		    Cache.Remove(CacheName)
-		  Next
+		  For Each cacheName As String In expiredCacheNames
+		    Cache.Remove(cacheName)
+		  Next cacheName
 		  
 		End Sub
 	#tag EndEvent
