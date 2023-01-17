@@ -42,7 +42,7 @@ Protected Module DemoTemplatesClientSide
 		      Request.Response.Status = "501"
 		      Request.Response.Content = "Internal Server Error"
 		      Request.Response.Headers.Value("Content-Type") = "text/html"
-		    Catch e As InvalidJSONException
+		    Catch e As JSONException
 		      // Could not parse the json from the string
 		      Request.Response.Status = "501"
 		      Request.Response.Content = "Internal Server Error"
