@@ -39,7 +39,6 @@ Class=Chat;Demos/DemoWebSockets/Chat.xojo_code;&h000000001D15DFFF;&h00000000475E
 Class=RequestThread;Modules/Express/RequestThread.xojo_code;&h000000000B14C7FF;&h000000001B3587FF;false
 Class=FormProcessor;Demos/DemoMultipartForms/FormProcessor.xojo_code;&h000000003A05E7FF;&h0000000027DAB7FF;false
 Class=XSContext;Modules/Express/XSContext.xojo_code;&h000000006B7387FF;&h000000001B3587FF;false
-Module=Xtend_URLConnection;Modules/Xtend_URLConnection.xojo_code;&h00000000489C77FF;&h000000005B71A7FF;false
 MajorVersion=5
 MinorVersion=0
 SubVersion=2
