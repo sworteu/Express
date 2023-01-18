@@ -6,14 +6,13 @@ Inherits SSLSocket
 		Sub Connected()
 		  // A connection has been made to one of the sockets.
 		  // The request's data will be read, and when that's complete, the DataAvailable event will occur.
-		  
-		  
+		  // We are implementing this to prevent it be handled by the user.
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub DataAvailable()
-		  // Data has been received..
+		  /// Data has been received.
 		  
 		  // Increment the data received counter.
 		  DataReceivedCount = DataReceivedCount + 1
@@ -110,8 +109,10 @@ Inherits SSLSocket
 
 	#tag Event
 		Sub Error(err As RuntimeException)
-		  // An error occurred with the socket.
-		  // Typically, this will be a 102 error, where the client has closed the connection.
+		  /// An error occurred with the socket.
+		  ///
+		  /// Typically, this will be a 102 error, where the client has closed the connection.
+		  
 		  If err.ErrorNumber <> 102 Then
 		    System.DebugLog "Socket " + SocketID.ToString + " Error: " + err.ErrorNumber.ToString
 		  End If
@@ -120,9 +121,9 @@ Inherits SSLSocket
 
 	#tag Event
 		Sub SendComplete(UserAborted As Boolean)
-		  #Pragma Unused UserAborted
+		  /// The response has been sent back to the client.
 		  
-		  // The response has been sent back to the client.
+		  #Pragma Unused UserAborted
 		  
 		  // If persistent connections are disabled...
 		  If KeepAlive = False Then
@@ -145,9 +146,9 @@ Inherits SSLSocket
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420626F64792E
 		Private Sub BodyGet()
-		  // Gets the request body.
+		  /// Gets the request body.
 		  
 		  // Split the data into headers and the body.
 		  Var requestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
@@ -160,14 +161,13 @@ Inherits SSLSocket
 		    Return
 		  End If
 		  
-		  // If request parts contains two rows
-		  // Normally this would be the header and the body split
+		  // If request parts contains two rows - Normally this would be the header and the body split.
 		  // Remove the header part.
 		  If requestParts.LastIndex >= 1 Then
 		    requestParts.RemoveAt(0)
 		  End If
 		  
-		  // If what should be the body is not = Content-Length, don't set the body value
+		  // If what should be the body is not = Content-Length, don't set the body value.
 		  If requestParts(0).Bytes <> ContentLength Then
 		    Return
 		  End If
@@ -179,10 +179,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4576616C756174657320746865207265717565737420626F647920746F206372656174652064696374696F6E617269657320726570726573656E74696E6720616E7920504F5354207661726961626C657320616E642F6F722066696C657320746861742068617665206265656E2073656E742E
 		Private Sub BodyProcess()
-		  // Evaluates the request body to create dictionaries representing any POST variables 
-		  // and/or files that have been sent.
+		  /// Evaluates the request body to create dictionaries representing any POST variables 
+		  /// and/or files that have been sent.
 		  
 		  // Create the POST and Files dictionaries.
 		  POST = New Dictionary
@@ -213,11 +213,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436C6F7365732074686520736F636B657420616E642072657365747320637573746F6D2070726F706572746965732E
 		Sub Close()
-		  // Closes the socket and resets custom properties.
-		  
-		  'Express.EventLog( "Socket " + SocketID.ToString + ": Close", Express.LogLevel.Debug )
+		  /// Closes the socket and resets custom properties.
 		  
 		  Reset
 		  
@@ -229,19 +227,21 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor(Server As Express.Server)
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
+		Sub Constructor(server As Express.Server)
+		  /// Default constructor.
+		  
 		  // Associate this request (socket) with its server.
-		  Self.Server = Server // Converts this instance value to a weakref internally.
+		  Self.Server = server
 		  
 		  // Inherit properties from the server.
-		  Multithreading = Server.Multithreading
-		  SSLEnabled = Server.Secure
-		  SSLConnectionType = Server.ConnectionType
-		  CertificateFile = Server.CertificateFile
-		  CertificatePassword = Server.CertificatePassword
-		  MaxEntitySize = Server.MaxEntitySize
-		  KeepAlive = Server.KeepAlive
+		  Multithreading = server.Multithreading
+		  SSLEnabled = server.Secure
+		  SSLConnectionType = server.ConnectionType
+		  CertificateFile = server.CertificateFile
+		  CertificatePassword = server.CertificatePassword
+		  MaxEntitySize = server.MaxEntitySize
+		  KeepAlive = server.KeepAlive
 		  
 		  // Call the overridden superclass constructor.
 		  Super.Constructor
@@ -249,22 +249,25 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 476574732074686520436F6E74656E742D4C656E677468206865616465722E
 		Sub ContentLengthGet()
-		  // Get the Content-Length header.
+		  /// Gets the Content-Length header.
+		  
 		  If Headers.HasKey("Content-Length") Then
 		    ContentLength = Headers.Value("Content-Length")
 		  Else
 		    ContentLength = 0
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207265717565737420636F6F6B6965732E
 		Private Sub CookiesDictionaryCreate()
-		  // Creates a dictionary representing the request cookies.
-		  // The cookies are delivered as a request header, like this:
-		  // Cookie: x=12; y=124
+		  /// Creates an internal dictionary representing the request cookies.
+		  ///
+		  /// The cookies are delivered as a request header, like this:
+		  /// Cookie: x=12; y=124
 		  
 		  // Create the dictionary.
 		  Cookies = New Dictionary
@@ -290,9 +293,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420646174612E
 		Private Sub DataGet()
-		  // Gets the request data.
+		  /// Gets the request data.
+		  
 		  Data = ReadAll(Encodings.UTF8)
 		  Data = Data.DefineEncoding(Encodings.UTF8)
 		  
@@ -301,6 +305,8 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Function Dump() As String
+		  #Pragma Warning "TODO: Document"
+		  
 		  Var html As String
 		  
 		  html = html + "<p>Method: " + Method + "</p>" + EndOfLine.Windows
@@ -382,11 +388,13 @@ Inherits SSLSocket
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E67207468652055524C20706172616D732E
 		Private Sub GETDictionaryCreate()
-		  // Creates a dictionary representing the URL params.
-		  // When multiple values are passed for the same key, the dictionary entry is treated as an array of strings.
-		  // Example: a=1&b=2&a=3&b=4&a=5&c=678
+		  /// Creates an internal dictionary representing the URL params.
+		  ///
+		  /// When multiple values are passed for the same key, the dictionary entry is treated as an array of strings.
+		  /// Example: 
+		  ///  a=1&b=2&a=3&b=4&a=5&c=678
 		  
 		  // Create the dictionary.
 		  GET = New Dictionary
@@ -397,7 +405,6 @@ Inherits SSLSocket
 		  
 		  // Loop over the URL params to create the GET dictionary.
 		  For i As Integer = 0 To GETParams.LastIndex
-		    
 		    Var thisParam As String = GETParams( i )
 		    Var key As String = thisParam.NthField( "=", 1 )
 		    Var value As String = thisParam.NthField( "=", 2 )
@@ -436,10 +443,11 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207265717565737420686561646572732E
 		Private Sub HeadersDictionaryCreate()
-		  // Creates a dictionary representing the request headers.
-		  // Not that "header 0" is actually the method, path, etc.
+		  /// Creates an internal dictionary representing the request headers.
+		  ///
+		  /// Note that "header 0" is actually the method, path, etc.
 		  
 		  // Create the dictionary.
 		  Headers = New Dictionary
@@ -458,13 +466,16 @@ Inherits SSLSocket
 		    Headers.Value(key) = value
 		    
 		  Next i
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4765747320616E6420736574732074686520485454502076657273696F6E2066726F6D207468652066697273742048656164657273526177417272617920656C656D656E742E
 		Private Sub HTTPVersionGet()
-		  // Get the HTP version from the first HeadersRawArray element.
-		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
+		  /// Gets and sets the HTTP version from the first HeadersRawArray element.
+		  ///
+		  /// Example: 
+		  ///   POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -474,8 +485,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 536574732074686520696E7465726E616C204B656570416C6976652070726F70657274792E
 		Sub KeepAliveGet()
+		  /// Sets the internal KeepAlive property.
+		  
 		  // If we're willing to keep connections open...
 		  If KeepAlive = True Then
 		    
@@ -490,12 +503,11 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit))
+	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit)), Description = 417474656D70747320746F206D61702061207265717565737420746F2061207374617469632066696C652E
 		Sub MapToFile(useETags As Boolean = True)
-		  // Attempts to map a request to a static file.
+		  /// Attempts to map a request to a static file.
 		  
 		  // Assume that the requested resource will not be found.
-		  'Response.Set404Response(Headers, Path)
 		  Response.Status = "404"
 		  
 		  // Create a folder item based on the location of the static files.
@@ -610,22 +622,26 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 47657420746865206D6574686F642066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E6420736574732074686520696E7465726E616C20604D6574686F64602070726F70657274792E
 		Private Sub MethodGet()
-		  // Get the method from the first HeadersRawArray element.
-		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
-		  
+		  /// Get the method from the first HeadersRawArray element and sets the internal `Method` property.
+		  ///
+		  /// Example:
+		  ///  POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
 		  
 		  // Get the request method.
 		  Method = header.NthField(" ", 1)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub MultipartFormHandle()
+		  #Pragma Warning "TODO: Document"
+		  
 		  // Split the content type at the boundary.
 		  Var contentTypeParts() As String = ContentType.Split("boundary=")
 		  
@@ -737,8 +753,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 536574732074686520696E7465726E616C206050617468436F6D706F6E656E7473602070726F70657274792E
 		Private Sub PathComponentsGet()
+		  /// Sets the internal `PathComponents` property.
+		  
 		  // Create the path components by splitting the Path.
 		  PathComponents = Path.Split("/")
 		  
@@ -750,10 +768,12 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4765742074686520706174682066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E6420736574732074686520696E7465726E616C206050617468602070726F70657274792E
 		Private Sub PathGet()
-		  // Get the path from the first HeadersRawArray element.
-		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
+		  /// Get the path from the first HeadersRawArray element and sets the internal `Path` property.
+		  ///
+		  /// Example:
+		  ///   POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -761,14 +781,12 @@ Inherits SSLSocket
 		  // Get the request path.
 		  Path = header.NthField(" ", 2).NthField("?", 1)
 		  
-		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207061746820636F6D706F6E656E74732028506174684974656D73292E
 		Private Sub PathItemsGet()
-		  // Creates a dictionary representing the path components.
-		  
+		  /// Creates an internal dictionary representing the path components (PathItems).
 		  
 		  // Create the dictionary.
 		  PathItems = New Dictionary
@@ -787,10 +805,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 50726570617265732061206E6577207265717565737420666F722070726F63657373696E672E20546869732069732063616C6C6564206F6E63652070657220726571756573742C207768656E20746865206669727374206261746368206F66206461746120697320726563656976656420766961207468652044617461417661696C61626C65206576656E742E
 		Sub Prepare()
-		  // Prepares a new request for processing.
-		  // This is called once per request, when the first batch of data is received via the DataAvailable event.
+		  /// Prepares a new request for processing.
+		  /// This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
 		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
@@ -854,7 +872,7 @@ Inherits SSLSocket
 		  System.Log System.LogLevelDebug, "StaticPath = " + StaticPath.NativePath
 		  IndexFilenames = Array("index.html", "index.htm")
 		  
-		  // Initlialize the Custom dictionary.
+		  // Initlialise the `Custom` dictionary.
 		  Custom = New Dictionary
 		  
 		  
@@ -864,10 +882,9 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Sub Process()
-		  // Processes a request.
-		  // This method will be called:
-		  // By a RequestThread's Run event handler, if multithreading is enabled.
-		  // By the DataAvailable event handler, if multithreading is disabled.
+		  /// Processes a request.
+		  /// Called (1) by a RequestThread's Run event handler, if multithreading is enabled and 
+		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
 		  // Create the POST and Files dictionaries.
 		  BodyProcess
@@ -881,13 +898,12 @@ Inherits SSLSocket
 		  // Reset the data received counter. 
 		  DataReceivedCount = 0
 		  
-		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 47657473207468652070726F746F636F6C2066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E64207365747320746865206050726F746F636F6C6020616E64206050726F746F636F6C56657273696F6E602070726F706572746965732E
 		Private Sub ProtocolGet()
-		  // Get the protocol from the first HeadersRawArray element.
+		  /// Gets the protocol from the first HeadersRawArray element and sets the `Protocol` and `ProtocolVersion` properties.
 		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
@@ -899,11 +915,13 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 5265736574732074686520736F636B65742070726F706572746965732061667465722061207265717565737420686173206265656E2070726F6365737365642E
 		Sub Reset()
-		  // Resets socket properties after a request has been processed.
-		  // Note that these properties are not reset because they are used 
-		  // to service WebSockets: Custom, Path
+		  /// Resets the socket properties after a request has been processed.
+		  ///
+		  /// Note that these properties are not reset because they are used to service WebSockets:
+		  /// - Custom
+		  /// - Path
 		  
 		  Body = ""
 		  ContentType = ""
@@ -924,11 +942,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 53657427732074686520726573706F6E73652073746174757320746F2034303420224E6F7420466F756E642220616E6420636F6E74656E7420746F2074686520416C6F654578707265737320636F6E7374616E74204E6F74466F756E64436F6E74656E742048544D4C2E
 		Sub ResourceNotFound()
-		  // Set's the response status to 404 "Not Found" and content to the AloeExpress
-		  // Standard404Content (constant) HTML.
-		  
+		  /// Set's the response status to 404 "Not Found" and content to the AloeExpress
+		  /// constant NotFoundContent HTML.
 		  
 		  // Set the response content.
 		  Response.Content = NotFoundContent
@@ -939,9 +956,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4576616C756174657320746865207265717565737420746F2064657465726D696E652069662074686520726573706F6E73652073686F756C6420626520636F6D707265737365642E
 		Private Sub ResponseCompressDefault()
-		  // Evaluates the request to determine if the response should be compressed.
+		  /// Evaluates the request to determine if the response should be compressed.
 		  
 		  // If the request did not include an "Accept-Encoding" header.
 		  If Headers.HasKey("Accept-Encoding") = False Then
@@ -960,13 +977,12 @@ Inherits SSLSocket
 		    Response.Compress = True
 		  End If
 		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ResponseReturn()
+		  #Pragma Warning "TODO: Document"
 		  
 		  // If the socket is still connected...
 		  If IsConnected Then
@@ -996,25 +1012,31 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SessionGet(AssignNewID As Boolean=True)
-		  // Gets a session for the request and associates it with the Session property.
-		  Session = Server.SessionEngine.SessionGet(Self, AssignNewID)
+	#tag Method, Flags = &h0, Description = 4765747320612073657373696F6E20666F7220746865207265717565737420616E64206173736F636961746573206974207769746820746865206053657373696F6E602070726F70657274792E
+		Sub SessionGet(assignNewID As Boolean = True)
+		  /// Gets a session for the request and associates it with the `Session` property.
+		  
+		  Session = Server.SessionEngine.SessionGet(Self, assignNewID)
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 5465726D696E61746573207468652063757272656E742073657373696F6E2E
 		Sub SessionTerminate()
+		  /// Terminates the current session.
+		  
 		  If Session <> Nil Then
 		    Server.SessionEngine.SessionTerminate(Session)
 		  End If
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 53706C6974732074686520636F6E74656E7420737472696E6720696E746F20616E206172726179206F6620737472696E677320616E642075706461746573207468652060504F5354602064696374696F6E6172792070726F70657274792E
 		Private Sub URLEncodedFormHandle()
-		  // Split the content string into an array of strings.
-		  // Example: a=123&b=456&c=999
+		  /// Splits the content string into an array of strings and updates the `POST` dictionary property.
+		  ///
+		  /// Example: 
+		  ///   a=123&b=456&c=999
+		  
 		  Var POSTParams() As String = Body.Split("&")
 		  
 		  If POSTParams.Count > 0 Then
@@ -1033,13 +1055,15 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 4765742074686520706172616D65746572732066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E64207365747320746865206055524C506172616D73602070726F70657274792E
 		Private Sub URLParamsGet()
-		  // Get the parameters from the first HeadersRawArray element.
-		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
-		  
-		  // Note that it is also possible for a parameter to include a question mark in it.
-		  // Example: GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
+		  /// Get the parameters from the first HeadersRawArray element and sets the `URLParams` property.
+		  ///
+		  /// Example:
+		  ///  POST /?a=123&b=456&c=999 HTTP/1.1
+		  ///
+		  /// Note that it's also possible for a parameter to include a question mark in it:
+		  ///   GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -1061,6 +1085,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Sub WSConnectionClose()
+		  #Pragma Warning "TODO: Document"
 		  
 		  If server.WebSockets.Count > 0 Then
 		    Var myIndex As Integer = Server.WebSockets.IndexOf(Self)
@@ -1076,9 +1101,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 506572666F726D7320616E206F70656E696E6720576562536F636B65742068616E647368616B652C2073657473206057535374617475736020616E64207265676973746572732074686520736F636B657420696E207468652060576562536F636B657473602061727261792E
 		Sub WSHandshake()
-		  // Performs an opening WebSocket handshake.
+		  /// Performs an opening WebSocket handshake, sets `WSStatus` and registers the socket in the `WebSockets` array.
 		  
 		  // If this isn't the WebSocket version that we're supporting...
 		  If Headers.Lookup("Sec-WebSocket-Version", "") <> "13" Then
@@ -1106,9 +1131,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 50726F636573736573206120576562536F636B6574206D6573736167652E
 		Sub WSMessageGet()
-		  // Processes a WebSocket message.
+		  /// Processes a WebSocket message.
 		  
 		  // Get the data.
 		  DataGet
@@ -1189,9 +1214,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 53656E6473206120576562536F636B657420287465787429206D65737361676520746F206120636C69656E742E
 		Sub WSMessageSend(message As String)
-		  // Sends a WebSocket (text) message to a client.
+		  /// Sends a WebSocket (text) message to a client.
 		  
 		  // Get the message length.
 		  Var messageLength As UInteger = message.Length
@@ -1236,8 +1261,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4576616C75617465732074686520636F6E74656E74206F6620603C786F6A6F7363726970743E3C2F786F6A6F7363726970743E6020617320586F6A6F5363726970742C207265706C6163696E672074686520636F6E74656E7420776974682074686520726573756C7473206F6620746865207363726970742E
 		Sub XojoScriptsParse()
+		  /// Evaluates the content of `<xojoscript></xojoscript>` as XojoScript, replacing the content with the results of the script.
+		  
 		  // Determine the number of scripts in the content.
 		  Var scripts() As String = Response.Content.Split("<xojoscript>")
 		  
@@ -1422,7 +1449,7 @@ Inherits SSLSocket
 		WSStatus As String = "Inactive"
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E2074686520636F6E74656E7473206F66203C786F6A6F7363726970743E20746167732077696C6C206265206576616C756174656420617320586F6A6F5363726970742E20486173206E6F206566666563742069662074686520707269766174652070726F706572747920586F6A6F536372697074417661696C61626C652069732046616C73652E
 		XojoScriptEnabled As Boolean = True
 	#tag EndProperty
 
@@ -1430,7 +1457,7 @@ Inherits SSLSocket
 	#tag Constant, Name = NotFoundContent, Type = String, Dynamic = False, Default = \"<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html>\n<head>\n<title>404 Not Found</title>\n</head>\n<body>\n<h1>Not Found</h1>\n<p>The requested URL [[Path]] was not found on this server.</p>\n<hr>\n<address>[[ServerType]] at [[Host]]</address>\n</body>\n</html>", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = XojoScriptAvailable, Type = Boolean, Dynamic = False, Default = \"True", Scope = Private
+	#tag Constant, Name = XojoScriptAvailable, Type = Boolean, Dynamic = False, Default = \"True", Scope = Private, Description = 49662054727565207468656E2074686520586F6A6F536372697074206672616D65776F726B20697320696E636C7564656420636F6E646974696F6E616C6C7920617420636F6D70696C6174696F6E20696E20526571756573742E4D6170546F46696C652E
 	#tag EndConstant
 
 
