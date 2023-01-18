@@ -32,54 +32,44 @@ Protected Class Response
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CookieSet(Name As String, Value As String, Expiration As DateTime = Nil, Domain As String = "", Path As String = "/", Secure As Boolean = False, HttpOnly As Boolean = False)
+		Sub CookieSet(name As String, Value As String, expiration As DateTime = Nil, domain As String = "", path As String = "/", secure As Boolean = False, HttpOnly As Boolean = False)
 		  // Adds a cookie to the dictionary.
 		  
-		  
 		  // Create a dictionary for the cookie's settings.
-		  Var Cookie As New Dictionary
-		  Cookie.Value("Value") = Value
-		  Cookie.Value("Expiration") = Expiration
-		  Cookie.Value("Domain") = Domain
-		  Cookie.Value("Path") = Path
-		  Cookie.Value("Secure") = Secure
-		  Cookie.Value("HttpOnly") = HttpOnly
+		  Var cookie As New Dictionary
+		  cookie.Value("Value") = value
+		  cookie.Value("Expiration") = expiration
+		  cookie.Value("Domain") = domain
+		  cookie.Value("Path") = path
+		  cookie.Value("Secure") = secure
+		  cookie.Value("HttpOnly") = HttpOnly
 		  
 		  // Add / replace the cookie.
-		  Cookies.Value(Name) = Cookie
-		  
-		  
-		  
-		  
+		  Cookies.Value(name) = cookie
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CookieSet(Name As String, Value As String, ExpirationDays As Integer = 0, ExpirationHours As Integer = 0, ExpirationMinutes As Integer = 0, ExpirationSeconds As Integer = 0, Domain As String = "", Path As String = "/", Secure As Boolean = False, HttpOnly As Boolean = False)
+		Sub CookieSet(name As String, value As String, expirationDays As Integer = 0, expirationHours As Integer = 0, expirationMinutes As Integer = 0, expirationSeconds As Integer = 0, domain As String = "", path As String = "/", secure As Boolean = False, HttpOnly As Boolean = False)
 		  // Adds a cookie to the dictionary.
 		  
 		  // Create the cookie's expiration date.
-		  Var ExpirationDate As DateTime = DateTime.Now
+		  Var expirationDate As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
-		  ExpirationDate = ExpirationDate.AddInterval( 0, 0, ExpirationDate.Day + ExpirationDays, ExpirationDate.Hour + ExpirationHours, ExpirationDate.Minute + ExpirationMinutes, ExpirationDate.Second + ExpirationSeconds )
-		  
+		  expirationDate = ExpirationDate.AddInterval( 0, 0, expirationDate.Day + expirationDays, expirationDate.Hour + expirationHours, expirationDate.Minute + expirationMinutes, expirationDate.Second + expirationSeconds )
 		  
 		  // Create a dictionary for the cookie's settings.
-		  Var Cookie As New Dictionary
-		  Cookie.Value("Value") = Value
-		  Cookie.Value("Expiration") = ExpirationDate
-		  Cookie.Value("Domain") = Domain
-		  Cookie.Value("Path") = Path
-		  Cookie.Value("Secure") = Secure
-		  Cookie.Value("HttpOnly") = HttpOnly
+		  Var cookie As New Dictionary
+		  cookie.Value("Value") = value
+		  cookie.Value("Expiration") = expirationDate
+		  cookie.Value("Domain") = domain
+		  cookie.Value("Path") = path
+		  cookie.Value("Secure") = secure
+		  cookie.Value("HttpOnly") = HttpOnly
 		  
 		  // Add / replace the cookie.
-		  Cookies.Value(Name) = Cookie
-		  
-		  
-		  
-		  
+		  Cookies.Value(name) = cookie
 		  
 		End Sub
 	#tag EndMethod

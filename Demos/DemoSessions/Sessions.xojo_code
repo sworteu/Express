@@ -88,13 +88,13 @@ Protected Class Sessions
 		  For Each key As Variant in Request.Server.SessionEngine.Sessions.Keys
 		    
 		    // Get the entry's key and value.
-		    Var SessionID As String = key
-		    Var Session As Dictionary = Request.Server.SessionEngine.Sessions.Value(key)
+		    Var sessionID As String = key
+		    Var session As Dictionary = Request.Server.SessionEngine.Sessions.Value(key)
 		    
-		    Var RemoteAddress As String = Session.Lookup("RemoteAddress", "")
-		    Var Username As String = Session.Lookup("Username", "n/a")
-		    Var Authenticated As String = If (Session.Lookup("Authenticated", False), "Yes", "No")
-		    Var RequestCount As Integer = Session.Lookup("RequestCount", 0)
+		    Var remoteAddress As String = session.Lookup("RemoteAddress", "")
+		    Var username As String = session.Lookup("Username", "n/a")
+		    Var authenticated As String = If (session.Lookup("Authenticated", False), "Yes", "No")
+		    Var requestCount As Integer = session.Lookup("RequestCount", 0)
 		    
 		    TableHTML = TableHTML _
 		    + "<tr>" + EndOfLine _
@@ -120,10 +120,10 @@ Protected Class Sessions
 		  // Loads the template file.
 		  
 		  // Create a folderitem that points to the template file.
-		  Var FI as FolderItem = Request.StaticPath.Child("template.html")
+		  Var f as FolderItem = Request.StaticPath.Child("template.html")
 		  
 		  // Use Aloe's FileRead method to load the file.
-		  HTML = Express.FileRead(FI)
+		  HTML = Express.FileRead(f)
 		  
 		End Sub
 	#tag EndMethod

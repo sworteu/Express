@@ -57,12 +57,12 @@ Protected Class DrummersList
 	#tag Method, Flags = &h0
 		Sub DrummersGet()
 		  // Try to get the data from the cache.
-		  Var CacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
+		  Var cacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
 		  
 		  // If cached data is available...
-		  If CacheEntry <> Nil Then
-		    Drummers = CacheEntry.Value("Content")
-		    CacheExpiration = CacheEntry.Value("Expiration")
+		  If cacheEntry <> Nil Then
+		    Drummers = cacheEntry.Value("Content")
+		    CacheExpiration = cacheEntry.Value("Expiration")
 		    CacheUsed = True
 		    Return
 		  End If
@@ -92,8 +92,8 @@ Protected Class DrummersList
 		  Request.Server.CacheEngine.Put("Drummers", Drummers, 300)
 		  
 		  // Get the cache entry so that we have access to its expiration.
-		  CacheEntry = Request.Server.CacheEngine.Get("Drummers")
-		  CacheExpiration = CacheEntry.Value("Expiration")
+		  cacheEntry = Request.Server.CacheEngine.Get("Drummers")
+		  CacheExpiration = cacheEntry.Value("Expiration")
 		  
 		  
 		End Sub
@@ -103,7 +103,6 @@ Protected Class DrummersList
 		Sub RecordsGet()
 		  // Gets all records from the Drummers table.
 		  
-		  
 		  // Simulate a slow query.
 		  Thread.SleepCurrent(3000)
 		  
@@ -111,10 +110,10 @@ Protected Class DrummersList
 		  Var SQL As String = "SELECT * FROM Drummers ORDER BY Votes DESC"
 		  
 		  // Create a prepared statement.
-		  Var PS As SQLitePreparedStatement = Database.Prepare(SQL)
+		  Var ps As SQLitePreparedStatement = Database.Prepare(SQL)
 		  
 		  // Perform the query.
-		  Records = PS.SelectSQL
+		  Records = ps.SelectSQL
 		  
 		  
 		  
@@ -126,28 +125,28 @@ Protected Class DrummersList
 	#tag Method, Flags = &h0
 		Sub ResponseGenerate()
 		  // Prepare a JSON item for use with the Template.
-		  Var TemplateData As New JSONItem
-		  TemplateData.Value("cached") = CacheUsed.ToString
-		  TemplateData.Value("cacheExpiration") = CacheExpiration.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
-		  TemplateData.Value("drummers") = Drummers
+		  Var templateData As New JSONItem
+		  templateData.Value("cached") = CacheUsed.ToString
+		  templateData.Value("cacheExpiration") = CacheExpiration.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
+		  templateData.Value("drummers") = Drummers
 		  
 		  // Create a Template instance.  
-		  Var Template As New Templates.MustacheLite
+		  Var template As New Templates.MustacheLite
 		  
 		  // Load the template file and use it as the source.
-		  Template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))
+		  template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))
 		  
 		  // Set the merge data source.
-		  Template.Data = TemplateData
+		  template.Data = templateData
 		  
 		  // Pass the Request to the Template so that request-related system tokens can be handled.
-		  Template.Request = Request
+		  template.Request = Request
 		  
 		  // Merge the template with the data.
-		  Template.Merge
+		  template.Merge
 		  
 		  // Update the response content with the expanded template.
-		  Request.Response.Content = Template.Expanded
+		  Request.Response.Content = template.Expanded
 		End Sub
 	#tag EndMethod
 

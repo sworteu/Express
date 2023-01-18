@@ -78,7 +78,6 @@ Protected Class Chat
 
 	#tag Method, Flags = &h0
 		Sub LeaveProcess()
-		  
 		  // Close the connection.
 		  Request.WSConnectionClose
 		  
@@ -86,11 +85,11 @@ Protected Class Chat
 		  Var Username As String = Express.URLDecode(Payload.Lookup("username", ""))
 		  
 		  // Broadcast a message announcing the departure of the user.
-		  Var ResponseJSON As New JSONItem
-		  ResponseJSON.Value("type") = "message"
-		  ResponseJSON.Value("username") = "Server"
-		  ResponseJSON.Value("message") = Express.URLEncode(Username) + " has left the chat."
-		  Request.Server.WSMessageBroadcast(ResponseJSON.ToString)
+		  Var responseJSON As New JSONItem
+		  responseJSON.Value("type") = "message"
+		  responseJSON.Value("username") = "Server"
+		  responseJSON.Value("message") = Express.URLEncode(username) + " has left the chat."
+		  Request.Server.WSMessageBroadcast(responseJSON.ToString)
 		  
 		  
 		  
@@ -123,7 +122,6 @@ Protected Class Chat
 		Sub PayloadProcess()
 		  // Processes a request.
 		  
-		  
 		  // Try to convert the request body (the payload) to JSON.
 		  Try
 		    Payload = New JSONItem(Express.URLDecode(Request.Body))
@@ -133,10 +131,10 @@ Protected Class Chat
 		  End Try
 		  
 		  // Get the payload type.
-		  Var PayloadType As String = Payload.Lookup("type", "message")
+		  Var payloadType As String = Payload.Lookup("type", "message")
 		  
 		  // Process the request...
-		  Select Case PayloadType
+		  Select Case payloadType
 		  Case "join"
 		    JoinProcess
 		  Case "leave"
@@ -146,7 +144,6 @@ Protected Class Chat
 		  Else
 		    MessageProcess
 		  End Select
-		  
 		  
 		End Sub
 	#tag EndMethod

@@ -3,25 +3,26 @@ Protected Class IndexPage
 	#tag Method, Flags = &h0
 		Sub Generate()
 		  // Get the orders as a JSON string.
-		  Var Orders As String = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
+		  Var orders As String = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
 		  
 		  // Create a Template instance.  
-		  Var Template As New Templates.MustacheLite
+		  Var template As New Templates.MustacheLite
 		  
 		  // Load the template file and use it as the source.
-		  Template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))
+		  template.Source = Express.FileRead(Request.StaticPath.Child("template-index.html"))
 		  
 		  // Use the contents of the JSON data file as the merge data source.
-		  Template.Data = New JSONItem(Orders)
+		  template.Data = New JSONItem(orders)
 		  
 		  // Pass the Request to the Template so that request-related system tokens can be handled.
-		  Template.Request = Request
+		  template.Request = Request
 		  
 		  // Merge the template with the data.
-		  Template.Merge
+		  template.Merge
 		  
 		  // Update the response content with the expanded template.
-		  Request.Response.Content = Template.Expanded
+		  Request.Response.Content = template.Expanded
+		  
 		End Sub
 	#tag EndMethod
 

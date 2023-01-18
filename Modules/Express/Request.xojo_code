@@ -64,12 +64,12 @@ Inherits SSLSocket
 		  BodyGet
 		  
 		  // Get the length of the content that has been received.
-		  Var ContentReceivedLength As Integer = Body.Bytes
+		  Var contentReceivedLength As Integer = Body.Bytes
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
 		  // and sending large entities.
-		  If ContentReceivedLength > MaxEntitySize Then
+		  If contentReceivedLength > MaxEntitySize Then
 		    Response.Status = "413 Request Entity Too Large"
 		    Response.Content = "Error 413: Request Entity Too Large"
 		    ResponseReturn
@@ -77,13 +77,13 @@ Inherits SSLSocket
 		  End If
 		  
 		  // If we haven't received all of the content...
-		  If ContentReceivedLength < ContentLength Then
+		  If contentReceivedLength < ContentLength Then
 		    // Continue receiving data...
 		    Return
 		  End If
 		  
 		  // If the body is not the expected length we have a problem
-		  If ContentReceivedLength <> ContentLength Then
+		  If contentReceivedLength <> ContentLength Then
 		    System.Log System.LogLevelCritical, CurrentMethodName + " Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString
 		    Response.Status = "400 Bad Request"
 		    Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
@@ -104,9 +104,6 @@ Inherits SSLSocket
 		  
 		  // Process the request immediately, on the primary thread...
 		  Process
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -153,30 +150,30 @@ Inherits SSLSocket
 		  // Gets the request body.
 		  
 		  // Split the data into headers and the body.
-		  Var RequestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var requestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  // We no longer need the data that was received, so clear it.
 		  Data = ""
 		  
 		  // If we were unable to split the data into a header and body...
-		  If RequestParts.LastIndex < 0 Then
+		  If requestParts.LastIndex < 0 Then
 		    Return
 		  End If
 		  
 		  // If request parts contains two rows
 		  // Normally this would be the header and the body split
 		  // Remove the header part.
-		  If RequestParts.LastIndex >= 1 Then
-		    RequestParts.RemoveAt(0)
+		  If requestParts.LastIndex >= 1 Then
+		    requestParts.RemoveAt(0)
 		  End If
 		  
 		  // If what should be the body is not = Content-Length, don't set the body value
-		  If RequestParts(0).Bytes <> ContentLength Then
+		  If requestParts(0).Bytes <> ContentLength Then
 		    Return
 		  End If
 		  
 		  // Merge the remaining parts to form the entire request body.
-		  Body = String.FromArray(RequestParts, EndOfLine.Windows + EndOfLine.Windows)
+		  Body = String.FromArray(requestParts, EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  
 		End Sub
@@ -469,12 +466,11 @@ Inherits SSLSocket
 		  // Get the HTP version from the first HeadersRawArray element.
 		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
 		  
-		  
 		  // Get the first header.
-		  Var Header As String = HeadersRawArray(0)
+		  Var header As String = HeadersRawArray(0)
 		  
 		  // Get the HTTP version that was used to make the request.
-		  HTTPVersion = Header.NthField(" ", 3).NthField("/", 2)
+		  HTTPVersion = header.NthField(" ", 3).NthField("/", 2)
 		End Sub
 	#tag EndMethod
 
@@ -495,18 +491,15 @@ Inherits SSLSocket
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit))
-		Sub MapToFile(UseETags As Boolean = True)
+		Sub MapToFile(useETags As Boolean = True)
 		  // Attempts to map a request to a static file.
-		  
 		  
 		  // Assume that the requested resource will not be found.
 		  'Response.Set404Response(Headers, Path)
 		  Response.Status = "404"
 		  
-		  
 		  // Create a folder item based on the location of the static files.
-		  Var FI As FolderItem = StaticPath
-		  
+		  Var f As FolderItem = StaticPath
 		  
 		  // Create a folder item for the file that was requested...
 		  For Each pathComponent As String In PathComponents
@@ -520,7 +513,7 @@ Inherits SSLSocket
 		    
 		    // Try to add the URL-decoded path component.
 		    Try
-		      FI = FI.Child(DecodeURLComponent( pathComponent ))
+		      f = f.Child(DecodeURLComponent( pathComponent ))
 		    Catch e As NilObjectException
 		      Return
 		    Catch e As UnsupportedFormatException
@@ -528,46 +521,45 @@ Inherits SSLSocket
 		    End Try
 		    
 		    // If the path is no longer valid...
-		    If FI = Nil Then
+		    If f = Nil Then
 		      Return
 		    End If
 		    
 		  Next pathComponent
 		  
-		  
 		  // If the requested resource is a directory...
-		  If FI.IsFolder Then
+		  If f.IsFolder Then
 		    
 		    // Loop over the index filenames to see if any exist...
 		    For Each indexFilename As String In IndexFilenames
 		      
 		      // Add this index document to the FolderItem...
-		      FI = FI.Child(indexFilename)
+		      f = f.Child(indexFilename)
 		      
 		      // If the FolderItem exists...
-		      If FI.Exists Then
+		      If f.Exists Then
 		        Exit
 		      End If
 		      
 		      // Remove the default document from the FolderItem.
-		      FI = FI.Parent
+		      f = f.Parent
 		      
 		    Next indexFilename
 		    
 		  End If
 		  
 		  // If the folder item exists and it is not a directory...
-		  If FI.Exists And FI.IsFolder = False Then
+		  If f.Exists And f.IsFolder = False Then
 		    
 		    // If we're using ETags...
-		    If UseETags Then
+		    If useETags Then
 		      
 		      // Generate the current Etag for the file.
 		      Const quote As String = """"
 		      Var currentEtag As String 
-		      currentEtag = MD5(FI.NativePath)
+		      currentEtag = MD5(f.NativePath)
 		      currentEtag = EncodeHex(currentEtag)
-		      currentEtag = currentEtag + "-" + FI.ModificationDateTime.SecondsFrom1970.ToString
+		      currentEtag = currentEtag + "-" + f.ModificationDateTime.SecondsFrom1970.ToString
 		      currentEtag = currentEtag.NthField(".", 1)
 		      
 		      // Get any Etag that the client sent in the request.
@@ -589,13 +581,13 @@ Inherits SSLSocket
 		    Response.Status = "200"
 		    
 		    // Get the file's contents.
-		    Response.Content = FileRead(FI)
+		    Response.Content = FileRead(f)
 		    
 		    // Set the encoding of the content.
 		    Response.Content = Response.Content.DefineEncoding(Encodings.UTF8)
 		    
 		    // Get the file's extension.
-		    Var extension As String = FI.Name.NthField( ".", FI.Name.CountFields( "."))
+		    Var extension As String = f.Name.NthField( ".", f.Name.CountFields( "."))
 		    
 		    // Map the file extension to a mime type, and use that as the content type.
 		    Response.Headers.Value("Content-Type") = MimeTypeGet(extension)
@@ -625,10 +617,10 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the first header.
-		  Var Header As String = HeadersRawArray(0)
+		  Var header As String = HeadersRawArray(0)
 		  
 		  // Get the request method.
-		  Method = Header.NthField(" ", 1)
+		  Method = header.NthField(" ", 1)
 		End Sub
 	#tag EndMethod
 
@@ -763,12 +755,11 @@ Inherits SSLSocket
 		  // Get the path from the first HeadersRawArray element.
 		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
 		  
-		  
 		  // Get the first header.
-		  Var Header As String = HeadersRawArray(0)
+		  Var header As String = HeadersRawArray(0)
 		  
 		  // Get the request path.
-		  Path = Header.NthField(" ", 2).NthField("?", 1)
+		  Path = header.NthField(" ", 2).NthField("?", 1)
 		  
 		  
 		End Sub
@@ -802,13 +793,13 @@ Inherits SSLSocket
 		  // This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
-		  Var RequestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  // If the request is valid...
-		  If RequestParts.LastIndex > -1 Then
+		  If requestParts.LastIndex > -1 Then
 		    
 		    // Get the headers as a string.
-		    HeadersRaw = RequestParts(0)
+		    HeadersRaw = requestParts(0)
 		    
 		    // Split the headers into an array of strings.
 		    HeadersRawArray = HeadersRaw.Split(EndOfLine.Windows)
@@ -899,13 +890,12 @@ Inherits SSLSocket
 		  // Get the protocol from the first HeadersRawArray element.
 		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
 		  
-		  
 		  // Get the first header.
-		  Var Header As String = HeadersRawArray(0)
+		  Var header As String = HeadersRawArray(0)
 		  
 		  // Get the protocol that was used to make the request.
-		  Protocol = Header.NthField(" ", 3).NthField("/", 1)
-		  ProtocolVersion = Header.NthField(" ", 3).NthField("/", 2)
+		  Protocol = header.NthField(" ", 3).NthField("/", 1)
+		  ProtocolVersion = header.NthField(" ", 3).NthField("/", 2)
 		End Sub
 	#tag EndMethod
 
@@ -953,20 +943,19 @@ Inherits SSLSocket
 		Private Sub ResponseCompressDefault()
 		  // Evaluates the request to determine if the response should be compressed.
 		  
-		  
 		  // If the request did not include an "Accept-Encoding" header.
 		  If Headers.HasKey("Accept-Encoding") = False Then
 		    Return
 		  End If
 		  
 		  // Get the "Accept-Encoding" header.
-		  Var AcceptEncoding As String = Headers.Lookup("Accept-Encoding", "")
+		  Var acceptEncoding As String = Headers.Lookup("Accept-Encoding", "")
 		  
 		  // Split the header value to see if "gzip" is specified.
-		  Var AcceptEncodingParts() As String = AcceptEncoding.Split("gzip")
+		  Var acceptEncodingParts() As String = AcceptEncoding.Split("gzip")
 		  
 		  // If gzip is accepted...
-		  If AcceptEncodingParts.LastIndex > 0 Then
+		  If acceptEncodingParts.LastIndex > 0 Then
 		    // By default, the response will be compressed.
 		    Response.Compress = True
 		  End If
@@ -990,11 +979,11 @@ Inherits SSLSocket
 		      
 		    Catch e As RunTimeException
 		      
-		      Var TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		      Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		      
 		      System.DebugLog "ResponseReturn Exception: Socket " + SocketID.ToString _
 		      + ", Last Error: " + LastErrorCode.ToString _
-		      + ", Exception Type: " + TypeInfo.Name
+		      + ", Exception Type: " + typeInfo.Name
 		      
 		    End Try
 		    
@@ -1053,10 +1042,10 @@ Inherits SSLSocket
 		  // Example: GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
 		  
 		  // Get the first header.
-		  Var Header As String = HeadersRawArray(0)
+		  Var header As String = HeadersRawArray(0)
 		  
 		  // Split the header on ?s.
-		  Var URLParamParts() As String = Header.Split("?")
+		  Var URLParamParts() As String = header.Split("?")
 		  
 		  // Remove the first element, which should be the method and path.
 		  URLParamParts.RemoveAt(0)
@@ -1098,16 +1087,16 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Create the SecWebSocketKey for the response.
-		  Var SecWebSocketKey As String = Headers.Value("Sec-WebSocket-Key") 
-		  SecWebSocketKey = SecWebSocketKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
-		  SecWebSocketKey = Crypto.Hash(SecWebSocketKey, Crypto.HashAlgorithms.SHA1)
-		  SecWebSocketKey = EncodeBase64(SecWebSocketKey, 0)
+		  Var secWebSocketKey As String = Headers.Value("Sec-WebSocket-Key") 
+		  secWebSocketKey = secWebSocketKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+		  secWebSocketKey = Crypto.Hash(secWebSocketKey, Crypto.HashAlgorithms.SHA1)
+		  secWebSocketKey = EncodeBase64(secWebSocketKey, 0)
 		  
 		  // Return the handshake response.
 		  Response.Status = "101 Switching Protocols"
 		  Response.Headers.Value("Upgrade") = "WebSocket"
 		  Response.Headers.Value("Connection") = "Upgrade"
-		  Response.Headers.Value("Sec-WebSocket-Accept") = SecWebSocketKey
+		  Response.Headers.Value("Sec-WebSocket-Accept") = secWebSocketKey
 		  
 		  // Update the WS status.
 		  WSStatus = "Active"
@@ -1201,45 +1190,45 @@ Inherits SSLSocket
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WSMessageSend(Message As String)
+		Sub WSMessageSend(message As String)
 		  // Sends a WebSocket (text) message to a client.
 		  
 		  // Get the message length.
-		  Var MessageLength As UInteger = Message.Length
+		  Var messageLength As UInteger = message.Length
 		  
 		  // If the entire message can be sent in a single frame...
-		  If MessageLength < 126 Then
+		  If messageLength < 126 Then
 		    Var mb As New MemoryBlock( 2 )
 		    mb.Byte( 0 ) = 129
-		    mb.Byte( 1 ) = MessageLength
-		    Write mb.StringValue( 0, 2 ) + Message
+		    mb.Byte( 1 ) = messageLength
+		    Write(mb.StringValue( 0, 2 ) + message)
 		    Return
 		  End If
 		  
 		  // Due to its length, the message needs to be sent in multiple frames...
-		  If MessageLength >= 126 and MessageLength < 65535 Then
+		  If messageLength >= 126 and messageLength < 65535 Then
 		    Var mb As New MemoryBlock( 4 )
 		    mb.Byte( 0 ) = 129
 		    mb.Byte( 1 ) = 126
-		    mb.Byte( 2 ) = Bitwise.ShiftRight(MessageLength, 8) And 255
-		    mb.Byte( 3 ) = MessageLength And 255
-		    Write mb.StringValue( 0, 4 ) + Message
+		    mb.Byte( 2 ) = Bitwise.ShiftRight(messageLength, 8) And 255
+		    mb.Byte( 3 ) = messageLength And 255
+		    Write(mb.StringValue( 0, 4 ) + message)
 		    Return
 		  End If
 		  
-		  If MessageLength >= 65535 Then
+		  If messageLength >= 65535 Then
 		    Var mb As New MemoryBlock( 10 )
 		    mb.Byte( 0 ) = 129
 		    mb.Byte( 1 ) = 127
-		    mb.Byte( 2 ) = Bitwise.ShiftRight(MessageLength, 56) And 255
-		    mb.Byte( 3 ) = Bitwise.ShiftRight(MessageLength, 48) And 255
-		    mb.Byte( 4 ) = Bitwise.ShiftRight(MessageLength, 40) And 255
-		    mb.Byte( 5 ) = Bitwise.ShiftRight(MessageLength, 32) And 255
-		    mb.Byte( 6 ) = Bitwise.ShiftRight(MessageLength, 24) And 255
-		    mb.Byte( 7 ) = Bitwise.ShiftRight(MessageLength, 16) And 255
-		    mb.Byte( 8 ) = Bitwise.ShiftRight(MessageLength, 8) And 255
-		    mb.Byte( 9 ) =  MessageLength And 255
-		    Write mb.StringValue( 0, 10 ) + Message
+		    mb.Byte( 2 ) = Bitwise.ShiftRight(messageLength, 56) And 255
+		    mb.Byte( 3 ) = Bitwise.ShiftRight(messageLength, 48) And 255
+		    mb.Byte( 4 ) = Bitwise.ShiftRight(messageLength, 40) And 255
+		    mb.Byte( 5 ) = Bitwise.ShiftRight(messageLength, 32) And 255
+		    mb.Byte( 6 ) = Bitwise.ShiftRight(messageLength, 24) And 255
+		    mb.Byte( 7 ) = Bitwise.ShiftRight(messageLength, 16) And 255
+		    mb.Byte( 8 ) = Bitwise.ShiftRight(messageLength, 8) And 255
+		    mb.Byte( 9 ) =  messageLength And 255
+		    Write(mb.StringValue( 0, 10 ) + message)
 		    Return
 		  End If
 		  

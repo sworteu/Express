@@ -10,14 +10,14 @@ Protected Class Login
 		    BodyContent = ErrorsIntro
 		    
 		    // Build the list of errors...
-		    Var ErrorsList As String
+		    Var errorsList As String
 		    For i As integer = 0 to ValidationErrors.LastIndex
-		      ErrorsList = ErrorsList _
+		      errorsList = errorsList _
 		      + "<li>" + ValidationErrors(i) + "</li>" + EndOfLine
 		    Next i
 		    
 		    // Replace the token with the errors.
-		    BodyContent = BodyContent.ReplaceAll("[[Errors]]", ErrorsList)
+		    BodyContent = BodyContent.ReplaceAll("[[Errors]]", errorsList)
 		    
 		  End If
 		  
@@ -71,16 +71,16 @@ Protected Class Login
 
 	#tag Method, Flags = &h0
 		Sub FormValidate()
-		  
-		  Var Username As String = Request.POST.Lookup("username", "")
-		  If Username = "" Then
+		  Var username As String = Request.POST.Lookup("username", "")
+		  If username = "" Then
 		    ValidationErrors.Add("You did not enter your username.")
 		  End If
 		  
-		  Var Password As String = Request.POST.Lookup("password", "")
-		  If Password = "" Then
+		  Var password As String = Request.POST.Lookup("password", "")
+		  If password = "" Then
 		    ValidationErrors.Add("You did not enter your password.")
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 
@@ -108,10 +108,10 @@ Protected Class Login
 		  // Loads the template file.
 		  
 		  // Create a folderitem that points to the template file.
-		  Var FI as FolderItem = Request.StaticPath.Child("template.html")
+		  Var f as FolderItem = Request.StaticPath.Child("template.html")
 		  
 		  // Use Aloe's FileRead method to load the file.
-		  HTML = Express.FileRead(FI)
+		  HTML = Express.FileRead(f)
 		  
 		End Sub
 	#tag EndMethod
@@ -119,8 +119,8 @@ Protected Class Login
 	#tag Method, Flags = &h0
 		Sub UserAuthenticate()
 		  // If the password was incorrect...
-		  Var Password As String = Request.POST.Lookup("password", "")
-		  If Password <> "secret" Then
+		  Var password As String = Request.POST.Lookup("password", "")
+		  If password <> "secret" Then
 		    ValidationErrors.Add("The password that you provided is incorrect.")
 		    Return
 		  End

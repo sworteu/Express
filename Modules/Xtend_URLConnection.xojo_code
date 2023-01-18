@@ -1,7 +1,7 @@
 #tag Module
 Protected Module Xtend_URLConnection
 	#tag Method, Flags = &h0
-		Sub xSetMultipartFormData(Extends con As URLConnection, FormData As Dictionary, Boundary As String = "")
+		Sub xSetMultipartFormData(Extends con As URLConnection, formData As Dictionary, boundary As String = "")
 		  // Code based on 
 		  
 		  ' Pass the URLConnection1
@@ -16,30 +16,28 @@ Protected Module Xtend_URLConnection
 		  ' URLConnection1.Send("POST", "www.example.com/uploads.php", 60)
 		  ' // Note: handle IOExceptions in the caller of SetMultipartFormData since folderitems can cause such exceptions.
 		  
-		  If Boundary.Trim = "" Then
-		    Var UniqueBoundary As String = EncodeHex(Crypto.GenerateRandomBytes(32), False)
-		    Boundary = "--" + UniqueBoundary + "-bOuNdArY"
+		  If boundary.Trim = "" Then
+		    Var uniqueBoundary As String = EncodeHex(Crypto.GenerateRandomBytes(32), False)
+		    boundary = "--" + uniqueBoundary + "-bOuNdArY"
 		  End If
 		  
 		  Static CRLF As String = EndOfLine.Windows
 		  Var data As New MemoryBlock(0)
 		  Var out As New BinaryStream(data)
 		  
-		  For Each key As String In FormData.Keys
+		  For Each key As String In formData.Keys
 		    
-		    out.Write("--" + Boundary + CRLF)
+		    out.Write("--" + boundary + CRLF)
 		    
-		    If FormData.Value(key).Type = Variant.TypeString Then
-		      //VarType(FormData.Value(Key))
-		      
+		    If formData.Value(key).Type = Variant.TypeString Then
 		      out.Write("Content-Disposition: form-data; name=""" + key + """" + CRLF + CRLF)
-		      out.Write(FormData.Value(key).StringValue + CRLF)
+		      out.Write(formData.Value(key).StringValue + CRLF)
 		      
-		    Elseif FormData.Value(Key) IsA FolderItem Then
+		    Elseif formData.Value(Key) IsA FolderItem Then
 		      
 		      Var file As FolderItem = FormData.Value(key)
 		      out.Write("Content-Disposition: form-data; name=""" + key + """; filename=""" + File.Name + """" + CRLF)
-		      out.Write("Content-Type: application/octet-stream" + CRLF + CRLF) ' replace with actual MIME Type
+		      out.Write("Content-Type: application/octet-stream" + CRLF + CRLF) // Replace with actual MIME Type.
 		      Var bs As BinaryStream = BinaryStream.Open(File)
 		      out.Write(bs.Read(bs.Length) + CRLF)
 		      bs.Close
@@ -51,7 +49,7 @@ Protected Module Xtend_URLConnection
 		  out.Write("--" + Boundary + "--" + CRLF)
 		  out.Close
 		  
-		  con.SetRequestContent(data, "multipart/form-data; boundary=" + Boundary)
+		  con.SetRequestContent(data, "multipart/form-data; boundary=" + boundary)
 		  
 		End Sub
 	#tag EndMethod

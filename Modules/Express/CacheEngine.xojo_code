@@ -98,7 +98,7 @@ Inherits Timer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Get(Name As String) As Dictionary
+		Function Get(name As String) As Dictionary
 		  // Gets an object from the cache, and checks its expiration date.
 		  // If the object is found, but it has expired, it is deleted from the cache.
 		  
@@ -107,24 +107,24 @@ Inherits Timer
 		  If Cache.HasKey(Name) Then
 		    
 		    // Get the cache entry.
-		    Var CacheEntry As Dictionary = Cache.Value(Name)
+		    Var cacheEntry As Dictionary = Cache.Value(name)
 		    
 		    // Get the cache's expiration date.
-		    Var Expiration As DateTime = CacheEntry.Value("Expiration")
+		    Var expiration As DateTime = cacheEntry.Value("Expiration")
 		    
 		    // Get the current date.
-		    Var Now As DateTime = DateTime.Now
+		    Var now As DateTime = DateTime.Now
 		    
 		    // If the cache has not expired...
-		    If Expiration > Now Then
+		    If expiration > now Then
 		      
 		      // Return the cached content.
-		      Return CacheEntry
+		      Return cacheEntry
 		      
 		    Else
 		      
 		      // Remove the expired cache entry.
-		      Cache.Remove(Name)
+		      Cache.Remove(name)
 		      
 		      Return Nil
 		      
@@ -132,41 +132,29 @@ Inherits Timer
 		    
 		  End If
 		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Put(Name As String, Content As Variant, ExpirationSecs As Integer)
+		Sub Put(name As String, content As Variant, expirationSecs As Integer)
 		  // Puts an object into the cache, and sets its expiration date.
 		  
-		  
 		  // Create the expiration date/time.
-		  Var Expiration As DateTime = DateTime.Now
+		  Var expiration As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
-		  Expiration = Expiration.AddInterval( 0, 0, 0, 0, 0, ExpirationSecs )
+		  expiration = expiration.AddInterval( 0, 0, 0, 0, 0, expirationSecs )
 		  
 		  // Get the current date/time.
-		  Var Now As DateTime = DateTime.Now
+		  Var now As DateTime = DateTime.Now
 		  
 		  // Create the cache entry.
-		  Var CacheEntry As New Dictionary
-		  CacheEntry.Value("Content") = Content
-		  CacheEntry.Value("Expiration") = Expiration
-		  CacheEntry.Value("Entered") = Now
+		  Var cacheEntry As New Dictionary
+		  cacheEntry.Value("Content") = content
+		  cacheEntry.Value("Expiration") = expiration
+		  cacheEntry.Value("Entered") = now
 		  
 		  // Add the entry to the cache.
-		  Cache.Value(Name) = CacheEntry
-		  
-		  
-		  
-		  
+		  Cache.Value(name) = cacheEntry
 		  
 		  
 		End Sub

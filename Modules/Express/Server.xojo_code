@@ -10,21 +10,20 @@ Inherits ServerSocket
 		    CurrentSocketID = CurrentSocketID + 1
 		    
 		    // Create a new instance of Request to act as the socket, and assign it an ID.
-		    Var NewSocket As New Request(Self)
+		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
 		    // Return the socket.
-		    Return NewSocket
+		    Return newSocket
 		    
 		  Catch e As RunTimeException
 		    
-		    Var TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
-		    #Pragma Unused TypeInfo
+		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		    #Pragma Unused typeInfo
 		    
 		    System.DebugLog "Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
 		    
 		  End Try
-		  
 		  
 		End Function
 	#tag EndEvent
@@ -194,8 +193,8 @@ Inherits ServerSocket
 		  End If
 		  
 		  // Create a ConnectionSweeper timer object for this server.
-		  Var Sweeper As New ConnectionSweeper(Self)
-		  #Pragma Unused Sweeper
+		  Var sweeper As New ConnectionSweeper(Self)
+		  #Pragma Unused sweeper
 		  
 		  // If caching is enabled...
 		  If CachingEnabled Then
@@ -230,13 +229,13 @@ Inherits ServerSocket
 		    If connCount > 10 Then
 		      // Speed up massively
 		      If Multithreading Then
-		        app.DoEvents(0) // Fast switch between threads after doing events
+		        App.DoEvents(0) // Fast switch between threads after doing events
 		      Else
-		        app.DoEvents(-1) // Fast do events (default)
+		        App.DoEvents(-1) // Fast do events (default)
 		      End If
 		    Else
 		      // Slow down a little
-		      app.DoEvents(2)
+		      App.DoEvents(2)
 		    End If
 		  Wend
 		End Sub

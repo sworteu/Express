@@ -29,25 +29,25 @@ Protected Module DemoServerThreads
 		  
 		  
 		  // Create AloeExpress ServerThread instances with servers listening on port 64000, 64001, etc.
-		  Var ServerThread1 As New Express.ServerThread
-		  ServerThread1.Server.Port = 64000
-		  ServerThread1.Start
+		  Var serverThread1 As New Express.ServerThread
+		  serverThread1.Server.Port = 64000
+		  serverThread1.Start
 		  
-		  Var ServerThread2 As New Express.ServerThread
-		  ServerThread2.Server.Port = 64001
-		  ServerThread2.Server.SessionsEnabled = True
-		  ServerThread2.Start
+		  Var serverThread2 As New Express.ServerThread
+		  serverThread2.Server.Port = 64001
+		  serverThread2.Server.SessionsEnabled = True
+		  serverThread2.Start
 		  
-		  Var ServerThread3 As New Express.ServerThread
-		  ServerThread3.Server.Port = 64002
-		  ServerThread3.Start
+		  Var serverThread3 As New Express.ServerThread
+		  serverThread3.Server.Port = 64002
+		  serverThread3.Start
 		  
-		  Var ServerThread4 As New Express.ServerThread
-		  ServerThread4.Server.Port = 64003
-		  ServerThread4.Start
+		  Var serverThread4 As New Express.ServerThread
+		  serverThread4.Server.Port = 64003
+		  serverThread4.Start
 		  
 		  While True
-		    app.DoEvents
+		    App.DoEvents
 		  Wend
 		End Sub
 	#tag EndMethod

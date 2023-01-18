@@ -5,14 +5,13 @@ Inherits Thread
 		Sub Run()
 		  // Processes a request.
 		  
-		  
-		  Var Request As Express.Request
+		  Var request As Express.Request
 		  
 		  If ( RequestWR <> Nil ) And ( RequestWR.Value <> Nil ) And ( RequestWR.Value IsA Express.Request ) Then
 		    
-		    Request = Express.Request( RequestWR.Value )
+		    request = Express.Request( RequestWR.Value )
 		    
-		    Request.Process
+		    request.Process
 		    
 		  End If
 		  
