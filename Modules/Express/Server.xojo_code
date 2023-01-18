@@ -135,7 +135,7 @@ Inherits ServerSocket
 		    
 		  End If
 		  
-		  // Initlialize the Custom dictionary.
+		  // Initlialise the Custom dictionary.
 		  Custom = New Dictionary
 		  
 		  

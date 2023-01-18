@@ -1294,119 +1294,123 @@ Inherits SSLSocket
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520626F6479206F662074686520726571756573742E
 		Body As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652073697A65206F6620746865206461746120696E2074686520626F64792E
 		ContentLength As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520636F6E74656E7420747970652E
 		ContentType As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207265717565737420636F6F6B69657320284B6579203D20537472696E672C2056616C7565203D20537472696E67292E
 		Cookies As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5573656420746F2073746F7265206170702D737065636966696320696E666F726D6174696F6E20666F72206120726571756573742C207768696368207065727369737473206265747765656E207265717565737473207768656E2074686520736F636B6574206973206265696E672068656C64206F70656E2E20496E697469616C6973656420696E207468652060526571756573742E50726570617265282960206D6574686F642E
 		Custom As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207265717565737420646174612E
 		Data As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206E756D626572206F662074696D657320746865206044617461417661696C61626C6560206576656E742068617320666972656420666F72207468697320726571756573742E
 		DataReceivedCount As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5768657265206120666F726D20686173206265656E207375626D697474656420776869636820696E636C75646564202266696C652220696E707574206669656C64732C20746869732044696374696F6E61727920697320757365642E204B6579203D206669656C64206E616D652E2056616C7565203D2044696374696F6E6172792028776869636820696E636C75646573206B65792F76616C756520706169727320666F72207468652066696C656E616D652C20636F6E74656E7420747970652C20636F6E74656E74206C656E6774682C20657463292E
 		Files As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 416E792055524C20706172616D65746572732070617373656420284B6579203D20537472696E672C2056616C7565203D20537472696E67292E
 		GET As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207265717565737420686561646572732E204B6579203D20537472696E672C2056616C7565203D20537472696E672E
 		Headers As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652072617720686561646572732E
 		HeadersRaw As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 416E206172726179207768657265206561636820656E7472792069732061207261772068656164657220737472696E672E
 		HeadersRawArray() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520485454502076657273696F6E207468617420776173207573656420746F206D616B652074686520726571756573742E
 		HTTPVersion As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 416E206172726179206F66207468652076616C756520696E6465782048544D4C2066696C65206E616D65732E
 		IndexFilenames() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 576865746865722074686520636F6E6E656374696F6E2073686F756C64206265206B65707420616C6976652E
 		KeepAlive As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865204461746554696D65206F6620746865206C617374206044617461417661696C61626C6560206576656E742E2054686973206973207573656420746F2064657465726D696E652069662061204B6565702D416C697665206F7220576562536F636B657420636F6E6E656374696F6E206861732074696D6564206F75742E
 		LastConnect As DateTime
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5573656420746F206C696D6974207468652073697A65206F662061207265717565737420626F64792E2048656C7066756C207768656E20796F752077616E7420746F206C696D6974207468652073697A65200A6F662066696C652075706C6F6164732E2042792064656661756C742C20746869732069732073657420746F2031304D62202831303438353736302062697473292E
 		MaxEntitySize As Integer = 1048576
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652072657175657374206D6574686F642E
 		Method As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h21, Description = 41207765616B207265666572656E636520746F207468697320726571756573742773207365727665722E
+		Private mServerRef As WeakRef
+	#tag EndProperty
+
+	#tag Property, Flags = &h0, Description = 496E686572697465642066726F6D20746865207365727665722E2057686574686572206F72206E6F74206D756C7469746872656164696E672073686F756C64206265207573656420666F7220726571756573742070726F63657373696E672E
 		Multithreading As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207265717565737420706174682E
 		Path As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520636F6D706F6E656E7473206F66207468652072657175657374277320706174682E
 		PathComponents() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207061746820636F6D706F6E656E74732073706C697420627920696E6465782E204B6579203D20496E74656765722C2056616C7565203D20706174686F20636F6D706F6E656E742028537472696E67292E
 		PathItems As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 4B6579203D20537472696E672C2056616C7565203D20537472696E672E
 		POST As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652070726F746F636F6C207573656420746F206D616B652074686520726571756573742E
 		Protocol As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652070726F746F636F6C2076657273696F6E207468617420776173207573656420746F206D616B652074686520726571756573742E
 		ProtocolVersion As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686973207265717565737427732070726F63657373696E67207468726561642E
 		RequestThread As Express.RequestThread
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520726573706F6E736520696E7374616E63652E
 		Response As Express.Response
 	#tag EndProperty
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h0, Description = 41207765616B207265666572656E636520746F207468697320726571756573742773207365727665722E
 		#tag Getter
 			Get
-			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And ServerRef.Value IsA Express.Server Then
-			    Return Express.Server(Self.ServerRef.Value)
+			  If mServerRef <> Nil And mServerRef.Value <> Nil And mServerRef.Value IsA Express.Server Then
+			    Return Express.Server(mServerRef.Value)
 			  End If
 			  
 			  Return Nil
@@ -1415,37 +1419,33 @@ Inherits SSLSocket
 		#tag Setter
 			Set
 			  If value = Nil Then
-			    Self.ServerRef = Nil
+			    mServerRef = Nil
 			    Return
 			  End If
 			  
-			  Self.ServerRef = New WeakRef(value)
+			  mServerRef = New WeakRef(value)
 			End Set
 		#tag EndSetter
 		Server As Express.Server
 	#tag EndComputedProperty
 
-	#tag Property, Flags = &h21
-		Private ServerRef As WeakRef
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686973207265717565737427732073657373696F6E2E
 		Session As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468697320736F636B657427732049442E
 		SocketID As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206C6F636174696F6E206F66207374617469632066696C65732E
 		StaticPath As FolderItem
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865207261772055524C20706172616D65746572732E
 		URLParams As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520576562536F636B6574207374617475732E20456974686572202241637469766522206F722022496E616374697665222E
 		WSStatus As String = "Inactive"
 	#tag EndProperty
 
