@@ -3,8 +3,8 @@ Protected Class CacheEngine
 Inherits Timer
 	#tag Event
 		Sub Action()
-		  // Removes expired objects from the cache.
-		  // This prevents the cache from growing unnecessarily due to orphaned objects.
+		  /// Removes expired objects from the cache.
+		  /// This prevents the cache from growing unnecessarily due to orphaned objects.
 		  
 		  // Get the current date/time.
 		  Var now As DateTime = DateTime.Now
@@ -40,23 +40,20 @@ Inherits Timer
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436C65617273207468652063616368652E
 		Sub Clear()
-		  // Clears the cache.
+		  /// Clears the cache.
 		  
 		  Cache = New Dictionary
-		  
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor(SweepIntervalSecs As Integer = 300)
-		  // Initilize the Cache dictionary.
+		  /// Default constructor.
+		  
+		  // Initialise the Cache dictionary.
 		  Cache = New Dictionary
 		  
 		  // Set the SweepIntervalSecs property.
@@ -76,10 +73,9 @@ Inherits Timer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 44656C6574657320616E206F626A6563742066726F6D207468652063616368652E
 		Sub Delete(Name As String)
-		  // Deletes an object from the cache.
-		  
+		  /// Deletes an object from the cache.
 		  
 		  // If the value is in the cache...
 		  If Cache.HasKey(Name) Then
@@ -97,11 +93,10 @@ Inherits Timer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4765747320616E206F626A6563742066726F6D207468652063616368652C20616E6420636865636B73206974732065787069726174696F6E20646174652E20496620746865206F626A65637420697320666F756E642C206275742068617320657870697265642C207468656E20697427732064656C657465642066726F6D207468652063616368652E
 		Function Get(name As String) As Dictionary
-		  // Gets an object from the cache, and checks its expiration date.
-		  // If the object is found, but it has expired, it is deleted from the cache.
-		  
+		  /// Gets an object from the cache, and checks its expiration date.
+		  /// If the object is found, but has expired, then it's deleted from the cache.
 		  
 		  // If the value is in the cache...
 		  If Cache.HasKey(Name) Then
@@ -135,13 +130,12 @@ Inherits Timer
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 5075747320616E206F626A65637420696E746F207468652063616368652C20616E642073657473206974732065787069726174696F6E20646174652E
 		Sub Put(name As String, content As Variant, expirationSecs As Integer)
-		  // Puts an object into the cache, and sets its expiration date.
+		  /// Puts an object into the cache, and sets its expiration date.
 		  
 		  // Create the expiration date/time.
 		  Var expiration As DateTime = DateTime.Now
-		  //years, months, days, hours, minutes, seconds
 		  expiration = expiration.AddInterval( 0, 0, 0, 0, 0, expirationSecs )
 		  
 		  // Get the current date/time.
@@ -161,11 +155,11 @@ Inherits Timer
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 4B6579203D204E616D652028537472696E67292C2056616C7565203D2044696374696F6E61727920776974682033206B6579732028436F6E74656E742C2045787069726174696F6E2C20456E7465726564292E
 		Cache As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206672657175656E63792028696E207365636F6E6473292077697468207768696368206578706972656420636163686520656E7472696573206172652072656D6F7665642E
 		SweepIntervalSecs As Integer = 300
 	#tag EndProperty
 
