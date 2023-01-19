@@ -4,8 +4,9 @@ Inherits Timer
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Event
 		Sub Action()
-		  // Removes any expired sessions from the Sessions array.
-		  // This prevents the array from growing unnecessarily due to orphaned sessions.
+		  /// Removes any expired sessions.
+		  ////
+		  /// This prevents the dictionary from growing unnecessarily large due to orphaned sessions.
 		  
 		  #If Not DebugBuild Then
 		    #Pragma BackgroundTasks False
@@ -21,7 +22,7 @@ Inherits Timer
 		  Var sessionKeys() As Variant = Sessions.Keys
 		  Var key As Variant, session As Dictionary, lastRequestTimestamp As DateTime, timeElapsedSecs As Double
 		  
-		  // Loop over the dictionary entries...
+		  // Loop over the dictionary entries.
 		  For Each key In sessionKeys
 		    
 		    // Get the entry's value.
@@ -33,17 +34,14 @@ Inherits Timer
 		    // Determine the time that has elapsed since the last request.
 		    timeElapsedSecs = Now.SecondsFrom1970 - lastRequestTimestamp.SecondsFrom1970
 		    
-		    // If the session has expired...
+		    // If the session has expired then append the session's key to the array.
 		    If timeElapsedSecs > sessionsTimeOutSecs Then
-		      
-		      // Append the session's key to the array.
 		      expiredSessionIDs.Add(Key)
-		      
 		    End If
 		    
 		  Next key
 		  
-		  // Removed the expired sessions...
+		  // Removed the expired sessions.
 		  For Each sessionID As String In expiredSessionIDs
 		    sessions.Remove(sessionID)
 		  Next sessionID
@@ -52,54 +50,45 @@ Inherits Timer
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub Constructor(SweepIntervalSecs As Integer = 300)
-		  // Initilize the Sessions dictionary.
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F7220746861742074616B657320746865206E756D626572206F66207365636F6E647320666F722074686520737765657020696E74657276616C2E
+		Sub Constructor(sweepIntervalSecs As Integer = 300)
+		  /// Default constructor that takes the number of seconds for the sweep interval.
+		  
+		  // Initiliase the Sessions dictionary.
 		  Sessions = New Dictionary
 		  
 		  // Set the SweepIntervalSecs property.
-		  Self.SweepIntervalSecs = SweepIntervalSecs
+		  Self.SweepIntervalSecs = sweepIntervalSecs
 		  
 		  // Schedule the SessionSweep process.
 		  Period = SweepIntervalSecs * 1000
 		  RunMode = timer.RunModes.Multiple
 		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E7320612073657373696F6E20666F722074686520726571756573742E20496620616E206578697374696E672073657373696F6E20697320617661696C61626C652C207468656E20697427732072657475726E65642E204F74686572776973652061206E65772073657373696F6E206973206372656174656420616E642072657475726E65642E
 		Function SessionGet(request As Express.Request, assignNewID As Boolean = True) As Dictionary
-		  // Returns a session for the request.
-		  // If an existing session is available, then it is returned.
-		  // Otherwise a new session is created and returned.
+		  /// Returns a session for the request.
+		  /// If an existing session is available, then it's returned.
+		  /// Otherwise a new session is created and returned.
 		  
 		  // This is the session that we'll return.
 		  Var session As Dictionary
 		  
-		  // This will be used if a new SessionID is assigned.
+		  // This will be used if a new session ID is assigned.
 		  Var newSessionID As String
 		  
 		  // Get the current date/time.
 		  Var now As DateTime = DateTime.Now
 		  
-		  // Get the original Session ID, if applicable.
+		  // Get the original session ID, if applicable.
 		  Var originalSessionID As String = request.Cookies.Lookup("SessionID", "")
 		  
-		  // If the user has a Session ID cookie...
+		  // If the user has a session ID cookie...
 		  If originalSessionID <> "" Then
 		    
-		    // If the Session ID matches a session in the Sessions dictionary...
+		    // If the session ID matches a session in the Sessions dictionary...
 		    If Sessions.HasKey(originalSessionID) = True Then
 		      
 		      // Get the session.
@@ -143,9 +132,9 @@ Inherits Timer
 		      
 		    End If
 		    
-		    // Assign a new Session ID to the existing session.
+		    // Assign a new session ID to the existing session.
 		    
-		    // Generate a new Session ID.
+		    // Generate a new session ID.
 		    newSessionID = UUIDGenerate
 		    
 		    // Update the session with the new ID.
@@ -159,9 +148,8 @@ Inherits Timer
 		    
 		  Else
 		    
-		    // We were unable to re-use an existing session, so create a new one...
+		    // We were unable to re-use an existing session, so create a new one.
 		    
-		    // Generate a new Session ID.
 		    newSessionID = UUIDGenerate
 		    
 		    // Create a new session dictionary.
@@ -180,7 +168,6 @@ Inherits Timer
 		  
 		  // Set the cookie expiration date.
 		  Var cookieExpiration As DateTime = DateTime.Now
-		  //years, months, days, hours, minutes, seconds
 		  cookieExpiration = cookieExpiration.AddInterval( 0, 0, 0, 0, 0, SessionsTimeOutSecs )
 		  
 		  // Drop the SessionID cookie.
@@ -188,33 +175,35 @@ Inherits Timer
 		  
 		  // Return the session to the caller.
 		  Return session
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SessionTerminate(Session As Dictionary)
-		  // Terminates a given session.
+	#tag Method, Flags = &h0, Description = 5465726D696E61746573206120676976656E2073657373696F6E2E
+		Sub SessionTerminate(session As Dictionary)
+		  /// Terminates a given session.
 		  
 		  // If the session still exists...
-		  If Sessions.HasKey(Session.Value("SessionID")) Then
+		  If Sessions.HasKey(session.Value("SessionID")) Then
 		    
 		    // Remove the session from the array of sessions.
-		    Sessions.Remove(Session.Value("SessionID"))
+		    Sessions.Remove(session.Value("SessionID"))
 		    
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652073657373696F6E73206265696E67206D616E616765642062792074686520656E67696E652E
 		Sessions As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206E756D626572206F66207365636F6E6473206265666F726520612073657373696F6E2074696D6573206F75742E
 		SessionsTimeOutSecs As Integer = 600
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206E756D626572206F66207365636F6E6473206265747765656E207377656570732E
 		SweepIntervalSecs As Integer = 300
 	#tag EndProperty
 

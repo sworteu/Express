@@ -9,7 +9,7 @@ Protected Class DrummersList
 		  // Get the data.
 		  DrummersGet
 		  
-		  // If the database is not available, or rhe query failed to return data...
+		  // If the database is not available, or the query failed to return data.
 		  If Request.Response.Status <> "200 OK" Then
 		    Request.Response.Content = "Sorry, but we're unable to connect our database at the moment."
 		    Return
@@ -22,10 +22,9 @@ Protected Class DrummersList
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4F70656E73206120636F6E6E656374696F6E20746F207468652053514C6974652064617461626173652E
 		Sub DatabaseConnect()
-		  // Opens a connection to the SQLite database.
-		  
+		  /// Opens a connection to the SQLite database.
 		  
 		  // Create a folderitem that points to the database file.
 		  DatabaseFile = App.ExecutableFile.Parent.Parent.Child("data").Child("drummers.sqlite")
@@ -44,7 +43,7 @@ Protected Class DrummersList
 		  // Assign the database file to the database.
 		  Database.DatabaseFile = DatabaseFile
 		  
-		  // If we can connect the database...
+		  // If we can connect the database.
 		  If Database.Connect Then
 		    DatabaseConnected = True
 		  End If
@@ -59,7 +58,7 @@ Protected Class DrummersList
 		  // Try to get the data from the cache.
 		  Var cacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
 		  
-		  // If cached data is available...
+		  // If cached data is available.
 		  If cacheEntry <> Nil Then
 		    Drummers = cacheEntry.Value("Content")
 		    CacheExpiration = cacheEntry.Value("Expiration")
@@ -99,9 +98,9 @@ Protected Class DrummersList
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4765747320616C6C207265636F7264732066726F6D20746865204472756D6D657273207461626C652E
 		Sub RecordsGet()
-		  // Gets all records from the Drummers table.
+		  /// Gets all records from the Drummers table.
 		  
 		  // Simulate a slow query.
 		  Thread.SleepCurrent(3000)

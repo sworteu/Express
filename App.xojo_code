@@ -18,11 +18,6 @@ Inherits ConsoleApplication
 		  
 		  server.KeepAlive = True
 		  
-		  //Pass any additional information to be displayed with Server.ServerInfoDisplay
-		  //Var info As New Dictionary
-		  //info.Value( "My App Version" ) = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
-		  //Server.AdditionalServerDisplayInfo = info
-		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -58,15 +53,12 @@ Inherits ConsoleApplication
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 50726F63657373657320616E204854545020726571756573742E
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
-		  #Pragma Unused Response // Keep marked as unused to prevent analyser warnings.
+		  /// Processes an HTTP request.
 		  
-		  // Processes an HTTP request.
-		  
-		  'Var host As String = Request.Headers.Value("Host").StringValue
-		  // - This is the requested host (domain) name.
-		  'Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
+		  // Keep the analyser happy.
+		  #Pragma Unused Response
 		  
 		  // Uncomment the demo module that you want to use.
 		  
@@ -76,7 +68,7 @@ Inherits ConsoleApplication
 		  'Request.Response.Content = "Hello, world!"
 		  
 		  // Express.CacheEngine.
-		  'DemoCaching.RequestProcess(Request)
+		  DemoCaching.RequestProcess(Request)
 		  
 		  // Express.Logger.
 		  'DemoLogging.RequestProcess(Request)
@@ -97,7 +89,7 @@ Inherits ConsoleApplication
 		  'DemoWebSockets.RequestProcess(Request)
 		  
 		  // Demonstrates Xojoscript support.
-		  DemoXojoScript.RequestProcess(Request)
+		  //DemoXojoScript.RequestProcess(Request)
 		  
 		  // Express.ServerThread demo.
 		  // *** Before using this demo... *** 

@@ -3,21 +3,24 @@ Protected Class ServerThread
 Inherits Thread
 	#tag Event
 		Sub Run()
-		  // Start the server.
+		  /// Start the server.
+		  
 		  Server.Start
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 43726561746520616E20696E7374616E6365206F6620457870726573732E536572766572
 		Sub Constructor()
-		  // Create an instance of Express.Server
+		  /// Create an instance of Express.Server
+		  
 		  Server = New Express.Server
+		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686973207468726561642773207365727665722E
 		Server As Express.Server
 	#tag EndProperty
 

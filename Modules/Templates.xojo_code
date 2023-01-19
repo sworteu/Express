@@ -12,12 +12,6 @@ Protected Module Templates
 		as the merge data source. Its "Merge" method has been significantly refactored to
 		account for the move away from Xojo.Core.Dictionary. 
 		
-		This module might be deprecated in the future. I recommend using popular client-side 
-		templating options such as Mustache, HandleBars, etc.
-		
-		Update: Some apps need server-side templating. Therefore, this module will *not*
-		be deprecated.
-		
 	#tag EndNote
 
 	#tag Note, Name = About
@@ -25,21 +19,7 @@ Protected Module Templates
 		About
 		-----------------------------------------------------------------------------------------
 		
-		Templates provides server-side templating support to Aloe Express-based apps.
-		
-		To learn more, visit: http://aloe.zone
-		
-		
-	#tag EndNote
-
-	#tag Note, Name = Developer
-		-----------------------------------------------------------------------------------------
-		Developer
-		-----------------------------------------------------------------------------------------
-		
-		Tim Dietrich
-		• Email: timdietrich@me.com
-		• Web: http://timdietrich.me
+		Templates provides server-side templating support to Express-based apps.
 		
 	#tag EndNote
 
