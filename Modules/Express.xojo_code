@@ -1460,7 +1460,8 @@ Protected Module Express
 	#tag Note, Name = Express 5.0.1
 		- Fixed serveral minor issues.
 		- Improved memory leak free coding, now using weakref and conversions for server/client.
-		- Removed the logging module, suggest using System.Log instead for improved loggin capabilities provided by the system.
+		- Removed loggin module, suggest using System.Log instead 
+		for improved loggin capabilities provided by the system.
 		- Express.VERSION_STRING is now a constant.
 	#tag EndNote
 
