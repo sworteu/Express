@@ -3,13 +3,16 @@ Protected Class XSProcessor
 Inherits XojoScript
 	#tag Event
 		Function CompilerError(location As XojoScriptLocation, error As XojoScript.Errors, errorInfo As Dictionary) As Boolean
-		  // Handles XojoScript compilation errors.
+		  /// Handles XojoScript compilation errors.
+		  /// Sets the internal `Result` property and logs to the system log if a debug build.
+		  
 		  #Pragma Unused location
 		  #Pragma Unused errorInfo
+		  
 		  Result = "<!-- XojoScript Error: " + ErrorCodeToString(error) + " -->"
 		  
 		  #If DebugBuild Then
-		    System.DebugLog CurrentMethodName + ": "+ ErrorCodeToString(error)
+		    System.DebugLog(CurrentMethodName + ": "+ ErrorCodeToString(error))
 		  #EndIf
 		  
 		  
@@ -18,49 +21,54 @@ Inherits XojoScript
 
 	#tag Event
 		Sub CompilerWarning(location As XojoScriptLocation, warning As XojoScript.Warnings, warningInfo As Dictionary)
+		  /// Logs to the system log the current method name if in a debug build.
+		  
 		  #Pragma Unused location
 		  #Pragma Unused Warning
 		  #Pragma Unused warningInfo
 		  
 		  #If DebugBuild Then
-		    System.DebugLog CurrentMethodName
+		    System.DebugLog(CurrentMethodName)
 		  #EndIf
+		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Function Input(prompt As String) As String
-		  #Pragma Unused prompt
-		End Function
-	#tag EndEvent
-
-	#tag Event
 		Sub Print(msg As String)
-		  // Appends XojoScript-generated content to the result.
+		  /// Appends XojoScript-generated content to the the `Result` property.
+		  
 		  Result = Result + msg
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub RuntimeError(error As RuntimeException)
-		  // Handles XojoScript runtime errors.
+		  /// Handles XojoScript runtime errors.
+		  /// Sets the internal `Result` property and logs to the system log if a debug build.
+		  
 		  Result = "<!-- XojoScript Error: " + error.Message + " -->"
 		  
 		  #If DebugBuild Then
-		    System.DebugLog CurrentMethodName
+		    System.DebugLog(CurrentMethodName)
 		  #EndIf
+		  
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 437265617465732061206E657720586F6A6F536372697074206576616C7561746F722077697468207468652070617373656420636F6E746578742E
 		Sub Constructor()
+		  /// Creates a new XojoScript evaluator with the passed context.
+		  
 		  Context = New XSContext
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E7320612068756D616E207265616461626C6520737472696E6720726570726573656E746174696F6E206F66206120586F6A6F536372697074206572726F7220636F64652E
 		Function ErrorCodeToString(code As XojoScript.Errors) As String
+		  /// Returns a human readable string representation of a XojoScript error code.
+		  
 		  Static errors As New Dictionary( _
 		  XojoScript.Errors.Syntax: "Syntax does not make sense.", _
 		  XojoScript.Errors.TypeMismatch: "Type mismatch.", _
@@ -235,9 +243,11 @@ Inherits XojoScript
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52756E7320746865207363726970742E
 		Sub Run()
-		  // Initialize the result.
+		  /// Runs the script.
+		  
+		  // Initialise the result.
 		  Result = ""
 		  
 		  // Run the XojoScript.
@@ -246,7 +256,7 @@ Inherits XojoScript
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520726573756C74206F662073637269707420657865637574696F6E2E
 		Result As String
 	#tag EndProperty
 

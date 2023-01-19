@@ -1535,19 +1535,8 @@ Protected Module Express
 	#tag EndProperty
 
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"5.0.1", Scope = Public
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"5.0.1", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
-
-
-	#tag Enum, Name = LogLevel, Type = Integer, Flags = &h0
-		None = 0
-		  Always = 1
-		  Critical = 2
-		  Error = 3
-		  Warning = 4
-		  Info = 5
-		Debug = 6
-	#tag EndEnum
 
 
 	#tag ViewBehavior

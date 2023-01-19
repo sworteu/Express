@@ -1272,7 +1272,7 @@ Inherits SSLSocket
 		  // Create an instance of the XojoScript evaluator.
 		  Var evaluator As New XSProcessor
 		  
-		  // Loop over the XojoScript blocks...
+		  // Loop over the XojoScript blocks.
 		  Var lastScriptsIndex As Integer = scripts.LastIndex
 		  For x As Integer = 0 To lastScriptsIndex
 		    
