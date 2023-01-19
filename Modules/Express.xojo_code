@@ -1,12 +1,13 @@
 #tag Module
 Protected Module Express
-	#tag Method, Flags = &h0
-		Function ArgsToDictionary(Args() As String) As Dictionary
-		  // Converts command line arguments to a dictionary.
+	#tag Method, Flags = &h0, Description = 436F6E766572747320636F6D6D616E64206C696E6520617267756D656E747320746F20612064696374696F6E6172792E2045616368206B657920697320616E20617267756D656E74206E616D6520616E642074686520636F72726573706F6E64696E672076616C75652069732074686520617267756D656E742076616C75652E
+		Function ArgsToDictionary(args() As String) As Dictionary
+		  /// Converts command line arguments to a dictionary.
+		  /// Each key is an argument name and the corresponding value is the argument value.
 		  
 		  Var arguments As New Dictionary
 		  
-		  For Each argument As String In Args
+		  For Each argument As String In args
 		    
 		    Var argParts() As String = argument.Split("=")
 		    Var name As String = argParts(0)
@@ -17,11 +18,14 @@ Protected Module Express
 		  Next argument
 		  
 		  Return arguments
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E732074686520636F6E74656E74206F6620612022626C6F636B2220746861742069732064656D617263617465642062792060746F6B656E426567696E6020616E642060746F6B656E456E64602E205468652022746F6B656E732220617265206E6F7420696E636C7564656420696E207468652072657475726E656420737472696E672E
 		Function BlockGet(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0) As String
+		  /// Returns the content of a "block" that is demarcated by `tokenBegin` and `tokenEnd`.
+		  /// The "tokens" are not included in the returned string.
 		  
 		  Var content As String
 		  
@@ -31,7 +35,7 @@ Protected Module Express
 		  // Get the position of the ending token.
 		  Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
 		  
-		  // If the template includes both the beginning and ending tokens...
+		  // If the source includes both the beginning and ending tokens.
 		  If ( (startPosition > -1) And (stopPosition > -1) ) Then
 		    
 		    // Get the content between the tokens.
@@ -43,8 +47,10 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 5265706C616365732065766572797468696E67206265747765656E2060746F6B656E426567696E6020616E642060746F6B656E456E6460207769746820607265706C6163656D656E74436F6E74656E74602E
 		Function BlockReplace(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0, replacementContent As String = "") As String
+		  /// Replaces everything between `tokenBegin` and `tokenEnd` with `replacementContent`.
+		  
 		  // Get the content block.
 		  Var blockContent As String = BlockGet(Source, tokenBegin, tokenEnd, start)
 		  
@@ -52,27 +58,26 @@ Protected Module Express
 		  source = source.ReplaceAll(tokenBegin + blockContent + tokenEnd, replacementContent)
 		  
 		  Return source
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function DateToRFC1123(TheDate As DateTime = Nil) As String
-		  // Returns a  in RFC 822 / 1123 format.
-		  // Example: Mon, 27 Nov 2017 13:27:26 GMT
-		  // Special thanks to Norman Palardy.
-		  // See: https://forum.xojo.com/42908-current-date-time-stamp-in-rfc-822-1123-format
+	#tag Method, Flags = &h0, Description = 52657475726E732061204461746554696D72206173206120737472696E6720696E2052464320383232202F203131323320666F726D61742E
+		Function DateToRFC1123(theDate As DateTime = Nil) As String
+		  /// Returns a DateTimr as a string in RFC 822 / 1123 format.
+		  ///
+		  /// Example: Mon, 27 Nov 2017 13:27:26 GMT
+		  /// Special thanks to Norman Palardy.
+		  /// See: https://forum.xojo.com/42908-current-date-time-stamp-in-rfc-822-1123-format
 		  
 		  Var tmp As String
 		  
-		  If TheDate = Nil Then
-		    TheDate = DateTime.Now
-		    //years, months, days, hours, minutes, seconds
-		    TheDate = TheDate.SubtractInterval( 0, 0, 0, 0, 0, TheDate.Timezone.SecondsFromGMT )
+		  If theDate = Nil Then
+		    theDate = DateTime.Now
+		    theDate = TheDate.SubtractInterval( 0, 0, 0, 0, 0, theDate.Timezone.SecondsFromGMT )
 		  End If
 		  
-		  //TheDate.GMTOffset = 0
-		  
-		  Select Case TheDate.DayOfWeek
+		  Select Case theDate.DayOfWeek
 		  Case 1
 		    tmp = tmp + "Sun"
 		  Case 2
@@ -91,11 +96,11 @@ Protected Module Express
 		  
 		  tmp = tmp + ", "
 		  
-		  tmp = tmp + If(TheDate.Day < 10, "0", "") + TheDate.Day.ToString
+		  tmp = tmp + If(theDate.Day < 10, "0", "") + theDate.Day.ToString
 		  
 		  tmp = tmp + " "
 		  
-		  Select Case TheDate.Month
+		  Select Case theDate.Month
 		  Case 1
 		    tmp = tmp + "Jan" 
 		  Case 2
@@ -124,16 +129,16 @@ Protected Module Express
 		  
 		  tmp = tmp + " "
 		  
-		  tmp = tmp + TheDate.Year.ToString
+		  tmp = tmp + theDate.Year.ToString
 		  tmp = tmp + " "
 		  
-		  tmp = tmp + If(TheDate.Hour < 10, "0", "") + TheDate.Hour.ToString
+		  tmp = tmp + If(theDate.Hour < 10, "0", "") + theDate.Hour.ToString
 		  tmp = tmp + ":"
 		  
-		  tmp = tmp + If(TheDate.Minute < 10, "0", "") + TheDate.Minute.ToString
+		  tmp = tmp + If(theDate.Minute < 10, "0", "") + theDate.Minute.ToString
 		  tmp = tmp + ":"
 		  
-		  tmp = tmp + If(TheDate.Second < 10, "0", "") + TheDate.Second.ToString
+		  tmp = tmp + If(theDate.Second < 10, "0", "") + theDate.Second.ToString
 		  tmp = tmp + " "
 		  
 		  tmp = tmp + "GMT"
@@ -143,22 +148,22 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function FileRead(FI as FolderItem, Encoding as TextEncoding = Nil) As String
-		  // Reads and returns the contents of a file, given a FolderItem.
+	#tag Method, Flags = &h0, Description = 526561647320616E642072657475726E732074686520636F6E74656E7473206F6620612066696C652C20676976656E206120466F6C6465724974656D2E204966206066602063616E6E6F74206265207265616420666F7220776861746576657220726561736F6E207468656E20616E20656D70747920737472696E672069732072657475726E65642E
+		Function FileRead(f As FolderItem, encoding As TextEncoding = Nil) As String
+		  /// Reads and returns the contents of a file, given a FolderItem.
+		  /// If `f` cannot be read for whatever reason then an empty string is returned.
 		  
-		  
-		  If FI <> Nil Then
+		  If f <> Nil Then
 		    
-		    If FI.Exists Then
+		    If f.Exists Then
 		      
-		      Var TIS As TextInputStream
+		      Var tin As TextInputStream
 		      
 		      Try
 		        
-		        TIS = TextInputStream.Open(FI)
-		        TIS.Encoding = If(Encoding = Nil, Encodings.UTF8, Encoding)
-		        Return TIS.ReadAll
+		        tin = TextInputStream.Open(f)
+		        tin.Encoding = If(encoding = Nil, Encodings.UTF8, encoding)
+		        Return tin.ReadAll
 		        
 		      Catch e As IOException
 		        
@@ -169,36 +174,43 @@ Protected Module Express
 		    End If
 		    
 		  End If
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Gunzip(Compressed As String) As String
-		  // Decompresses a gzipped string.
-		  // Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
+	#tag Method, Flags = &h0, Description = 4465636F6D70726573736573206120677A697070656420737472696E672E
+		Function Gunzip(compressed As String) As String
+		  /// Decompresses a gzipped string.
+		  ///
+		  /// Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
+		  /// Feedback request: https://tracker.xojo.com/xojoinc/xojo/-/issues/20404
 		  
+		  Var gzipContent As New _GzipString
 		  
-		  // Return the decompressed string.
-		  Var GzipContent As New _GzipString
-		  Return GzipContent.Decompress(Compressed)
+		  Return gzipContent.Decompress(compressed)
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function GZip(Uncompressed As String) As String
-		  // Compresses a string using gzip.
-		  // Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
+	#tag Method, Flags = &h0, Description = 436F6D70726573736573206120737472696E67207573696E6720677A69702E
+		Function GZip(uncompressed As String) As String
+		  /// Compresses a string using gzip.
+		  ///
+		  /// Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
+		  /// Feedback request: https://tracker.xojo.com/xojoinc/xojo/-/issues/20404
 		  
 		  // Return the compressed string.
-		  Var GzipContent As New _GzipString
-		  Return GzipContent.Compress(Uncompressed)
+		  Var gzipContent As New _GzipString
+		  Return gzipContent.Compress(uncompressed)
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4D61707320612066696C6520657874656E73696F6E20746F20697473204D494D4520747970652E
 		Function MIMETypeGet(extension As String) As String
-		  // Maps a file extension to its MIME type.
-		  // Source: https://github.com/samuelneff/MimeTypeMap
+		  /// Maps a file extension to its MIME type.
+		  ///
+		  /// Source: https://github.com/samuelneff/MimeTypeMap
 		  
 		  Var mimeTypes As New Dictionary
 		  mimeTypes.Value("323") = "text/h323"
@@ -807,18 +819,18 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436F6E7665727473206120526F7753657420746F2061204A534F4E4974656D2E
 		Function RowSetToJSONItem(records As RowSet, close As Boolean = True) As JSONItem
-		  // Converts a recordset to JSONItem.
+		  /// Converts a RowSet to a JSONItem.
 		  
 		  Var recordsJSON As New JSONItem
 		  
-		  // Loop over each record...
+		  // Loop over each record.
 		  While Not records.AfterLastRow
 		    
 		    Var recordJSON As New JSONItem
 		    
-		    // Loop over each column...
+		    // Loop over each column.
 		    For i As Integer = 0 To records.ColumnCount-1
 		      
 		      // Add a name / value pair to the JSON record.
@@ -841,12 +853,13 @@ Protected Module Express
 		  
 		  Return recordsJSON
 		  
-		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F6620616E2053534C436F6E6E656374696F6E547970652E
 		Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
+		  /// Returns a string representation of an SSLConnectionType.
+		  
 		  Var output As String
 		  
 		  Select Case s
@@ -873,39 +886,43 @@ Protected Module Express
 		  End Select
 		  
 		  Return output
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function URLDecode(Encoded As String) As String
-		  // Properly and fully decodes a URL-encoded value.
-		  // Unlike Xojo's "DecodeURLComponent," this method decodes any "+" characters
-		  // that represent encoded space characters.
+	#tag Method, Flags = &h0, Description = 46756C6C79206465636F64657320612055524C2D656E636F6465642076616C75652E
+		Function URLDecode(encoded As String) As String
+		  /// Fully decodes a URL-encoded value.
+		  ///
+		  /// Unlike Xojo's "DecodeURLComponent," this method decodes any "+" characters
+		  /// that represent encoded space characters.
 		  
 		  // Replace any "+" chars with spaces.
-		  Encoded = Encoded.ReplaceAll("+", " ")
+		  encoded = encoded.ReplaceAll("+", " ")
 		  
 		  // Decode everything else.
-		  Encoded = DecodeURLComponent(Encoded)
+		  encoded = DecodeURLComponent(encoded)
 		  
-		  Return Encoded
+		  Return encoded
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function URLEncode(Value As String) As String
-		  // A wrapper for Xojo's EncodeURLComponent, provided for consistency and convenience.
+	#tag Method, Flags = &h0, Description = 41207772617070657220666F7220586F6A6F277320456E636F646555524C436F6D706F6E656E742C2070726F766964656420666F7220636F6E73697374656E637920616E6420636F6E76656E69656E63652E
+		Function URLEncode(value As String) As String
+		  /// A wrapper for Xojo's EncodeURLComponent, provided for consistency and convenience.
 		  
-		  Return EncodeURLComponent(Value)
+		  Return EncodeURLComponent(value)
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 47656E657261746573206120555549442E
 		Function UUIDGenerate() As String
-		  // Generates a UUID.
-		  // Source: https://forum.xojo.com/18856-getting-guid/0 ( Roberto Calvi )
-		  // Replace this with whatever UUID generation function that you prefer.
-		  
+		  /// Generates a UUID.
+		  ///
+		  /// Source: https://forum.xojo.com/18856-getting-guid/0 (Roberto Calvi)
+		  /// Replace this with whatever UUID generation function that you prefer.
 		  
 		  Var db As New SQLiteDatabase
 		  
@@ -920,28 +937,21 @@ Protected Module Express
 		    db.Connect
 		    Var GUID As String = db.SelectSQL(SQL_Instruction).Column("GUID")
 		    db.Close
-		    Return  GUID
+		    Return GUID
 		  Catch error As DatabaseException
-		    Print( "SQLite Error: " + error.Message )
+		    System.DebugLog("SQLite Error: " + error.Message)
 		  End Try
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4163636570747320612064696374696F6E61727920636F6E7461696E696E6720224E616D65223A22537472696E6756616C756522204F7220224E616D65223A466F6C6465724974656D20706169727320746F20626520656E636F6465642C20616C6F6E67207769746820616E206F7074696F6E616C20626F756E6461727920737472696E6720746F20626520757365642E2053657473207468652070617373656420636F6E6E656374696F6E2773207265717565737420636F6E74656E742E
 		Sub xSetMultipartFormData(Extends con As URLConnection, formData As Dictionary, boundary As String = "")
-		  // Code based on 
-		  
-		  ' Pass the URLConnection1
-		  ' a Dictionary containg "Name":"StringValue" Or "Name":FolderItem pairs To be encoded, 
-		  ' along With the boundary String To be used. 
-		  ' To have a boundary generated For you, pass the empty String.
-		  ' 
-		  ' Var HTMLForm As New Dictionary
-		  ' HTMLForm.Value("UserName") = "Bob Smith"
-		  ' HTMLForm.Value("Upload") = SpecialFolder.Desktop.Child("Somefile.zip")
-		  ' URLConnection1.xSetMultipartFormData(HTMLForm, "") ' pass an empty boundary to generate a new one (default = "")
-		  ' URLConnection1.Send("POST", "www.example.com/uploads.php", 60)
-		  ' // Note: handle IOExceptions in the caller of SetMultipartFormData since folderitems can cause such exceptions.
+		  /// Accepts a dictionary containing "Name":"StringValue" Or "Name":FolderItem pairs to be encoded, 
+		  /// along with an optional boundary string to be used.
+		  /// Sets the passed connection's request content.
+		  ///
+		  /// To have a boundary generated for you, pass an empty string.
 		  
 		  If boundary.Trim = "" Then
 		    Var uniqueBoundary As String = EncodeHex(Crypto.GenerateRandomBytes(32), False)
