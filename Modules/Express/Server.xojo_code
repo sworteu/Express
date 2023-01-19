@@ -3,13 +3,14 @@ Protected Class Server
 Inherits ServerSocket
 	#tag Event
 		Function AddSocket() As TCPSocket
-		  // Tries to add a socket to the pool.
+		  /// Tries to add a socket to the pool.
+		  
 		  Try
 		    
 		    // Increment the Socket ID.
 		    CurrentSocketID = CurrentSocketID + 1
 		    
-		    // Create a new instance of Request to act as the socket, and assign it an ID.
+		    // Create a new request instance to act as the socket, and assign it an ID.
 		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
@@ -21,7 +22,7 @@ Inherits ServerSocket
 		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		    #Pragma Unused typeInfo
 		    
-		    System.DebugLog "Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
+		    System.DebugLog "Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
 		    
 		  End Try
 		  
@@ -31,34 +32,34 @@ Inherits ServerSocket
 	#tag Event
 		Sub Error(ErrorCode As Integer, err As RuntimeException)
 		  #Pragma Unused err
-		  System.DebugLog "Aloe Express Server Error: Code: " + ErrorCode.ToString
+		  System.DebugLog "Express Server Error: Code: " + ErrorCode.ToString
+		  
 		End Sub
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E7320746865206E756D626572206F6620636F6E6E65637465642061637469766520736F636B6574732E
 		Function ConnectedSocketCount() As Integer
+		  /// Returns the number of connected active sockets.
+		  
 		  Var activeSockets() As TCPSocket = Self.ActiveConnections
-		  
-		  Var i As Integer = 0 
-		  Var lastSocketIndex As Integer = activeSockets.LastIndex
-		  
 		  Var count As Integer = 0
 		  
-		  For i = 0 To lastSocketIndex
-		    
-		    If activeSockets(i).IsConnected Then
+		  For Each sock As TCPSocket In activeSockets
+		    If sock.IsConnected Then
 		      count = count + 1
 		    End If
-		    
-		  Next i
+		  Next sock
 		  
 		  Return count
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor(Args() As String = Nil)
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F7220746861742074616B6573206F7074696F6E616C20617267756D656E74732E
+		Sub Constructor(args() As String = Nil)
+		  /// Default constructor that takes optional arguments.
+		  
 		  // Set defaults.
 		  #If DebugBuild Then
 		    Port = 8080
@@ -70,67 +71,52 @@ Inherits ServerSocket
 		  MinimumSocketsAvailable = 10
 		  Secure = False
 		  ConnectionType = SSLSocket.SSLConnectionTypes.TLSv12
-		  'CertificateFile = App.ExecutableFile.Parent.Parent.Child("certificates").Child("default-certificate.crt")
 		  CertificatePassword = ""
 		  KeepAlive = True
 		  
-		  // If arguments were passed...
-		  If Args <> Nil Then
+		  // Any arguments?
+		  If args <> Nil Then
 		    
 		    // Convert any command line arguments into a dictionary.
-		    Var Arguments As Dictionary = ArgsToDictionary(Args)
+		    Var arguments As Dictionary = ArgsToDictionary(args)
 		    
-		    // Assign valid arguments to their corresponding properties...
-		    
-		    If Arguments.HasKey("--Port") Then
-		      Port = Val(Arguments.Value("--Port"))
+		    // Assign valid arguments to their corresponding properties.
+		    If arguments.HasKey("--Port") Then
+		      Port = Val(arguments.Value("--Port"))
 		    End If
 		    
-		    If Arguments.HasKey("--MaxSockets") Then
-		      MaximumSocketsConnected = Val(Arguments.Value("--MaxSockets"))
+		    If arguments.HasKey("--MaxSockets") Then
+		      MaximumSocketsConnected = Val(arguments.Value("--MaxSockets"))
 		    End If
 		    
-		    If Arguments.HasKey("--MinSockets") Then
-		      MinimumSocketsAvailable = Val(Arguments.Value("--MinSockets"))
+		    If arguments.HasKey("--MinSockets") Then
+		      MinimumSocketsAvailable = Val(arguments.Value("--MinSockets"))
 		    End If
 		    
-		    Loopback = Arguments.HasKey("--Loopback")
+		    Loopback = arguments.HasKey("--Loopback")
 		    
-		    If Arguments.HasKey("--Nothreads") Then 
+		    If arguments.HasKey("--Nothreads") Then 
 		      Multithreading = False
 		    End If
 		    
-		    If Arguments.HasKey("--Secure") Then 
+		    If arguments.HasKey("--Secure") Then 
 		      Secure = True
 		    End If
 		    
-		    If Arguments.HasKey("--ConnectionType") Then 
-		      ConnectionType = Arguments.Value("--ConnectionType")
+		    If arguments.HasKey("--ConnectionType") Then 
+		      ConnectionType = arguments.Value("--ConnectionType")
 		    End If
 		    
-		    If Arguments.HasKey("--CertificateFile") Then 
-		      CertificateFile = New FolderItem(Arguments.Value("--CertificateFile"), FolderItem.PathModes.Shell)
+		    If arguments.HasKey("--CertificateFile") Then 
+		      CertificateFile = New FolderItem(arguments.Value("--CertificateFile"), FolderItem.PathModes.Shell)
 		    End If
 		    
-		    If Arguments.HasKey("--CertificatePassword") Then 
+		    If arguments.HasKey("--CertificatePassword") Then 
 		      CertificatePassword = CertificatePassword
 		    End If
 		    
-		    If Arguments.HasKey("--CloseConnections") Then 
+		    If arguments.HasKey("--CloseConnections") Then 
 		      KeepAlive = False
-		    End If
-		    
-		    //Check for VerboseLogging argument
-		    If Arguments.HasKey("--VerboseLogging") Then
-		      Var level As String = Arguments.Value("--VerboseLogging")
-		      //If a value has been passed, assign it otherwise we have a default value for the parameter of Debug
-		      //You can call "--VerboseLogging" and get LogLevel.Debug or pass a parameter such as critical to the argument "--VerboseLogging=Critical"
-		      If level <> "" Then
-		        'MinimumLogLevel.StringValue = level
-		      Else
-		        'MinimumLogLevel = LogLevel.Debug
-		      End If
-		      
 		    End If
 		    
 		  End If
@@ -138,54 +124,54 @@ Inherits ServerSocket
 		  // Initlialise the Custom dictionary.
 		  Custom = New Dictionary
 		  
-		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 446973706C6179732073657276657220636F6E66696775726174696F6E20696E666F2E
 		Sub ServerInfoDisplay()
-		  // Displays server configuration info.
+		  /// Displays server configuration info.
 		  
-		  Var Info As String = EndOfLine + EndOfLine _
-		  + Name + " has started... " + EndOfLine _
-		  + "• Xojo Version: " + XojoVersionString + EndOfLine _
-		  + "• Aloe Express Version: " + Express.VERSION_STRING + EndOfLine _
-		  + "• Caching: " + If(CachingEnabled , "Enabled", "Disabled") + EndOfLine _
-		  + "• Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds" + EndOfLine _
-		  + "• Loopback: " + If(Loopback , "Enabled", "Disabled") + EndOfLine _
-		  + "• Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled") + EndOfLine _
-		  + "• Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds" + EndOfLine _
-		  + "• Keep-Alive Sweep Interval: " + ConnSweepIntervalSecs.ToString + EndOfLine _
-		  + "• Maximum Entity Size: " + MaxEntitySize.ToString + EndOfLine _
-		  + "• Maximum Sockets Connected: " + MaximumSocketsConnected.ToString + EndOfLine _
-		  + "• Minimum Sockets Available: " + MinimumSocketsAvailable.ToString + EndOfLine _
-		  + "• Multithreading: " + If(Multithreading, "Enabled", "Disabled") + EndOfLine _
-		  + "• Port: " + Port.ToString + EndOfLine _
-		  + "• Sessions: " + If(SessionsEnabled , "Enabled", "Disabled") + EndOfLine _
-		  + "• Sessions Sweep Interval: " + SessionsSweepIntervalSecs.ToString + " seconds" + EndOfLine _
-		  + "• SSL: " + If(Secure , "Enabled", "Disabled") + EndOfLine _
-		  + If(Secure , "• SSL Certificate Path: " + CertificateFile.NativePath + EndOfLine, "") _
-		  + If(Secure , "• SSL Connection Type: " + ConnectionType.ToString  + EndOfLine, "") _
-		  + "• WebSocket Timeout: " + WSTimeout.ToString + " seconds" + EndOfLine '_
-		  '+ "• Log Level: " + MinimumLogLevel.ToString + EndOfLine
-		  If AdditionalServerDisplayInfo <> Nil Then
-		    Var keys() As Variant = AdditionalServerDisplayInfo.Keys
-		    Var lastKeyIndex As Integer = keys.LastIndex
-		    For i As Integer = 0 To lastKeyIndex
-		      info = info + "• " + keys(i).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
-		    Next i
+		  Var info() As String
+		  
+		  info.Add(EndOfLine)
+		  
+		  info.Add(Name + " has started... ")
+		  info.Add("• Xojo Version: " + XojoVersionString)
+		  info.Add("• Express Version: " + Express.VERSION_STRING)
+		  info.Add("• Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
+		  info.Add("• Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
+		  info.Add("• Loopback: " + If(Loopback , "Enabled", "Disabled"))
+		  info.Add("• Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
+		  info.Add("• Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
+		  info.Add("• Keep-Alive Sweep Interval: " + ConnSweepIntervalSecs.ToString)
+		  info.Add("• Maximum Entity Size: " + MaxEntitySize.ToString)
+		  info.Add("• Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
+		  info.Add("• Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
+		  info.Add("• Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
+		  info.Add("• Port: " + Port.ToString)
+		  info.Add("• Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
+		  info.Add("• SSL: " + If(Secure , "Enabled", "Disabled"))
+		  info.Add("• WebSocket Timeout: " + WSTimeout.ToString + " seconds")
+		  
+		  If Secure Then
+		    info.Add("• SSL Certificate Path: " + CertificateFile.NativePath)
+		    info.Add("• SSL Connection Type: " + ConnectionType.ToString)
 		  End If
 		  
-		  info = info + EndOfLine + EndOfLine
+		  If AdditionalServerDisplayInfo <> Nil Then
+		    For Each entry As DictionaryEntry In AdditionalServerDisplayInfo
+		      info.Add("• " + entry.Key.StringValue + ": " + entry.Value.StringValue)
+		    Next entry
+		  End If
 		  
-		  System.Log( System.LogLevelNotice, Info + EndOfLine + EndOfLine )
+		  System.Log( System.LogLevelNotice, String.FromArray(info, EndOfLine) )
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 537461727473207468652073657276657220736F2074686174206974206C697374656E7320666F7220696E636F6D696E672072657175657374732E
 		Sub Start()
-		  // Starts the server so that it listens for incoming requests.
-		  
+		  /// Starts the server so that it listens for incoming requests.
 		  
 		  // If the server should use the loopback network interface.
 		  If Loopback Then
@@ -193,15 +179,14 @@ Inherits ServerSocket
 		  End If
 		  
 		  // Create a ConnectionSweeper timer object for this server.
-		  Var sweeper As New ConnectionSweeper(Self)
-		  #Pragma Unused sweeper
+		  mSweeper New ConnectionSweeper(Self)
 		  
-		  // If caching is enabled...
+		  // Caching enabled?
 		  If CachingEnabled Then
 		    CacheEngine = New Express.CacheEngine(CacheSweepIntervalSecs)
 		  End If
 		  
-		  // If session management is enabled...
+		  // Session management enabled?
 		  If SessionsEnabled Then
 		    SessionEngine = New Express.SessionEngine(SessionsSweepIntervalSecs)
 		  End If
@@ -209,25 +194,20 @@ Inherits ServerSocket
 		  // Start listening for incoming requests.
 		  Listen
 		  
-		  // If the server is running as part of a desktop app...
-		  #If TargetDesktop Then
-		    // We're done.
-		    Return
-		  #Endif
+		  // If the server is running as part of a desktop app then we're done.
+		  If TargetDesktop Then Return
 		  
-		  // If the server isn't starting silently...
-		  If SilentStart = False Then
-		    // Display server info.
+		  // If the server isn't starting silently then display server info.
+		  If Not SilentStart Then
 		    ServerInfoDisplay
 		  End If
 		  
-		  // Rock on.
-		  // Speed up if we have more than 10 connections active to keep the server responsive!
+		  // Speed up if we have more than 10 connections active to keep the server responsive.
 		  Var connCount As Integer = 0
 		  While True
 		    connCount = ConnectedSocketCount
 		    If connCount > 10 Then
-		      // Speed up massively
+		      // Speed up.
 		      If Multithreading Then
 		        App.DoEvents(0) // Fast switch between threads after doing events
 		      Else
@@ -241,24 +221,19 @@ Inherits ServerSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 42726F616463617374732061206D65737361676520746F20616C6C206F662074686520576562536F636B65747320746861742061726520636F6E6E656374656420746F20746865207365727665722E
 		Sub WSMessageBroadcast(message As String)
-		  // Broadcasts a message to all of the WebSockets that are connected to the server.
+		  /// Broadcasts a message to all of the WebSockets that are connected to the server.
 		  
-		  
-		  // Loop over each WebSocket connection...
+		  // Loop over each WebSocket connection.
 		  For Each socket As Express.Request In WebSockets
 		    
-		    // If the WebSocket is still connected...
+		    // If the WebSocket is still connected then send it the message.
 		    If socket.IsConnected Then
-		      
-		      // Send it the message.
 		      socket.WSMessageSend(message)
-		      
 		    End If
 		    
 		  Next socket
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -320,12 +295,16 @@ Inherits ServerSocket
 		MaxEntitySize As Integer = 10485760
 	#tag EndProperty
 
+	#tag Property, Flags = &h21, Description = 5468697320736572766572277320636F6E6E656374696F6E20737765657065722E
+		Private mSweeper As Express.ConnectionSweeper
+	#tag EndProperty
+
 	#tag Property, Flags = &h0
 		Multithreading As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Name As String = "Aloe Express Server"
+		Name As String = "Express Server"
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
