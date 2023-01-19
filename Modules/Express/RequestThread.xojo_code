@@ -3,15 +3,11 @@ Protected Class RequestThread
 Inherits Thread
 	#tag Event
 		Sub Run()
-		  // Processes a request.
+		  /// Processes a request.
 		  
-		  Var request As Express.Request
-		  
-		  If ( RequestWR <> Nil ) And ( RequestWR.Value <> Nil ) And ( RequestWR.Value IsA Express.Request ) Then
+		  If Request <> Nil Then
 		    
-		    request = Express.Request( RequestWR.Value )
-		    
-		    request.Process
+		    Request.Process
 		    
 		  End If
 		  
@@ -19,9 +15,33 @@ Inherits Thread
 	#tag EndEvent
 
 
-	#tag Property, Flags = &h0
-		RequestWR As WeakRef
+	#tag Property, Flags = &h21, Description = 41207765616B207265666572656E636520746F207468697320746872656164277320726571756573742E204261636B73207468652060526571756573746020636F6D70757465642070726F70657274792E
+		Private mRequest As WeakRef
 	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0, Description = 41207765616B207265666572656E636520746F207468697320746872656164277320726571756573742E
+		#tag Getter
+			Get
+			  If mRequest = Nil Or mRequest.Value = Nil Then
+			    Return Nil
+			  Else
+			    Return Express.Request(mRequest.Value)
+			  End If
+			  
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  If value = Nil Then
+			    mRequest = Nil
+			  Else
+			    mRequest = New WeakRef(value)
+			  End If
+			  
+			End Set
+		#tag EndSetter
+		Request As Express.Request
+	#tag EndComputedProperty
 
 
 	#tag ViewBehavior

@@ -95,7 +95,7 @@ Inherits SSLSocket
 		    
 		    // Hand the request off to a RequestThread instance for processing.
 		    RequestThread = New Express.RequestThread
-		    RequestThread.RequestWR = New WeakRef( Self )
+		    RequestThread.Request = Self
 		    RequestThread.Start
 		    Return
 		    
@@ -942,10 +942,10 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 53657427732074686520726573706F6E73652073746174757320746F2034303420224E6F7420466F756E642220616E6420636F6E74656E7420746F2074686520416C6F654578707265737320636F6E7374616E74204E6F74466F756E64436F6E74656E742048544D4C2E
+	#tag Method, Flags = &h0, Description = 53657427732074686520726573706F6E73652073746174757320746F2034303420224E6F7420466F756E642220616E642074686520636F6E74656E7420746F207468652048544D4C2077697468696E2074686520604E6F74466F756E64436F6E74656E746020636F6E7374616E742E
 		Sub ResourceNotFound()
-		  /// Set's the response status to 404 "Not Found" and content to the AloeExpress
-		  /// constant NotFoundContent HTML.
+		  /// Set's the response status to 404 "Not Found" and the content to the 
+		  /// HTML within the `NotFoundContent` constant.
 		  
 		  // Set the response content.
 		  Response.Content = NotFoundContent
@@ -1454,7 +1454,7 @@ Inherits SSLSocket
 	#tag EndProperty
 
 
-	#tag Constant, Name = NotFoundContent, Type = String, Dynamic = False, Default = \"<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html>\n<head>\n<title>404 Not Found</title>\n</head>\n<body>\n<h1>Not Found</h1>\n<p>The requested URL [[Path]] was not found on this server.</p>\n<hr>\n<address>[[ServerType]] at [[Host]]</address>\n</body>\n</html>", Scope = Public
+	#tag Constant, Name = NotFoundContent, Type = String, Dynamic = False, Default = \"<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n<html>\n<head>\n<title>404 Not Found</title>\n</head>\n<body>\n<h1>Not Found</h1>\n<p>The requested URL [[Path]] was not found on this server.</p>\n<hr>\n<address>[[ServerType]] at [[Host]]</address>\n</body>\n</html>", Scope = Public, Description = 5468652048544D4C20636F6E74656E74206F66207468652034303420706167652E
 	#tag EndConstant
 
 	#tag Constant, Name = XojoScriptAvailable, Type = Boolean, Dynamic = False, Default = \"True", Scope = Private, Description = 49662054727565207468656E2074686520586F6A6F536372697074206672616D65776F726B20697320696E636C7564656420636F6E646974696F6E616C6C7920617420636F6D70696C6174696F6E20696E20526571756573742E4D6170546F46696C652E
