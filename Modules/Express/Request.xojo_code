@@ -950,7 +950,7 @@ Inherits SSLSocket
 		  
 		  // Set the response content.
 		  Response.Content = NotFoundContent
-		  Response.Content = Response.Content.ReplaceAll("[[ServerType]]", "Xojo/" + XojoVersionString + "+ AloeExpress/" + Express.VERSION_STRING)
+		  Response.Content = Response.Content.ReplaceAll("[[ServerType]]", "Xojo/" + XojoVersionString + "+ Express/" + Express.VERSION_STRING)
 		  Response.Content = Response.Content.ReplaceAll("[[Host]]", Headers.Lookup("Host", ""))
 		  Response.Content = Response.Content.ReplaceAll("[[Path]]", Path)
 		  

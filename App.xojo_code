@@ -68,13 +68,13 @@ Inherits ConsoleApplication
 		  'Request.Response.Content = "Hello, world!"
 		  
 		  // Express.CacheEngine.
-		  DemoCaching.RequestProcess(Request)
+		  'DemoCaching.RequestProcess(Request)
 		  
 		  // Express.Logger.
 		  'DemoLogging.RequestProcess(Request)
 		  
 		  // Multipart forms demo.
-		  'DemoMultipartForms.RequestProcess(Request)
+		  DemoMultipartForms.RequestProcess(Request)
 		  
 		  // Express.SessionEngine.
 		  'DemoSessions.RequestProcess(Request)
