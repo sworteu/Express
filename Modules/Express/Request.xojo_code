@@ -90,7 +90,7 @@ Inherits SSLSocket
 		    Return
 		  End If
 		  
-		  // If the app is using threads...
+		  // Is the server using threads?
 		  If Multithreading Then
 		    
 		    // Hand the request off to a RequestThread instance for processing.
@@ -101,7 +101,7 @@ Inherits SSLSocket
 		    
 		  End If
 		  
-		  // Process the request immediately, on the primary thread...
+		  // Process the request immediately, on the primary thread.
 		  Process
 		  
 		End Sub
@@ -303,88 +303,89 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 44756D70732074686973207265717565737420617320616E2048544D4C20737472696E672E
 		Function Dump() As String
-		  #Pragma Warning "TODO: Document"
+		  /// Dumps this request as an HTML string.
 		  
-		  Var html As String
+		  Var html() As String
 		  
-		  html = html + "<p>Method: " + Method + "</p>" + EndOfLine.Windows
-		  html = html + "<p>Path: " + Path + "</p>" + EndOfLine.Windows
-		  
-		  html = html + "<p>Path Components: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
-		  If PathComponents.LastIndex > -1 Then
+		  html.Add("<p>Method: " + Method + "</p>")
+		  html.Add("<p>Path: " + Path + "</p>")
+		  html.Add("<p>Path Components: ")
+		  html.Add("<ul>")
+		  If PathComponents.Count > 0 Then
 		    For i As Integer = 0 to PathComponents.LastIndex
-		      html = html + "<li>" + i.ToString + ". " + PathComponents(i) + "</li>"+ EndOfLine.Windows
+		      html.Add("<li>" + i.ToString + ". " + PathComponents(i) + "</li>")
 		    Next i
 		  Else
-		    html = html + "<li>None</li>"+ EndOfLine.Windows
+		    html.Add("<li>None</li>")
 		  End If
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html.Add("</ul>")
+		  html.Add("</p>")
 		  
-		  html = html + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
-		  html = html + "<p>Remote Address: " + RemoteAddress + "</p>" + EndOfLine.Windows
-		  html = html + "<p>Socket ID: " + SocketID.ToString + "</p>" + EndOfLine.Windows
+		  html.Add("<p>HTTP Version: " + HTTPVersion + "</p>")
+		  html.Add("<p>Remote Address: " + RemoteAddress + "</p>")
+		  html.Add("<p>Socket ID: " + SocketID.ToString + "</p>")
 		  
-		  html = html + "<p>Headers: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
+		  html.Add("<p>Headers: ")
+		  html.Add("<ul>")
+		  
 		  If Headers.KeyCount > 0 Then
 		    For Each key As Variant in Headers.Keys
-		      html = html + "<li>" + key + "=" + Headers.Value(key) + "</li>"+ EndOfLine.Windows
+		      html.Add("<li>" + key + "=" + Headers.Value(key) + "</li>")
 		    Next key
 		  Else
-		    html = html + "<li>None</li>"+ EndOfLine.Windows
+		    html.Add("<li>None</li>")
 		  End If
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html.Add("</ul>" )
+		  html.Add("</p>" )
 		  
-		  html = html + "<p>Cookies: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
+		  html.Add("<p>Cookies: " )
+		  html.Add("<ul>" )
 		  If Cookies.KeyCount > 0 Then
 		    For Each key As Variant in Cookies.Keys
-		      HTML = html + "<li>" + Key + "=" + Cookies.Value(key) + "</li>"+ EndOfLine.Windows
+		      html.Add("<li>" + Key + "=" + Cookies.Value(key) + "</li>")
 		    Next key
 		  Else
-		    html = html + "<li>None</li>"+ EndOfLine.Windows
+		    html.Add("<li>None</li>")
 		  End If
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html.Add("</ul>" )
+		  html.Add("</p>" )
 		  
-		  html = html + "<p>GET Params: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
+		  html.Add("<p>GET Params: " )
+		  html.Add("<ul>" )
 		  If GET.KeyCount > 0 Then
 		    For Each key As Variant in GET.Keys
-		      html = html + "<li>" + key + "=" + GET.Value(key) + "</li>"+ EndOfLine.Windows
+		      html.Add("<li>" + key + "=" + GET.Value(key) + "</li>")
 		    Next key
 		  Else
-		    html = html + "<li>None</li>"+ EndOfLine.Windows
+		    html.Add("<li>None</li>")
 		  End If
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html.Add("</ul>" )
+		  html.Add("</p>" )
 		  
-		  html = html + "<p>POST Params: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
+		  html.Add("<p>POST Params: " )
+		  html.Add("<ul>" )
 		  If POST.KeyCount > 0 Then
 		    For Each key As Variant in POST.Keys
-		      HTML = html + "<li>" + key + "=" + POST.Value(key) + "</li>"+ EndOfLine.Windows
+		      html.Add("<li>" + key + "=" + POST.Value(key) + "</li>")
 		    Next key
 		  Else
-		    html = html + "<li>None</li>"+ EndOfLine.Windows
+		    html.Add("<li>None</li>")
 		  End If
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html.Add("</ul>" )
+		  html.Add("</p>" )
 		  
-		  html = html + "<p>Body:<br /><br />" 
+		  html.Add("<p>Body:<br /><br />" )
 		  If Body <> "" Then
-		    html = html + Body
+		    html.Add(Body)
 		  Else
-		    html = html + "None"
+		    html.Add("None")
 		  End If
-		  html = html + Body + "</p>" + EndOfLine.Windows
+		  html.Add(Body + "</p>" )
 		  
-		  Return html
+		  Return String.FromArray(html, EndOfLine.Windows)
+		  
 		End Function
 	#tag EndMethod
 
@@ -638,14 +639,14 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, Description = 48616E646C652061206D756C74697061727420666F726D2E
 		Private Sub MultipartFormHandle()
-		  #Pragma Warning "TODO: Document"
+		  /// Handle a multipart form.
 		  
 		  // Split the content type at the boundary.
 		  Var contentTypeParts() As String = ContentType.Split("boundary=")
 		  
-		  // If the content does not have a boundary...
+		  // Does the content have a boundary?
 		  If contentTypeParts.LastIndex < 1 Then
 		    Return
 		  End If
@@ -656,14 +657,14 @@ Inherits SSLSocket
 		  // Split the content into parts based on the boundary.
 		  Var parts() As String = Body.Split("--" + boundary)
 		  
-		  // Loop over the parts, skipping the header...
+		  // Loop over the parts, skipping the header.
 		  Var lastPartsIndex As Integer = parts.LastIndex
 		  For i As Integer = 1 To lastPartsIndex
 		    
 		    // Split the part into its header and content.
 		    Var partComponents() As String = parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
 		    
-		    // If this part has no content...
+		    // If this part has no content then continue.
 		    If partComponents.LastIndex < 1 Then
 		      Continue
 		    End If
@@ -671,22 +672,22 @@ Inherits SSLSocket
 		    // Get the part content.
 		    Var partContent As String = partComponents(1)
 		    
-		    // Additional info about the part will be stored in these vars.
+		    // Additional info about the part will be stored in these variables.
 		    Var fieldname As String
 		    Var filename As String
 		    Var fileContentType As String
 		    Var fieldIsAFile As Boolean = False
 		    
 		    // Split the part headers into an array.
-		    // Example Header...
-		    // Content-Disposition: form-data; name="file1"; filename="woot.png"
-		    // Content-Type: image/png
+		    // Example Header:
+		    //   Content-Disposition: form-data; name="file1"; filename="woot.png"
+		    //   Content-Type: image/png
 		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.Windows)
 		    
-		    // Loop over the part headers...
+		    // Loop over the part headers.
 		    For Each partHeader As String In partHeaders
 		      
-		      // If this part header is empty...
+		      // If this part header is empty.
 		      If partHeader = "" Then
 		        Continue
 		      End If
@@ -714,12 +715,12 @@ Inherits SSLSocket
 		            Continue
 		          End If
 		          
-		          // If this is a field name...
+		          // Field name?
 		          If nameValue(0) = "name" Then
 		            Fieldname = nameValue(1).ReplaceAll("""", "")
 		          End If
 		          
-		          // If this is a file name...
+		          // File name?
 		          If nameValue(0) = "filename" Then
 		            fieldIsAFile = True
 		            filename = nameValue(1).ReplaceAll("""", "")
@@ -731,12 +732,12 @@ Inherits SSLSocket
 		      
 		    Next partHeader
 		    
-		    // If we could not get a field name from the part...
+		    // If we couldn't get a field name from the part.
 		    If fieldname = "" Then
 		      Continue
 		    End If
 		    
-		    // If this is a file...
+		    // If this is a file.
 		    If fieldIsAFile Then
 		      Var fileDictionary As New Dictionary
 		      fileDictionary.Value("ContentType") = fileContentType
@@ -980,18 +981,16 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E2074686520726573706F6E73652E
 		Sub ResponseReturn()
-		  #Pragma Warning "TODO: Document"
+		  /// Return the response.
 		  
-		  // If the socket is still connected...
+		  // If the socket is still connected, try to write the response.
 		  If IsConnected Then
 		    
-		    // Try to write the response.
 		    Try
 		      
-		      // Return the response.
-		      Write Response.Get
+		      Write(Response.Get)
 		      
 		    Catch e As RunTimeException
 		      
@@ -1004,9 +1003,6 @@ Inherits SSLSocket
 		    End Try
 		    
 		  End If
-		  
-		  
-		  
 		  
 		  
 		End Sub
@@ -1083,9 +1079,9 @@ Inherits SSLSocket
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436C6F736573207468697320776562736F636B657420636F6E6E656374696F6E2E
 		Sub WSConnectionClose()
-		  #Pragma Warning "TODO: Document"
+		  /// Closes this websocket connection.
 		  
 		  If server.WebSockets.Count > 0 Then
 		    Var myIndex As Integer = Server.WebSockets.IndexOf(Self)

@@ -21,10 +21,10 @@ Inherits Timer
 		  /// Default constructor.
 		  
 		  // Store the server.
-		  Self.Server = server // Stored as a weakref internally
+		  Self.Server = server
 		  
 		  // Schedule the Sweep process.
-		  Period = server.ConnSweepIntervalSecs * 1000
+		  Period = server.ConnectionSweepIntervalSecs * 1000
 		  RunMode = Timer.RunModes.Multiple
 		  
 		End Sub

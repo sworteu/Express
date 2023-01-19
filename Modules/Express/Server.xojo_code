@@ -143,7 +143,7 @@ Inherits ServerSocket
 		  info.Add("• Loopback: " + If(Loopback , "Enabled", "Disabled"))
 		  info.Add("• Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
 		  info.Add("• Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
-		  info.Add("• Keep-Alive Sweep Interval: " + ConnSweepIntervalSecs.ToString)
+		  info.Add("• Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
 		  info.Add("• Maximum Entity Size: " + MaxEntitySize.ToString)
 		  info.Add("• Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
 		  info.Add("• Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
@@ -179,7 +179,7 @@ Inherits ServerSocket
 		  End If
 		  
 		  // Create a ConnectionSweeper timer object for this server.
-		  mSweeper New ConnectionSweeper(Self)
+		  mSweeper = New ConnectionSweeper(Self)
 		  
 		  // Caching enabled?
 		  If CachingEnabled Then
@@ -239,59 +239,59 @@ Inherits ServerSocket
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 4F7074696F6E616C206164646974696F6E616C20696E666F726D6174696F6E20746861742063616E20626520646973706C617965642062792074686520736572766572207768656E2063616C6C696E67207468652060536572766572496E666F446973706C617960206D6574686F642E
 		AdditionalServerDisplayInfo As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520736572766572277320636163686520656E67696E652E
 		CacheEngine As Express.CacheEngine
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206672657175656E63792028696E207365636F6E6473292077697468207768696368206578706972656420636163686520656E7472696573206172652072656D6F7665642E
 		CacheSweepIntervalSecs As Integer = 300
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E20746865207365727665722077696C6C207573652063616368696E672E
 		CachingEnabled As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652073657276657227732053534C2063657274696669636174652066696C652E
 		CertificateFile As FolderItem
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652073657276657227732063657274696669636174652070617373776F72642E
 		CertificatePassword As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54686520696E74657276616C2028696E207365636F6E647329207769746820776869636820636F6E6E656374696F6E207377656570696E67206F63637572732E
+		ConnectionSweepIntervalSecs As Integer = 15
+	#tag EndProperty
+
+	#tag Property, Flags = &h0, Description = 5468652053534C20636F6E6E656374696F6E20747970652E
 		ConnectionType As SSLSocket.SSLConnectionTypes
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		ConnSweepIntervalSecs As Integer = 15
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865204944206F662074686520736F636B6574206A7573742061646465642E
 		CurrentSocketID As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546869732064696374696F6E617279207065727369737473206265747765656E2072657175657374732C20616E642069732073636F70656420696E207375636820612077617920746861742069742061637473206C696B6520616E204170702D6C6576656C2070726F70657274792E
 		Custom As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5573656420746F20656E61626C65206F722064697361626C652070657273697374656E7420636F6E6E656374696F6E732E205768656E2054727565207468656E20604B656570416C69766554696D656F757460206973207573656420746F20737065636966792074686520616D6F756E74206F662074696D652028696E207365636F6E6473292074686174206120636F6E6E656374696F6E2063616E2062652069646C65206265666F726520697420697320636F6E7369646572656420746F20686176652074696D6564206F75742E
 		KeepAlive As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5768656E20604B656570416C697665602069732054727565207468656E20746869732069732074686520616D6F756E74206F662074696D652028696E207365636F6E6473292074686174206120636F6E6E656374696F6E2063616E2062652069646C65206265666F726520697420697320636F6E7369646572656420746F20686176652074696D6564206F75742E
 		KeepAliveTimeout As Integer = 30
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E20746865207365727665722077696C6C2075736520746865206C6F6F706261636B206E6574776F726B20696E746572666163652E
 		Loopback As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5573656420746F206C696D6974207468652073697A65206F662061207265717565737420626F64792028696E2062697473292E2048656C7066756C207768656E20796F752077616E7420746F206C696D6974207468652073697A65200A6F662066696C652075706C6F616473
 		MaxEntitySize As Integer = 10485760
 	#tag EndProperty
 
@@ -299,39 +299,39 @@ Inherits ServerSocket
 		Private mSweeper As Express.ConnectionSweeper
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E20746865207365727665722077696C6C20757365207468726561647320746F2070726F636573732072657175657374732E
 		Multithreading As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206E616D65206F662074686973207365727665722E
 		Name As String = "Express Server"
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 54727565206966207468697320736572766572206973207573696E672053534C2E
 		Secure As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652073657276657227732073657373696F6E20656E67696E652E
 		SessionEngine As Express.SessionEngine
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E207468652073657373696F6E206D616E6167656D656E7420697320656E61626C65642E
 		SessionsEnabled As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206672657175656E63792028696E207365636F6E647329207769746820776869636820657870697265642073657373696F6E73206172652072656D6F7665642E
 		SessionsSweepIntervalSecs As Integer = 300
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 49662054727565207468656E20746865207365727665722077696C6C206E6F7420646973706C617920696E666F726D6174696F6E2061626F757420697473656C66207768656E206974207374617274732E
 		SilentStart As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 5468652063757272656E742061637469766520776562736F636B657420636F6E6E656374696F6E732E
 		WebSockets() As Express.Request
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, Description = 546865206E756D626572206F66207365636F6E6473206F6620696E616374697669747920746861742063616E2070617373206265666F7265206120576562536F636B65742077696C6C0A626520636F6E7369646572656420746F20686176652074696D6564206F75742E2044656661756C742069732031383030207365636F6E647320283330206D696E75746573292E0A53657420746F207A65726F20746F2064697361626C6520576562536F636B65742074696D656F7574732E
 		WSTimeout As Integer = 1800
 	#tag EndProperty
 
@@ -464,7 +464,7 @@ Inherits ServerSocket
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="ConnSweepIntervalSecs"
+			Name="ConnectionSweepIntervalSecs"
 			Visible=false
 			Group="Behavior"
 			InitialValue="60"
