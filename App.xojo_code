@@ -70,9 +70,6 @@ Inherits ConsoleApplication
 		  // Express.CacheEngine.
 		  'DemoCaching.RequestProcess(Request)
 		  
-		  // Express.Logger.
-		  'DemoLogging.RequestProcess(Request)
-		  
 		  // Multipart forms demo.
 		  DemoMultipartForms.RequestProcess(Request)
 		  
