@@ -19,7 +19,7 @@ Inherits ConsoleApplication
 		  server.KeepAlive = True
 		  
 		  //Pass any additional information to be displayed with Server.ServerInfoDisplay
-		  //Dim info As New Dictionary
+		  //Var info As New Dictionary
 		  //info.Value( "My App Version" ) = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
 		  //Server.AdditionalServerDisplayInfo = info
 		  
@@ -47,7 +47,7 @@ Inherits ConsoleApplication
 		      
 		      System.Log System.LogLevelCritical, trace
 		      
-		    Next
+		    Next trace
 		    
 		    System.Log System.LogLevelCritical, "END STACK TRACE <"
 		    
@@ -60,7 +60,7 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h0
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
-		  //#Pragma Unused Response // For now unused
+		  #Pragma Unused Response // Keep marked as unused to prevent analyser warnings.
 		  
 		  // Processes an HTTP request.
 		  
@@ -69,7 +69,6 @@ Inherits ConsoleApplication
 		  'Response.Content = "ID: " + Request.SocketID.ToString + EndOfLine
 		  
 		  // Uncomment the demo module that you want to use.
-		  'Break
 		  
 		  // Hello, world demo.
 		  'DemoHelloWorld.RequestProcess(Request)

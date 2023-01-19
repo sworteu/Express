@@ -10,21 +10,20 @@ Inherits ServerSocket
 		    CurrentSocketID = CurrentSocketID + 1
 		    
 		    // Create a new instance of Request to act as the socket, and assign it an ID.
-		    Dim NewSocket As New Request(Self)
+		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
 		    // Return the socket.
-		    Return NewSocket
+		    Return newSocket
 		    
 		  Catch e As RunTimeException
 		    
-		    Dim TypeInfo As Introspection.TypeInfo = Introspection.GetType(e)
-		    #Pragma Unused TypeInfo
+		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		    #Pragma Unused typeInfo
 		    
 		    System.DebugLog "Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
 		    
 		  End Try
-		  
 		  
 		End Function
 	#tag EndEvent
@@ -52,7 +51,7 @@ Inherits ServerSocket
 		      count = count + 1
 		    End If
 		    
-		  Next
+		  Next i
 		  
 		  Return count
 		End Function
@@ -79,7 +78,7 @@ Inherits ServerSocket
 		  If Args <> Nil Then
 		    
 		    // Convert any command line arguments into a dictionary.
-		    Dim Arguments As Dictionary = ArgsToDictionary(Args)
+		    Var Arguments As Dictionary = ArgsToDictionary(Args)
 		    
 		    // Assign valid arguments to their corresponding properties...
 		    
@@ -123,7 +122,7 @@ Inherits ServerSocket
 		    
 		    //Check for VerboseLogging argument
 		    If Arguments.HasKey("--VerboseLogging") Then
-		      Dim level As String = Arguments.Value("--VerboseLogging")
+		      Var level As String = Arguments.Value("--VerboseLogging")
 		      //If a value has been passed, assign it otherwise we have a default value for the parameter of Debug
 		      //You can call "--VerboseLogging" and get LogLevel.Debug or pass a parameter such as critical to the argument "--VerboseLogging=Critical"
 		      If level <> "" Then
@@ -136,7 +135,7 @@ Inherits ServerSocket
 		    
 		  End If
 		  
-		  // Initlialize the Custom dictionary.
+		  // Initlialise the Custom dictionary.
 		  Custom = New Dictionary
 		  
 		  
@@ -147,7 +146,7 @@ Inherits ServerSocket
 		Sub ServerInfoDisplay()
 		  // Displays server configuration info.
 		  
-		  Dim Info As String = EndOfLine + EndOfLine _
+		  Var Info As String = EndOfLine + EndOfLine _
 		  + Name + " has started... " + EndOfLine _
 		  + "• Xojo Version: " + XojoVersionString + EndOfLine _
 		  + "• Aloe Express Version: " + Express.VERSION_STRING + EndOfLine _
@@ -170,11 +169,11 @@ Inherits ServerSocket
 		  + "• WebSocket Timeout: " + WSTimeout.ToString + " seconds" + EndOfLine '_
 		  '+ "• Log Level: " + MinimumLogLevel.ToString + EndOfLine
 		  If AdditionalServerDisplayInfo <> Nil Then
-		    Dim keys() As Variant = AdditionalServerDisplayInfo.Keys
+		    Var keys() As Variant = AdditionalServerDisplayInfo.Keys
 		    Var lastKeyIndex As Integer = keys.LastIndex
 		    For i As Integer = 0 To lastKeyIndex
-		      info = info + "• " + keys( i ).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
-		    Next
+		      info = info + "• " + keys(i).StringValue + ": " + AdditionalServerDisplayInfo.Value( keys( i ) ).StringValue + EndOfLine
+		    Next i
 		  End If
 		  
 		  info = info + EndOfLine + EndOfLine
@@ -194,8 +193,8 @@ Inherits ServerSocket
 		  End If
 		  
 		  // Create a ConnectionSweeper timer object for this server.
-		  Dim Sweeper As New ConnectionSweeper(Self)
-		  #Pragma Unused Sweeper
+		  Var sweeper As New ConnectionSweeper(Self)
+		  #Pragma Unused sweeper
 		  
 		  // If caching is enabled...
 		  If CachingEnabled Then
@@ -230,35 +229,35 @@ Inherits ServerSocket
 		    If connCount > 10 Then
 		      // Speed up massively
 		      If Multithreading Then
-		        app.DoEvents(0) // Fast switch between threads after doing events
+		        App.DoEvents(0) // Fast switch between threads after doing events
 		      Else
-		        app.DoEvents(-1) // Fast do events (default)
+		        App.DoEvents(-1) // Fast do events (default)
 		      End If
 		    Else
 		      // Slow down a little
-		      app.DoEvents(2)
+		      App.DoEvents(2)
 		    End If
 		  Wend
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WSMessageBroadcast(Message As String)
+		Sub WSMessageBroadcast(message As String)
 		  // Broadcasts a message to all of the WebSockets that are connected to the server.
 		  
 		  
 		  // Loop over each WebSocket connection...
-		  For Each Socket As Express.Request In WebSockets
+		  For Each socket As Express.Request In WebSockets
 		    
 		    // If the WebSocket is still connected...
-		    If Socket.IsConnected Then
+		    If socket.IsConnected Then
 		      
 		      // Send it the message.
-		      Socket.WSMessageSend(Message)
+		      socket.WSMessageSend(message)
 		      
 		    End If
 		    
-		  Next
+		  Next socket
 		  
 		  
 		End Sub
@@ -411,7 +410,7 @@ Inherits ServerSocket
 			Name="CurrentSocketID"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0"
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

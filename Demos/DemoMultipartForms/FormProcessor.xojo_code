@@ -14,17 +14,17 @@ Protected Class FormProcessor
 		  FieldsInfoJSON = New JSONItem
 		  
 		  // Process files that were uploaded...
-		  For Each FieldName As String In Request.POST.Keys
+		  For Each fieldName As String In Request.POST.Keys
 		    
 		    // Create a JSONItem for this field.
-		    Dim FieldInfo As New JSONItem
-		    FieldInfo.Value("Name") = FieldName
-		    FieldInfo.Value("Value") = Request.POST.Value(FieldName)
+		    Var fieldInfo As New JSONItem
+		    fieldInfo.Value("Name") = fieldName
+		    fieldInfo.Value("Value") = Request.POST.Value(fieldName)
 		    
 		    // Append this field's info tp the FieldsInfoJSON object.
-		    FieldsInfoJSON.Add(FieldInfo)
+		    FieldsInfoJSON.Add(fieldInfo)
 		    
-		  Next
+		  Next fieldName
 		  
 		  
 		End Sub
@@ -42,46 +42,46 @@ Protected Class FormProcessor
 		  If Request.Files.Keys.LastIndex > -1 Then
 		    
 		    // Process files that were uploaded...
-		    For Each FileFieldName As String In Request.Files.Keys
+		    For Each fileFieldName As String In Request.Files.Keys
 		      
 		      // Get the file field's dictionary.
-		      Dim File As Dictionary = Request.Files.Value(FileFieldName)
+		      Var file As Dictionary = Request.Files.Value(fileFieldName)
 		      
 		      // Create a JSONItem for this file.
-		      Dim FileInfo As New JSONItem
-		      FileInfo.Value("FieldName") = FileFieldName
+		      Var fileInfo As New JSONItem
+		      fileInfo.Value("FieldName") = fileFieldName
 		      
 		      // If a file was uploaded...
-		      If File.Lookup("Filename", "") <> "" Then
+		      If file.Lookup("Filename", "") <> "" Then
 		        
 		        // Grab the filename, type, and length.
-		        FileInfo.Value("Filename") = File.Lookup("Filename", "")
-		        FileInfo.Value("ContentType") = File.Lookup("ContentType", "")
-		        FileInfo.Value("ContentLength") = File.Lookup("ContentLength", "")
+		        fileInfo.Value("Filename") = file.Lookup("Filename", "")
+		        fileInfo.Value("ContentType") = file.Lookup("ContentType", "")
+		        fileInfo.Value("ContentLength") = file.Lookup("ContentLength", "")
 		        
 		        // If we're storing files in a folder...
 		        If UploadFolder <> Nil Then
 		          
 		          // Get the filename to use when saving the file.
-		          Dim FileName As String = File.Value("Filename")
+		          Var fileName As String = file.Value("Filename")
 		          If FilenamePrefix <> "" Then
-		            FileName = FilenamePrefix + "-" + FileName
+		            fileName = FilenamePrefix + "-" + fileName
 		          End If
 		          
 		          // Create a folderitem for the file.
-		          Dim F As FolderItem = UploadFolder.Child(FileName)
+		          Var f As FolderItem = UploadFolder.Child(fileName)
 		          
 		          // Write the file content.
-		          Dim TOS As TextOutputStream
-		          TOS = TextOutputStream.Create(F)
-		          TOS.WriteLine(File.Value("content"))
+		          Var TOS As TextOutputStream
+		          TOS = TextOutputStream.Create(f)
+		          TOS.WriteLine(file.Value("content"))
 		          TOS.Close
 		          
 		          // Store the filename that was used to save the file.
-		          FileInfo.Value("SavedFilename") = FileName
+		          fileInfo.Value("SavedFilename") = fileName
 		          
 		          // Store the path to the file.
-		          FileInfo.Value("NativePath") = F.NativePath
+		          fileInfo.Value("NativePath") = f.NativePath
 		          
 		        End If
 		        
@@ -90,7 +90,7 @@ Protected Class FormProcessor
 		      // Append this file's info tp the FilesInfoJSON object.
 		      FilesInfoJSON.Add(FileInfo)
 		      
-		    Next
+		    Next fileFieldName
 		    
 		  End If
 		End Sub

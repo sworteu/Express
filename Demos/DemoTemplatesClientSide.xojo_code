@@ -2,69 +2,69 @@
 Protected Module DemoTemplatesClientSide
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub RequestProcess(Request As Express.Request)
+		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
 		  #If DebugBuild Then
-		    Request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-client-side")
+		    request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-client-side")
 		  #Else
-		    Request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-templates-client-side")
+		    request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-templates-client-side")
 		  #EndIf
 		  
 		  // Process the request based on the path of the requested resource...
-		  If Request.Path = "/data" Then
+		  If request.Path = "/data" Then
 		    
 		    // Simulate a slow query.
 		    'Thread.SleepCurrent(10)
 		    
 		    // Get the orders.
-		    Dim Orders As String 
+		    Var orders As String 
 		    #If DebugBuild Then
-		      orders = Express.FileRead(Request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
+		      orders = Express.FileRead(request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
 		    #Else
-		      Orders = Express.FileRead(Request.StaticPath.Parent.Child("data").Child("orders.json"))
+		      Orders = Express.FileRead(request.StaticPath.Parent.Child("data").Child("orders.json"))
 		    #EndIf
 		    
 		    Try
 		      
 		      // Create the data object.
-		      Dim Data As Dictionary = ParseJSON(Orders)
-		      Data.Value("system") = SystemDataGet(Request)
+		      Var data As Dictionary = ParseJSON(orders)
+		      data.Value("system") = SystemDataGet(request)
 		      
 		      // Return the data as a JSON string.
-		      Request.Response.Content = GenerateJSON(Data, Request.GET.HasKey("pretty"))
+		      request.Response.Content = GenerateJSON(data, request.GET.HasKey("pretty"))
 		      
 		      // Specify the response content type.
-		      Request.Response.Headers.Value("Content-Type") = "application/json"
+		      request.Response.Headers.Value("Content-Type") = "application/json"
 		      
 		    Catch e As InvalidArgumentException
 		      // Could not create the json from dictionary
-		      Request.Response.Status = "501"
-		      Request.Response.Content = "Internal Server Error"
-		      Request.Response.Headers.Value("Content-Type") = "text/html"
-		    Catch e As InvalidJSONException
+		      request.Response.Status = "501"
+		      request.Response.Content = "Internal Server Error"
+		      request.Response.Headers.Value("Content-Type") = "text/html"
+		    Catch e As JSONException
 		      // Could not parse the json from the string
-		      Request.Response.Status = "501"
-		      Request.Response.Content = "Internal Server Error"
-		      Request.Response.Headers.Value("Content-Type") = "text/html"
+		      request.Response.Status = "501"
+		      request.Response.Content = "Internal Server Error"
+		      request.Response.Headers.Value("Content-Type") = "text/html"
 		    End Try
 		    
 		  Else
 		    
 		    // Map the request to a file.
-		    Request.MapToFile
+		    request.MapToFile
 		    
 		    // If the request couldn't be mapped to a static file...
-		    If Request.Response.Status = "404" Then
+		    If request.Response.Status = "404" Then
 		      
 		      // Return the standard 404 error response.
 		      // You could also use a custom error handler that sets Request.Response.Content.
-		      Request.ResourceNotFound
+		      request.ResourceNotFound
 		      
 		    Else
 		      
 		      // Set the Cache-Control header value so that static content is cached for 1 hour.
-		      Request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
+		      request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
 		      
 		    End If
 		    
@@ -73,60 +73,57 @@ Protected Module DemoTemplatesClientSide
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SystemDataGet(Request As Express.Request) As Dictionary
+		Function SystemDataGet(request As Express.Request) As Dictionary
 		  // Add the Date object.
-		  Dim DateData As New Dictionary
+		  Var dateData As New Dictionary
 		  
-		  Dim Today As DateTime = DateTime.Now
-		  DateData.Value("abbreviateddate") = Today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
-		  DateData.Value("day") = Today.Day
-		  DateData.Value("dayofweek") = Today.DayOfWeek
-		  DateData.Value("dayofyear") = Today.DayOfYear
-		  Dim GMTOffset As Double = Today.Timezone.SecondsFromGMT // The actual offset
-		  DateData.Value("gmtoffset") = GMTOffset
-		  DateData.Value("hour") = Today.Hour
-		  DateData.Value("longdate") = Today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
-		  DateData.Value("longtime") = Today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium ) // This is the closest equivalent to the old code. We might have to trip the AM and PM off the end
-		  DateData.Value("minute") = Today.Minute
-		  DateData.Value("month") = Today.Month
-		  DateData.Value("second") = Today.Second
-		  DateData.Value("shortdate") = Today.ToString( Nil, DateTime.FormatStyles.Short, DateTime.FormatStyles.None )
-		  DateData.Value("shorttime") = Today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
-		  DateData.Value("sql") = Today.SQLDate
-		  DateData.Value("sqldate") = Today.SQLDate
-		  DateData.Value("sqldatetime") = Today.SQLDateTime
-		  DateData.Value("SecondsFrom1970") = Today.SecondsFrom1970
-		  DateData.Value("weekofyear") = Today.WeekOfYear
-		  DateData.Value("year") = Today.Year
+		  Var today As DateTime = DateTime.Now
+		  dateData.Value("abbreviateddate") = today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
+		  dateData.Value("day") = today.Day
+		  dateData.Value("dayofweek") = today.DayOfWeek
+		  dateData.Value("dayofyear") = today.DayOfYear
+		  Var GMTOffset As Double = today.Timezone.SecondsFromGMT // The actual offset
+		  dateData.Value("gmtoffset") = GMTOffset
+		  dateData.Value("hour") = today.Hour
+		  dateData.Value("longdate") = today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
+		  dateData.Value("longtime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium ) // This is the closest equivalent to the old code. We might have to trip the AM and PM off the end
+		  dateData.Value("minute") = today.Minute
+		  dateData.Value("month") = today.Month
+		  dateData.Value("second") = today.Second
+		  dateData.Value("shortdate") = today.ToString( Nil, DateTime.FormatStyles.Short, DateTime.FormatStyles.None )
+		  dateData.Value("shorttime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
+		  dateData.Value("sql") = today.SQLDate
+		  dateData.Value("sqldate") = today.SQLDate
+		  dateData.Value("sqldatetime") = today.SQLDateTime
+		  dateData.Value("SecondsFrom1970") = today.SecondsFrom1970
+		  dateData.Value("weekofyear") = today.WeekOfYear
+		  dateData.Value("year") = today.Year
 		  
 		  // Add the Meta object.
-		  Dim MetaData As New Dictionary
-		  MetaData.Value("xojo-version") = XojoVersionString
-		  MetaData.Value("express-version") = Express.VERSION_STRING
+		  Var metaData As New Dictionary
+		  metaData.Value("xojo-version") = XojoVersionString
+		  metaData.Value("express-version") = Express.VERSION_STRING
 		  
 		  // Add the Request object.
-		  Dim RequestData As New Dictionary
-		  RequestData.Value("cookies") = Request.Cookies
-		  RequestData.Value("data") = Request.Data
-		  RequestData.Value("get") = Request.GET
-		  RequestData.Value("headers") = Request.Headers
-		  RequestData.Value("method") = Request.Method
-		  RequestData.Value("path") = Request.Path
-		  RequestData.Value("post") = Request.POST
-		  RequestData.Value("remoteaddress") = Request.RemoteAddress
-		  RequestData.Value("socketid") = Request.SocketID.ToString
-		  RequestData.Value("urlparams") = Request.URLParams
+		  Var requestData As New Dictionary
+		  requestData.Value("cookies") = request.Cookies
+		  requestData.Value("data") = request.Data
+		  requestData.Value("get") = request.GET
+		  requestData.Value("headers") = request.Headers
+		  requestData.Value("method") = request.Method
+		  requestData.Value("path") = request.Path
+		  requestData.Value("post") = request.POST
+		  requestData.Value("remoteaddress") = request.RemoteAddress
+		  requestData.Value("socketid") = request.SocketID.ToString
+		  requestData.Value("urlparams") = request.URLParams
 		  
 		  // Create the system object.
-		  Dim SystemData As New Dictionary
-		  SystemData.Value("date") = DateData
-		  SystemData.Value("meta") = MetaData
-		  SystemData.Value("request") = RequestData
+		  Var systemData As New Dictionary
+		  systemData.Value("date") = dateData
+		  systemData.Value("meta") = metaData
+		  systemData.Value("request") = requestData
 		  
-		  Return SystemData
-		  
-		  
-		  
+		  Return systemData
 		  
 		End Function
 	#tag EndMethod

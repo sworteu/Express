@@ -3,6 +3,8 @@ Protected Class ConnectionSweeper
 Inherits Timer
 	#tag Event
 		Sub Action()
+		  /// Closes defunct connections.
+		  
 		  // Closes any HTTP connections that have timed out.
 		  HTTPConnSweep
 		  
@@ -14,23 +16,25 @@ Inherits Timer
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub Constructor(Server As Express.Server)
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
+		Sub Constructor(server As Express.Server)
+		  /// Default constructor.
+		  
 		  // Store the server.
-		  Self.Server = Server // Stored as a weakref internally
+		  Self.Server = server // Stored as a weakref internally
 		  
 		  // Schedule the Sweep process.
-		  Period = Server.ConnSweepIntervalSecs * 1000
+		  Period = server.ConnSweepIntervalSecs * 1000
 		  RunMode = Timer.RunModes.Multiple
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436C6F73657320636F6E6E656374696F6E73207468617420686176652074696D6564206F75742E
 		Sub HTTPConnSweep()
-		  // Closes connections that have timed out.
+		  /// Closes connections that have timed out.
 		  
-		  
-		  // Loop over the server's connections...
+		  // Loop over the server's connections.
 		  Var socks() As TCPSocket = server.ActiveConnections
 		  Var lastSocketIndex As Integer = socks.LastIndex
 		  Var sockCount As Integer = socks.Count
@@ -43,50 +47,49 @@ Inherits Timer
 		      socket = Express.Request(socks(i))
 		      
 		      // If the socket isn't connected...
-		      If Socket.IsConnected = False Then
+		      If socket.IsConnected = False Then
 		        Continue
 		      End If
 		      
 		      // If the socket has not been connected to...
-		      If Socket.LastConnect = Nil Then
+		      If socket.LastConnect = Nil Then
 		        Continue
 		      End If
 		      
 		      // If the socket is actively servicing a WebSocket...
-		      If Socket.WSStatus = "Active" Then
+		      If socket.WSStatus = "Active" Then
 		        Continue
 		      End If
 		      
 		      // Get the current date/time.
-		      Dim Now As DateTime = DateTime.Now
+		      Var now As DateTime = DateTime.Now
 		      
 		      // Get the socket's last connection timestamp.
-		      Dim Timeout As DateTime = Socket.LastConnect
+		      Var timeout As DateTime = socket.LastConnect
 		      
 		      // Determine when the connection will timeout due to inactivity.
-		      //years, months, days, hours, minutes, seconds
-		      Timeout = Timeout.AddInterval(  0, 0, 0, 0, 0,  Server.KeepAliveTimeout )
+		      timeout = timeout.AddInterval(  0, 0, 0, 0, 0,  Server.KeepAliveTimeout )
 		      
 		      // If the socket's keep-alive has timed out...
-		      If Now > Timeout Then
+		      If now > timeout Then
 		        
 		        // Reset the socket's last connection time.
-		        Socket.LastConnect = Nil
+		        socket.LastConnect = Nil
 		        
 		        // Close the socket.
-		        Socket.Close
+		        socket.Close
 		        
 		      End If
 		      
-		    Next
+		    Next i
 		    
 		  End If
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 436C6F73657320616E7920576562536F636B657420636F6E6E656374696F6E73207468617420686176652074696D6564206F75742E
 		Sub WSConnSweep()
-		  // Closes WebSocket connections that have timed out.
+		  /// Closes any WebSocket connections that have timed out.
 		  
 		  // If the server has been configured so that WebSocket connections do not timeout...
 		  If Server.WSTimeout = 0 Then
@@ -99,45 +102,49 @@ Inherits Timer
 		  For i = Server.WebSockets.LastIndex DownTo 0
 		    
 		    // Get the socket.
-		    Dim Socket As Express.Request = Server.WebSockets(i)
+		    Var socket As Express.Request = Server.WebSockets(i)
 		    
 		    // Get the current date/time.
-		    Dim Now As DateTime = DateTime.Now
+		    Var now As DateTime = DateTime.Now
 		    
 		    // Get the socket's last connection timestamp.
-		    Dim Timeout As DateTime = Socket.LastConnect
+		    Var timeout As DateTime = socket.LastConnect
 		    
 		    // Determine when the connection will timeout due to inactivity.
-		    //years, months, days, hours, minutes, seconds
-		    Timeout = Timeout.AddInterval( 0, 0, 0, 0, 0, Server.WSTimeout )
+		    timeout = timeout.AddInterval( 0, 0, 0, 0, 0, Server.WSTimeout )
 		    
 		    // If the socket has timed out...
-		    If Now > Timeout Then
+		    If now > timeout Then
 		      
 		      // Reset the socket's last connection time.
-		      Socket.LastConnect = Nil
+		      socket.LastConnect = Nil
 		      
 		      // Set the WebSocket status.
-		      Socket.WSStatus = "Inactive"
+		      socket.WSStatus = "Inactive"
 		      
 		      // Close the socket.
-		      Socket.Close
+		      socket.Close
 		      
 		      // Remove the socket from the array.
 		      Server.WebSockets.RemoveAt(i)
 		      
 		    End If
 		    
-		  Next
+		  Next i
+		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag ComputedProperty, Flags = &h0
+	#tag Property, Flags = &h21, Description = 41207765616B207265666572656E636520746F207468697320737765657065722773207365727665722E
+		Private mServerRef As WeakRef
+	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0, Description = 41207765616B207265666572656E636520746F207468697320737765657065722773207365727665722E
 		#tag Getter
 			Get
-			  If Self.ServerRef <> Nil And Self.ServerRef.Value <> Nil And Self.ServerRef.Value IsA Express.Server Then
-			    Return Express.Server(Self.ServerRef.Value)
+			  If mServerRef <> Nil And mServerRef.Value <> Nil And mServerRef.Value IsA Express.Server Then
+			    Return Express.Server(mServerRef.Value)
 			  End If
 			  
 			  Return Nil
@@ -146,19 +153,15 @@ Inherits Timer
 		#tag Setter
 			Set
 			  If value = Nil Then
-			    Self.ServerRef = Nil
+			    mServerRef = Nil
 			    Return
 			  End If
 			  
-			  Self.ServerRef = New WeakRef(value)
+			  mServerRef = New WeakRef(value)
 			End Set
 		#tag EndSetter
 		Server As Express.Server
 	#tag EndComputedProperty
-
-	#tag Property, Flags = &h21
-		Private ServerRef As WeakRef
-	#tag EndProperty
 
 
 	#tag ViewBehavior

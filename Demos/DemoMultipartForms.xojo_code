@@ -2,52 +2,52 @@
 Protected Module DemoMultipartForms
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub RequestProcess(Request As Express.Request)
+		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  Request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-multipart-forms")
+		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-multipart-forms")
 		  
 		  // If content has been posted...
-		  If Request.Method = "POST" Then
+		  If request.Method = "POST" Then
 		    
 		    // Hand the request off to the form processor.
-		    Dim FP As New FormProcessor(Request)
+		    Var fp As New FormProcessor(request)
 		    
 		    // This is the folder that files will be uploaded to.
-		    FP.UploadFolder = App.ExecutableFile.Parent.Parent.Child("uploads")
+		    fp.UploadFolder = App.ExecutableFile.Parent.Parent.Child("uploads")
 		    
 		    // This is an optional prefix that will be added to files that are saved.
 		    'FP.FilenamePrefix = Express.UUIDGenerate
 		    
 		    // Process the form.
-		    FP.Process
+		    fp.Process
 		    
 		    // Load the template...
-		    Dim FI as FolderItem = Request.StaticPath.Child("templates").Child("upload-response.html")
-		    Dim Template As String = Express.FileRead(FI)
+		    Var f as FolderItem = request.StaticPath.Child("templates").Child("upload-response.html")
+		    Var template As String = Express.FileRead(f)
 		    
 		    // Replace tokens.
-		    Template = Template.ReplaceAll("[[data]]", FP.FormData.ToString)
+		    template = template.ReplaceAll("[[data]]", fp.FormData.ToString)
 		    
 		    // Set the response content.
-		    Request.Response.Content = Template
+		    request.Response.Content = template
 		    
 		  Else
 		    
 		    // Map the request to a file.
-		    Request.MapToFile
+		    request.MapToFile
 		    
 		    // If the request couldn't be mapped to a static file...
-		    If Request.Response.Status = "404" Then
+		    If request.Response.Status = "404" Then
 		      
 		      // Return the standard 404 error response.
 		      // You could also use a custom error handler that sets Request.Response.Content.
-		      Request.ResourceNotFound
+		      request.ResourceNotFound
 		      
 		    Else
 		      
 		      // Set the Cache-Control header value so that static content is cached for 1 hour.
-		      Request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
+		      request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
 		      
 		    End If
 		    

@@ -85,16 +85,16 @@ Protected Class Sessions
 		  
 		  
 		  // Loop over the server's session keys...
-		  For Each Key As Variant in Request.Server.SessionEngine.Sessions.Keys
+		  For Each key As Variant in Request.Server.SessionEngine.Sessions.Keys
 		    
 		    // Get the entry's key and value.
-		    Dim SessionID As String = Key
-		    Dim Session As Dictionary = Request.Server.SessionEngine.Sessions.Value(Key)
+		    Var sessionID As String = key
+		    Var session As Dictionary = Request.Server.SessionEngine.Sessions.Value(key)
 		    
-		    Dim RemoteAddress As String = Session.Lookup("RemoteAddress", "")
-		    Dim Username As String = Session.Lookup("Username", "n/a")
-		    Dim Authenticated As String = If (Session.Lookup("Authenticated", False), "Yes", "No")
-		    Dim RequestCount As Integer = Session.Lookup("RequestCount", 0)
+		    Var remoteAddress As String = session.Lookup("RemoteAddress", "")
+		    Var username As String = session.Lookup("Username", "n/a")
+		    Var authenticated As String = If (session.Lookup("Authenticated", False), "Yes", "No")
+		    Var requestCount As Integer = session.Lookup("RequestCount", 0)
 		    
 		    TableHTML = TableHTML _
 		    + "<tr>" + EndOfLine _
@@ -105,7 +105,7 @@ Protected Class Sessions
 		    + "<td>" + RequestCount.ToString + "</td>" + EndOfLine _
 		    + "<tr>" + EndOfLine
 		    
-		  Next
+		  Next key
 		  
 		  
 		  // Close the table.
@@ -120,10 +120,10 @@ Protected Class Sessions
 		  // Loads the template file.
 		  
 		  // Create a folderitem that points to the template file.
-		  Dim FI as FolderItem = Request.StaticPath.Child("template.html")
+		  Var f as FolderItem = Request.StaticPath.Child("template.html")
 		  
 		  // Use Aloe's FileRead method to load the file.
-		  HTML = Express.FileRead(FI)
+		  HTML = Express.FileRead(f)
 		  
 		End Sub
 	#tag EndMethod

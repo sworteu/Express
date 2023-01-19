@@ -2,38 +2,39 @@
 Protected Module DemoTemplatesServerSide
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub RequestProcess(Request As Express.Request)
+		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  Request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-server-side")
+		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-server-side")
 		  
 		  // Process the request based on the path of the requested resource...
-		  If Request.Path = "/" or Request.Path = "/index.html" Then
+		  If request.Path = "/" or request.Path = "/index.html" Then
 		    
-		    Dim Page As New IndexPage
-		    Page.Request = Request
-		    Page.Generate
+		    Var page As New IndexPage
+		    page.Request = request
+		    page.Generate
 		    
 		  Else
 		    
 		    // Map the request to a file.
-		    Request.MapToFile
+		    request.MapToFile
 		    
 		    // If the request couldn't be mapped to a static file...
-		    If Request.Response.Status = "404" Then
+		    If request.Response.Status = "404" Then
 		      
 		      // Return the standard 404 error response.
 		      // You could also use a custom error handler that sets Request.Response.Content.
-		      Request.ResourceNotFound
+		      request.ResourceNotFound
 		      
 		    Else
 		      
 		      // Set the Cache-Control header value so that static content is cached for 1 hour.
-		      Request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
+		      request.Response.Headers.Value("Cache-Control") = "public, max-age=3600"
 		      
 		    End If
 		    
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 

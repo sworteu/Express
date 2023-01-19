@@ -70,10 +70,10 @@ Protected Class Home
 		  // Loads the template file.
 		  
 		  // Create a folderitem that points to the template file.
-		  Dim FI as FolderItem = Request.StaticPath.Child("template.html")
+		  Var f as FolderItem = Request.StaticPath.Child("template.html")
 		  
 		  // Use Aloe's FileRead method to load the file.
-		  HTML = Express.FileRead(FI)
+		  HTML = Express.FileRead(f)
 		  
 		End Sub
 	#tag EndMethod

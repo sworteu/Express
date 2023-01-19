@@ -12,42 +12,41 @@ Inherits Timer
 		  #EndIf
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var now As DateTime = DateTime.Now
 		  
 		  // This is an array of the session IDs that have expired.
-		  Dim ExpiredSessionIDs() As String
+		  Var expiredSessionIDs() As String
 		  
 		  // Prepare variables outside of the loops to improve speed.
-		  Var SessionKeys() As Variant = Sessions.Keys
-		  Var Key As Variant, Session As Dictionary, LastRequestTimestamp As DateTime, TimeElapsedSecs As Double
+		  Var sessionKeys() As Variant = Sessions.Keys
+		  Var key As Variant, session As Dictionary, lastRequestTimestamp As DateTime, timeElapsedSecs As Double
 		  
 		  // Loop over the dictionary entries...
-		  For Each Key In SessionKeys
+		  For Each key In sessionKeys
 		    
 		    // Get the entry's value.
-		    Session = Sessions.Value(Key)
+		    session = Sessions.Value(key)
 		    
 		    // Get the session's LastRequestTimestamp.
-		    LastRequestTimestamp = Session.Value("LastRequestTimestamp")
+		    lastRequestTimestamp = session.Value("LastRequestTimestamp")
 		    
 		    // Determine the time that has elapsed since the last request.
-		    TimeElapsedSecs = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
+		    timeElapsedSecs = Now.SecondsFrom1970 - lastRequestTimestamp.SecondsFrom1970
 		    
 		    // If the session has expired...
-		    If TimeElapsedSecs > SessionsTimeOutSecs Then
+		    If timeElapsedSecs > sessionsTimeOutSecs Then
 		      
 		      // Append the session's key to the array.
-		      ExpiredSessionIDs.Add(Key)
+		      expiredSessionIDs.Add(Key)
 		      
 		    End If
 		    
-		  Next
+		  Next key
 		  
 		  // Removed the expired sessions...
-		  For Each SessionID As String In ExpiredSessionIDs
-		    Sessions.Remove(SessionID)
-		  Next
-		  
+		  For Each sessionID As String In expiredSessionIDs
+		    sessions.Remove(sessionID)
+		  Next sessionID
 		  
 		End Sub
 	#tag EndEvent
@@ -80,46 +79,46 @@ Inherits Timer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SessionGet(Request As Express.Request, AssignNewID As Boolean = True) As Dictionary
+		Function SessionGet(request As Express.Request, assignNewID As Boolean = True) As Dictionary
 		  // Returns a session for the request.
 		  // If an existing session is available, then it is returned.
 		  // Otherwise a new session is created and returned.
 		  
 		  // This is the session that we'll return.
-		  Dim Session As Dictionary
+		  Var session As Dictionary
 		  
 		  // This will be used if a new SessionID is assigned.
-		  Dim NewSessionID As String
+		  Var newSessionID As String
 		  
 		  // Get the current date/time.
-		  Dim Now As DateTime = DateTime.Now
+		  Var now As DateTime = DateTime.Now
 		  
 		  // Get the original Session ID, if applicable.
-		  Dim OriginalSessionID As String = Request.Cookies.Lookup("SessionID", "")
+		  Var originalSessionID As String = request.Cookies.Lookup("SessionID", "")
 		  
 		  // If the user has a Session ID cookie...
-		  If OriginalSessionID <> "" Then
+		  If originalSessionID <> "" Then
 		    
 		    // If the Session ID matches a session in the Sessions dictionary...
-		    If Sessions.HasKey(OriginalSessionID) = True Then
+		    If Sessions.HasKey(originalSessionID) = True Then
 		      
 		      // Get the session.
-		      Session = Sessions.Value(OriginalSessionID)
+		      session = Sessions.Value(originalSessionID)
 		      
 		      // Get the session's LastRequestTimestamp.
-		      Dim LastRequestTimestamp As New DateTime( Session.Value("LastRequestTimestamp").DateTimeValue )
+		      Var lastRequestTimestamp As New DateTime( session.Value("LastRequestTimestamp").DateTimeValue )
 		      
 		      // Determine the time that has elapsed since the last request.
-		      Dim TimeElapsed As Double = Now.SecondsFrom1970 - LastRequestTimestamp.SecondsFrom1970
+		      Var timeElapsed As Double = now.SecondsFrom1970 - lastRequestTimestamp.SecondsFrom1970
 		      
 		      // If the session has expired...
-		      If TimeElapsed > SessionsTimeOutSecs Then
+		      If timeElapsed > SessionsTimeOutSecs Then
 		        
 		        // Remove the session from the array.
-		        Sessions.Remove(OriginalSessionID)
+		        Sessions.Remove(originalSessionID)
 		        
 		        // Clear the session.
-		        Session = Nil
+		        session = Nil
 		        
 		      End If
 		      
@@ -128,72 +127,67 @@ Inherits Timer
 		  End If
 		  
 		  // If an existing session is available...
-		  If Session <> Nil Then
+		  If session <> Nil Then
 		    
 		    // Update the session's LastRequestTimestamp.
-		    Session.Value("LastRequestTimestamp") = Now
+		    session.Value("LastRequestTimestamp") = now
 		    
 		    // Increment the session's Request Count.
-		    Session.Value("RequestCount") = Session.Value("RequestCount") + 1
+		    session.Value("RequestCount") = session.Value("RequestCount") + 1
 		    
 		    // If we're not going to assign a new Session ID to the existing session...
-		    If AssignNewID = False Then
+		    If assignNewID = False Then
 		      
 		      // Return the session to the caller.
-		      Return Session
+		      Return session
 		      
 		    End If
 		    
 		    // Assign a new Session ID to the existing session.
 		    
 		    // Generate a new Session ID.
-		    NewSessionID = UUIDGenerate
+		    newSessionID = UUIDGenerate
 		    
 		    // Update the session with the new ID.
-		    Session.Value("SessionID") = NewSessionID
+		    session.Value("SessionID") = newSessionID
 		    
 		    // Add the new session to the Sessions dictionary.
-		    Sessions.Value(NewSessionID) = Session
+		    Sessions.Value(newSessionID) = session
 		    
 		    // Remove the old session from the Sessions dictionary.
-		    Sessions.Remove(OriginalSessionID)
+		    Sessions.Remove(originalSessionID)
 		    
 		  Else
 		    
 		    // We were unable to re-use an existing session, so create a new one...
 		    
 		    // Generate a new Session ID.
-		    NewSessionID = UUIDGenerate
+		    newSessionID = UUIDGenerate
 		    
 		    // Create a new session dictionary.
-		    Session = New Dictionary
-		    Session.Value("SessionID") = NewSessionID
-		    Session.Value("LastRequestTimestamp") = Now
-		    Session.Value("RemoteAddress") = Request.RemoteAddress
-		    Session.Value("UserAgent") = Request.Headers.Lookup("User-Agent", "")
-		    Session.Value("RequestCount") = 1
-		    Session.Value("Authenticated") = False
+		    session = New Dictionary
+		    session.Value("SessionID") = newSessionID
+		    session.Value("LastRequestTimestamp") = now
+		    session.Value("RemoteAddress") = request.RemoteAddress
+		    session.Value("UserAgent") = request.Headers.Lookup("User-Agent", "")
+		    session.Value("RequestCount") = 1
+		    session.Value("Authenticated") = False
 		    
 		  End If
 		  
 		  // Add the session to the Sessions dictionary.
-		  Sessions.Value(NewSessionID) = Session
+		  Sessions.Value(newSessionID) = session
 		  
 		  // Set the cookie expiration date.
-		  Dim CookieExpiration As DateTime = DateTime.Now
+		  Var cookieExpiration As DateTime = DateTime.Now
 		  //years, months, days, hours, minutes, seconds
-		  CookieExpiration = CookieExpiration.AddInterval( 0, 0, 0, 0, 0, SessionsTimeOutSecs )
+		  cookieExpiration = cookieExpiration.AddInterval( 0, 0, 0, 0, 0, SessionsTimeOutSecs )
 		  
 		  // Drop the SessionID cookie.
-		  Request.Response.CookieSet("SessionID", NewSessionID, CookieExpiration)
+		  request.Response.CookieSet("SessionID", newSessionID, cookieExpiration)
 		  
 		  // Return the session to the caller.
-		  Return Session
-		  
-		  
-		  
-		  
-		  
+		  Return session
 		End Function
 	#tag EndMethod
 

@@ -20,8 +20,8 @@ Protected Class MustacheLite
 		  Expanded = Source
 		  
 		  // Regex used for removal of comments and orphans.
-		  Dim rg As New RegEx
-		  Dim rgMatch As RegExMatch
+		  Var rg As New RegEx
+		  Var rgMatch As RegExMatch
 		  
 		  // Remove comments.
 		  If RemoveComments = True Then
@@ -34,103 +34,103 @@ Protected Class MustacheLite
 		  End If
 		  
 		  // Loop over the data object's values...
-		  For Each Key As String In Data.Names
+		  For Each key As String In Data.Keys
 		    
 		    // Get the value.
-		    Dim Value As Variant = Data.Value(Key)
+		    Var value As Variant = Data.Value(key)
 		    
 		    // If the value is null...
-		    If Value = Nil Then
+		    If value = Nil Then
 		      Continue
 		    End If
 		    
 		    // Use introspection to determine the entry's value type.
-		    Dim ValueType As Introspection.TypeInfo = Introspection.GetType(Value)
-		    If ValueType = Nil Then Continue
+		    Var valueType As Introspection.TypeInfo = Introspection.GetType(Value)
+		    If valueType = Nil Then Continue
 		    
 		    // If the value is a boolean, number, string, etc..
-		    If ValueType.IsPrimitive Then
+		    If valueType.IsPrimitive Then
 		      
 		      // Convert the primitive value to a string.
-		      Dim ValueString As String = Value.StringValue
+		      Var valueString As String = value.StringValue
 		      
 		      // Using the object's name and the entry's key, generate the token to replace.
-		      Dim Token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
+		      Var token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
 		      
 		      // Replace all occurrences of the token with the value.
-		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", ValueString)
+		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", valueString)
 		      
 		      Continue
 		      
 		    End If
 		    
 		    // If the value is a nested JSONItem...
-		    If ValueType.Name = "JSONItem" Then
+		    If valueType.Name = "JSONItem" Then
 		      
 		      // Get the nested JSONItem.
-		      Dim NestedJSON As JSONItem = Value
+		      Var nestedJSON As JSONItem = value
 		      
 		      // If the nested JSONItem is not an array...
-		      If NestedJSON.IsArray = False Then
+		      If nestedJSON.IsArray = False Then
 		        
 		        // Process the nested JSON using another Template instance. 
-		        Dim Engine As New MustacheLite
-		        Engine.Source = Expanded
-		        Engine.Data = NestedJSON
-		        Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
-		        Engine.MergeSystemTokens = False
-		        Engine.RemoveComments = False
-		        Engine.RemoveOrphans = False
-		        Engine.Merge
-		        Expanded = Engine.Expanded
+		        Var engine As New MustacheLite
+		        engine.Source = Expanded
+		        engine.Data = nestedJSON
+		        engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		        engine.MergeSystemTokens = False
+		        engine.RemoveComments = False
+		        engine.RemoveOrphans = False
+		        engine.Merge
+		        Expanded = engine.Expanded
 		        
 		      Else
 		        
 		        // Get the beginning and ending tokens for this array.
-		        Dim TokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
-		        Dim TokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + Key + "}}"
+		        Var tokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
+		        Var tokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
 		        
 		        // Get the start position of the beginning token.
-		        Dim StartPosition As Integer = Source.IndexOf(0, TokenBegin) 
+		        Var startPosition As Integer = Source.IndexOf(0, tokenBegin) 
 		        
 		        // Get the position of the ending token.
-		        Dim StopPosition As Integer = Source.IndexOf(StartPosition, TokenEnd)
+		        Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
 		        
 		        // If the template does not include both the beginning and ending tokens...
-		        If ( (StartPosition = -1) Or (StopPosition = -1) ) Then
+		        If ( (startPosition = -1) Or (stopPosition = -1) ) Then
 		          // We do not need to merge the array.
 		          Continue
 		        End If
 		        
 		        // Get the content between the beginning and ending tokens.
-		        Dim LoopSource As String = Source.Middle( StartPosition + TokenBegin.Length, StopPosition - StartPosition - TokenBegin.Length)
+		        Var loopSource As String = Source.Middle( startPosition + tokenBegin.Length, stopPosition - startPosition - tokenBegin.Length)
 		        
 		        // LoopContent is the content created by looping over the array and merging each value.
-		        Dim LoopContent As String
+		        Var loopContent As String
 		        
 		        // Loop over the array elements...
 		        For i As Integer = 0 to NestedJSON.Count - 1
 		          
-		          Dim ArrayValue As Variant = NestedJSON.ValueAt(i)
+		          Var arrayValue As Variant = NestedJSON.ValueAt(i)
 		          
 		          // Process the value using another instance of Template. 
-		          Dim Engine As New MustacheLite
-		          Engine.Source = LoopSource
-		          Engine.Data = ArrayValue
-		          Engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + Key
-		          Engine.MergeSystemTokens = False
-		          Engine.RemoveComments = False
+		          Var engine As New MustacheLite
+		          engine.Source = loopSource
+		          engine.Data = arrayValue
+		          engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		          engine.MergeSystemTokens = False
+		          engine.RemoveComments = False
 		          Engine.RemoveOrphans = False
 		          Engine.Merge
 		          
 		          // Append the expanded content with the loop content.
-		          LoopContent = LoopContent + Engine.Expanded
+		          loopContent = loopContent + engine.Expanded
 		          
-		        Next
+		        Next i
 		        
 		        // Substitute the loop content block of the template with the expanded content.
-		        Dim LoopBlock As String = TokenBegin + LoopSource + TokenEnd
-		        Expanded = Expanded.ReplaceAll(LoopBlock, LoopContent)
+		        Var loopBlock As String = tokenBegin + loopSource + tokenEnd
+		        Expanded = Expanded.ReplaceAll(loopBlock, loopContent)
 		        
 		      End If
 		      
@@ -143,7 +143,7 @@ Protected Class MustacheLite
 		    // Look at ValueType.Name to determine what the type is.
 		    Break
 		    
-		  Next
+		  Next key
 		  
 		  // Remove orphaned tokens.
 		  If RemoveOrphans = True Then
@@ -160,44 +160,45 @@ Protected Class MustacheLite
 	#tag Method, Flags = &h0
 		Sub SystemDataAppend()
 		  // Initialize the system object, which is used to merge system tokens.
-		  Dim SystemData As New JSONItem
+		  Var systemData As New JSONItem
 		  
 		  // Append the system object to the data object.
 		  Data.Value("system") = SystemData
 		  
 		  // Add the Date object.
-		  Dim DateData As New JSONItem
-		  Dim Today As DateTime = DateTime.Now
-		  DateData.Value("abbreviateddate") = Today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
-		  DateData.Value("day") = Today.Day.ToString
-		  DateData.Value("dayofweek") = Today.DayOfWeek.ToString
-		  DateData.Value("dayofyear") = Today.DayOfYear.ToString
-		  Dim GMTOffset As Double = Today.Timezone.SecondsFromGMT / 3600 //3600 seconds in an hour
-		  DateData.Value("gmtoffset") = GMTOffset.ToString
-		  DateData.Value("hour") = Today.Hour.ToString
-		  DateData.Value("longdate") = Today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
-		  DateData.Value("longtime") = Today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium ) // This is the closest equivalent to the old code. We might have to trip the AM and PM off the end
-		  DateData.Value("minute") = Today.Minute.ToString
-		  DateData.Value("month") = Today.Month.ToString
-		  DateData.Value("second") = Today.Second.ToString
-		  DateData.Value("shortdate") = Today.ToString( Nil, DateTime.FormatStyles.Short, DateTime.FormatStyles.None )
-		  DateData.Value("shorttime") = Today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
-		  DateData.Value("sql") = Today.SQLDate
-		  DateData.Value("sqldate") = Today.SQLDate
-		  DateData.Value("sqldatetime") = Today.SQLDateTime
-		  DateData.Value("SecondsFrom1970") = Today.SecondsFrom1970
-		  DateData.Value("weekofyear") = Today.WeekOfYear.ToString
-		  DateData.Value("year") = Today.Year.ToString
-		  SystemData.Value("date") = DateData
+		  Var dateData As New JSONItem
+		  Var today As DateTime = DateTime.Now
+		  dateData.Value("abbreviateddate") = today.ToString( Nil, DateTime.FormatStyles.Medium, DateTime.FormatStyles.None )
+		  dateData.Value("day") = today.Day.ToString
+		  dateData.Value("dayofweek") = today.DayOfWeek.ToString
+		  dateData.Value("dayofyear") = today.DayOfYear.ToString
+		  Var GMTOffset As Double = today.Timezone.SecondsFromGMT / 3600 //3600 seconds in an hour
+		  dateData.Value("gmtoffset") = GMTOffset.ToString
+		  dateData.Value("hour") = today.Hour.ToString
+		  dateData.Value("longdate") = today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
+		  dateData.Value("longtime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium ) // This is the closest equivalent to the old code. We might have to trip the AM and PM off the end
+		  dateData.Value("minute") = today.Minute.ToString
+		  dateData.Value("month") = today.Month.ToString
+		  dateData.Value("second") = today.Second.ToString
+		  dateData.Value("shortdate") = today.ToString( Nil, DateTime.FormatStyles.Short, DateTime.FormatStyles.None )
+		  dateData.Value("shorttime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Short )
+		  dateData.Value("sql") = today.SQLDate
+		  dateData.Value("sqldate") = today.SQLDate
+		  dateData.Value("sqldatetime") = today.SQLDateTime
+		  dateData.Value("SecondsFrom1970") = today.SecondsFrom1970
+		  dateData.Value("weekofyear") = today.WeekOfYear.ToString
+		  dateData.Value("year") = today.Year.ToString
+		  systemData.Value("date") = dateData
 		  
 		  // Add the Meta object.
-		  Dim MetaData As New JSONItem
-		  MetaData.Value("xojo-version") = XojoVersionString
-		  MetaData.Value("express-version") = Express.VERSION_STRING
-		  SystemData.Value("meta") = MetaData
+		  Var metaData As New JSONItem
+		  metaData.Value("xojo-version") = XojoVersionString
+		  metaData.Value("express-version") = Express.VERSION_STRING
+		  systemData.Value("meta") = metaData
+		  
 		  
 		  // Add the Request object.
-		  Dim RequestData As New JSONItem
+		  Var RequestData As New JSONItem
 		  Var cookiesJSON As JSONItem = Request.Cookies
 		  RequestData.Value("cookies") = cookiesJSON
 		  RequestData.Value("data") = Request.Data
