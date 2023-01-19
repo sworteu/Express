@@ -18,11 +18,6 @@ Inherits ConsoleApplication
 		  
 		  server.KeepAlive = True
 		  
-		  //Pass any additional information to be displayed with Server.ServerInfoDisplay
-		  Var info As New Dictionary
-		  info.Value( "My App Version" ) = App.MajorVersion.ToString + "." + App.MinorVersion.ToString + "." + App.BugVersion.ToString
-		  Server.AdditionalServerDisplayInfo = info
-		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -73,7 +68,7 @@ Inherits ConsoleApplication
 		  'Request.Response.Content = "Hello, world!"
 		  
 		  // Express.CacheEngine.
-		  'DemoCaching.RequestProcess(Request)
+		  DemoCaching.RequestProcess(Request)
 		  
 		  // Express.Logger.
 		  'DemoLogging.RequestProcess(Request)

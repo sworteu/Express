@@ -7,16 +7,16 @@ Protected Module DemoCaching
 		  // In this example, we're using an alternate folder.
 		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-caching")
 		  
-		  // If this is a request for the root...
+		  // If this is a request for the root.
 		  If request.Path = "/" or request.Path = "/index.html" Then
-		    Var drummersList As New drummersList(request)
+		    Var drummersList As New DrummersList(request)
 		    #Pragma Unused drummersList
 		  Else
 		    
 		    // Map the request to a file.
 		    request.MapToFile
 		    
-		    // If the request couldn't be mapped to a static file...
+		    // If the request couldn't be mapped to a static file.
 		    If request.Response.Status = "404" Then
 		      
 		      // Return the standard 404 error response.

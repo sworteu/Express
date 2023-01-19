@@ -47,13 +47,10 @@ Protected Class MustacheLite
 		      Continue
 		    End If
 		    
-		    // Use introspection to determine the entry's value type.
-		    Var valueType As Introspection.TypeInfo = Introspection.GetType(Value)
-		    If valueType = Nil Then Continue
-		    
-		    // If the value is a boolean, number, string, etc.
-		    If valueType.IsPrimitive Then
-		      
+		    // Handle Xojo primitive types first.
+		    Select Case value.Type
+		    Case Variant.TypeBoolean, Variant.TypeDouble, Variant.TypeInt32, Variant.TypeInt64, Variant.TypeString, _
+		      Variant.TypeText, Variant.TypeDateTime, Variant.TypeColor, Variant.TypeCurrency
 		      // Convert the primitive value to a string.
 		      Var valueString As String = value.StringValue
 		      
@@ -64,8 +61,10 @@ Protected Class MustacheLite
 		      Expanded = Expanded.ReplaceAll("{{" + Token + "}}", valueString)
 		      
 		      Continue
-		      
-		    End If
+		    End Select
+		    
+		    // Not a primitive value. Use introspection to determine the entry's value type.
+		    Var valueType As Introspection.TypeInfo = Introspection.GetType(value)
 		    
 		    // If the value is a nested JSONItem.
 		    If valueType.Name = "JSONItem" Then
