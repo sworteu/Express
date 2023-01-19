@@ -1,7 +1,7 @@
 #tag Module
 Protected Module Express
-	#tag Method, Flags = &h0, Description = 436F6E766572747320636F6D6D616E64206C696E6520617267756D656E747320746F20612064696374696F6E6172792E2045616368206B657920697320616E20617267756D656E74206E616D6520616E642074686520636F72726573706F6E64696E672076616C75652069732074686520617267756D656E742076616C75652E
-		Function ArgsToDictionary(args() As String) As Dictionary
+	#tag Method, Flags = &h1, Description = 436F6E766572747320636F6D6D616E64206C696E6520617267756D656E747320746F20612064696374696F6E6172792E2045616368206B657920697320616E20617267756D656E74206E616D6520616E642074686520636F72726573706F6E64696E672076616C75652069732074686520617267756D656E742076616C75652E
+		Protected Function ArgsToDictionary(args() As String) As Dictionary
 		  /// Converts command line arguments to a dictionary.
 		  /// Each key is an argument name and the corresponding value is the argument value.
 		  
@@ -22,8 +22,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52657475726E732074686520636F6E74656E74206F6620612022626C6F636B2220746861742069732064656D617263617465642062792060746F6B656E426567696E6020616E642060746F6B656E456E64602E205468652022746F6B656E732220617265206E6F7420696E636C7564656420696E207468652072657475726E656420737472696E672E
-		Function BlockGet(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0) As String
+	#tag Method, Flags = &h1, Description = 52657475726E732074686520636F6E74656E74206F6620612022626C6F636B2220746861742069732064656D617263617465642062792060746F6B656E426567696E6020616E642060746F6B656E456E64602E205468652022746F6B656E732220617265206E6F7420696E636C7564656420696E207468652072657475726E656420737472696E672E
+		Protected Function BlockGet(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0) As String
 		  /// Returns the content of a "block" that is demarcated by `tokenBegin` and `tokenEnd`.
 		  /// The "tokens" are not included in the returned string.
 		  
@@ -47,8 +47,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 5265706C616365732065766572797468696E67206265747765656E2060746F6B656E426567696E6020616E642060746F6B656E456E6460207769746820607265706C6163656D656E74436F6E74656E74602E
-		Function BlockReplace(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0, replacementContent As String = "") As String
+	#tag Method, Flags = &h1, Description = 5265706C616365732065766572797468696E67206265747765656E2060746F6B656E426567696E6020616E642060746F6B656E456E6460207769746820607265706C6163656D656E74436F6E74656E74602E
+		Protected Function BlockReplace(source As String, tokenBegin As String, tokenEnd As String, start As Integer = 0, replacementContent As String = "") As String
 		  /// Replaces everything between `tokenBegin` and `tokenEnd` with `replacementContent`.
 		  
 		  // Get the content block.
@@ -62,8 +62,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52657475726E732061204461746554696D72206173206120737472696E6720696E2052464320383232202F203131323320666F726D61742E
-		Function DateToRFC1123(theDate As DateTime = Nil) As String
+	#tag Method, Flags = &h1, Description = 52657475726E732061204461746554696D72206173206120737472696E6720696E2052464320383232202F203131323320666F726D61742E
+		Protected Function DateToRFC1123(theDate As DateTime = Nil) As String
 		  /// Returns a DateTimr as a string in RFC 822 / 1123 format.
 		  ///
 		  /// Example: Mon, 27 Nov 2017 13:27:26 GMT
@@ -148,8 +148,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 526561647320616E642072657475726E732074686520636F6E74656E7473206F6620612066696C652C20676976656E206120466F6C6465724974656D2E204966206066602063616E6E6F74206265207265616420666F7220776861746576657220726561736F6E207468656E20616E20656D70747920737472696E672069732072657475726E65642E
-		Function FileRead(f As FolderItem, encoding As TextEncoding = Nil) As String
+	#tag Method, Flags = &h1, Description = 526561647320616E642072657475726E732074686520636F6E74656E7473206F6620612066696C652C20676976656E206120466F6C6465724974656D2E204966206066602063616E6E6F74206265207265616420666F7220776861746576657220726561736F6E207468656E20616E20656D70747920737472696E672069732072657475726E65642E
+		Protected Function FileRead(f As FolderItem, encoding As TextEncoding = Nil) As String
 		  /// Reads and returns the contents of a file, given a FolderItem.
 		  /// If `f` cannot be read for whatever reason then an empty string is returned.
 		  
@@ -178,8 +178,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 4465636F6D70726573736573206120677A697070656420737472696E672E
-		Function Gunzip(compressed As String) As String
+	#tag Method, Flags = &h1, Description = 4465636F6D70726573736573206120677A697070656420737472696E672E
+		Protected Function Gunzip(compressed As String) As String
 		  /// Decompresses a gzipped string.
 		  ///
 		  /// Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
@@ -192,8 +192,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 436F6D70726573736573206120737472696E67207573696E6720677A69702E
-		Function GZip(uncompressed As String) As String
+	#tag Method, Flags = &h1, Description = 436F6D70726573736573206120737472696E67207573696E6720677A69702E
+		Protected Function GZip(uncompressed As String) As String
 		  /// Compresses a string using gzip.
 		  ///
 		  /// Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
@@ -206,8 +206,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 4D61707320612066696C6520657874656E73696F6E20746F20697473204D494D4520747970652E
-		Function MIMETypeGet(extension As String) As String
+	#tag Method, Flags = &h1, Description = 4D61707320612066696C6520657874656E73696F6E20746F20697473204D494D4520747970652E
+		Protected Function MIMETypeGet(extension As String) As String
 		  /// Maps a file extension to its MIME type.
 		  ///
 		  /// Source: https://github.com/samuelneff/MimeTypeMap
@@ -819,8 +819,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 436F6E7665727473206120526F7753657420746F2061204A534F4E4974656D2E
-		Function RowSetToJSONItem(records As RowSet, close As Boolean = True) As JSONItem
+	#tag Method, Flags = &h1, Description = 436F6E7665727473206120526F7753657420746F2061204A534F4E4974656D2E
+		Protected Function RowSetToJSONItem(records As RowSet, close As Boolean = True) As JSONItem
 		  /// Converts a RowSet to a JSONItem.
 		  
 		  Var recordsJSON As New JSONItem
@@ -890,8 +890,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 46756C6C79206465636F64657320612055524C2D656E636F6465642076616C75652E
-		Function URLDecode(encoded As String) As String
+	#tag Method, Flags = &h1, Description = 46756C6C79206465636F64657320612055524C2D656E636F6465642076616C75652E
+		Protected Function URLDecode(encoded As String) As String
 		  /// Fully decodes a URL-encoded value.
 		  ///
 		  /// Unlike Xojo's "DecodeURLComponent," this method decodes any "+" characters
@@ -908,8 +908,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 41207772617070657220666F7220586F6A6F277320456E636F646555524C436F6D706F6E656E742C2070726F766964656420666F7220636F6E73697374656E637920616E6420636F6E76656E69656E63652E
-		Function URLEncode(value As String) As String
+	#tag Method, Flags = &h1, Description = 41207772617070657220666F7220586F6A6F277320456E636F646555524C436F6D706F6E656E742C2070726F766964656420666F7220636F6E73697374656E637920616E6420636F6E76656E69656E63652E
+		Protected Function URLEncode(value As String) As String
 		  /// A wrapper for Xojo's EncodeURLComponent, provided for consistency and convenience.
 		  
 		  Return EncodeURLComponent(value)
@@ -917,8 +917,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 47656E657261746573206120555549442E
-		Function UUIDGenerate() As String
+	#tag Method, Flags = &h1, Description = 47656E657261746573206120555549442E
+		Protected Function UUIDGenerate() As String
 		  /// Generates a UUID.
 		  ///
 		  /// Source: https://forum.xojo.com/18856-getting-guid/0 (Roberto Calvi)
@@ -945,8 +945,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 4163636570747320612064696374696F6E61727920636F6E7461696E696E6720224E616D65223A22537472696E6756616C756522204F7220224E616D65223A466F6C6465724974656D20706169727320746F20626520656E636F6465642C20616C6F6E67207769746820616E206F7074696F6E616C20626F756E6461727920737472696E6720746F20626520757365642E2053657473207468652070617373656420636F6E6E656374696F6E2773207265717565737420636F6E74656E742E
-		Sub xSetMultipartFormData(Extends con As URLConnection, formData As Dictionary, boundary As String = "")
+	#tag Method, Flags = &h1, Description = 4163636570747320612064696374696F6E61727920636F6E7461696E696E6720224E616D65223A22537472696E6756616C756522204F7220224E616D65223A466F6C6465724974656D20706169727320746F20626520656E636F6465642C20616C6F6E67207769746820616E206F7074696F6E616C20626F756E6461727920737472696E6720746F20626520757365642E2053657473207468652070617373656420636F6E6E656374696F6E2773207265717565737420636F6E74656E742E
+		Protected Sub xSetMultipartFormData(Extends con As URLConnection, formData As Dictionary, boundary As String = "")
 		  /// Accepts a dictionary containing "Name":"StringValue" Or "Name":FolderItem pairs to be encoded, 
 		  /// along with an optional boundary string to be used.
 		  /// Sets the passed connection's request content.
