@@ -1,15 +1,18 @@
 #tag Class
 Protected Class MustacheLite
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor()
-		  // Initialize the data object.
+		  /// Default constructor.
+		  
+		  // Initialise the data object.
 		  Data = New JSONItem
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4D657267657320612074656D706C617465202860536F757263656029207769746820646174612028604461746160292C20616E642073746F7265732074686520726573756C7420696E2060457870616E646564602E
 		Sub Merge()
-		  // Merges a template ("Source") with data ("Data"), and stores the result in "Expanded."
+		  /// Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
 		  
 		  // Append the system hash to the data hash.
 		  If MergeSystemTokens Then
@@ -33,13 +36,13 @@ Protected Class MustacheLite
 		    Wend
 		  End If
 		  
-		  // Loop over the data object's values...
+		  // Loop over the data object's values.
 		  For Each key As String In Data.Keys
 		    
 		    // Get the value.
 		    Var value As Variant = Data.Value(key)
 		    
-		    // If the value is null...
+		    // If the value is Nil then continue.
 		    If value = Nil Then
 		      Continue
 		    End If
@@ -48,7 +51,7 @@ Protected Class MustacheLite
 		    Var valueType As Introspection.TypeInfo = Introspection.GetType(Value)
 		    If valueType = Nil Then Continue
 		    
-		    // If the value is a boolean, number, string, etc..
+		    // If the value is a boolean, number, string, etc.
 		    If valueType.IsPrimitive Then
 		      
 		      // Convert the primitive value to a string.
@@ -64,13 +67,13 @@ Protected Class MustacheLite
 		      
 		    End If
 		    
-		    // If the value is a nested JSONItem...
+		    // If the value is a nested JSONItem.
 		    If valueType.Name = "JSONItem" Then
 		      
 		      // Get the nested JSONItem.
 		      Var nestedJSON As JSONItem = value
 		      
-		      // If the nested JSONItem is not an array...
+		      // If the nested JSONItem is not an array.
 		      If nestedJSON.IsArray = False Then
 		        
 		        // Process the nested JSON using another Template instance. 
@@ -96,7 +99,7 @@ Protected Class MustacheLite
 		        // Get the position of the ending token.
 		        Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
 		        
-		        // If the template does not include both the beginning and ending tokens...
+		        // If the template does not include both the beginning and ending tokens.
 		        If ( (startPosition = -1) Or (stopPosition = -1) ) Then
 		          // We do not need to merge the array.
 		          Continue
@@ -108,12 +111,12 @@ Protected Class MustacheLite
 		        // LoopContent is the content created by looping over the array and merging each value.
 		        Var loopContent As String
 		        
-		        // Loop over the array elements...
+		        // Loop over the array elements.
 		        For i As Integer = 0 to NestedJSON.Count - 1
 		          
 		          Var arrayValue As Variant = NestedJSON.ValueAt(i)
 		          
-		          // Process the value using another instance of Template. 
+		          // Process the value using another MustacheLite instance. 
 		          Var engine As New MustacheLite
 		          engine.Source = loopSource
 		          engine.Data = arrayValue
@@ -154,12 +157,13 @@ Protected Class MustacheLite
 		      rgMatch = rg.Search(Expanded)
 		    Wend
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SystemDataAppend()
-		  // Initialize the system object, which is used to merge system tokens.
+		  // Initialise the system object, which is used to merge system tokens.
 		  Var systemData As New JSONItem
 		  
 		  // Append the system object to the data object.
@@ -176,7 +180,7 @@ Protected Class MustacheLite
 		  dateData.Value("gmtoffset") = GMTOffset.ToString
 		  dateData.Value("hour") = today.Hour.ToString
 		  dateData.Value("longdate") = today.ToString( Nil, DateTime.FormatStyles.Long, DateTime.FormatStyles.None )
-		  dateData.Value("longtime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium ) // This is the closest equivalent to the old code. We might have to trip the AM and PM off the end
+		  dateData.Value("longtime") = today.ToString( Nil, DateTime.FormatStyles.None, DateTime.FormatStyles.Medium )
 		  dateData.Value("minute") = today.Minute.ToString
 		  dateData.Value("month") = today.Month.ToString
 		  dateData.Value("second") = today.Second.ToString
@@ -196,28 +200,23 @@ Protected Class MustacheLite
 		  metaData.Value("express-version") = Express.VERSION_STRING
 		  systemData.Value("meta") = metaData
 		  
-		  
 		  // Add the Request object.
-		  Var RequestData As New JSONItem
+		  Var requestData As New JSONItem
 		  Var cookiesJSON As JSONItem = Request.Cookies
-		  RequestData.Value("cookies") = cookiesJSON
-		  RequestData.Value("data") = Request.Data
+		  requestData.Value("cookies") = cookiesJSON
+		  requestData.Value("data") = Request.Data
 		  Var getParamsJSON As JSONItem = Request.GET
-		  RequestData.Value("get") = getParamsJSON
+		  requestData.Value("get") = getParamsJSON
 		  Var headersJSON As JSONItem = Request.Headers
-		  RequestData.Value("headers") = headersJSON
-		  RequestData.Value("method") = Request.Method
-		  RequestData.Value("path") = Request.Path
+		  requestData.Value("headers") = headersJSON
+		  requestData.Value("method") = Request.Method
+		  requestData.Value("path") = Request.Path
 		  Var postParamsJSON As JSONItem = Request.POST
-		  RequestData.Value("post") = postParamsJSON
-		  RequestData.Value("remoteaddress") = Request.RemoteAddress
-		  RequestData.Value("socketid") = Request.SocketID
-		  RequestData.Value("urlparams") = Request.URLParams
-		  SystemData.Value("request") = RequestData
-		  
-		  
-		  
-		  
+		  requestData.Value("post") = postParamsJSON
+		  requestData.Value("remoteaddress") = Request.RemoteAddress
+		  requestData.Value("socketid") = Request.SocketID
+		  requestData.Value("urlparams") = Request.URLParams
+		  systemData.Value("request") = requestData
 		  
 		End Sub
 	#tag EndMethod
