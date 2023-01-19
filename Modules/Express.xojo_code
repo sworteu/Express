@@ -1427,6 +1427,21 @@ Protected Module Express
 		- Fixed a bug where the StaticPath in some examples was set to the wrong main folder (parent.parent.. changed to parent..)
 	#tag EndNote
 
+	#tag Note, Name = 5.0.1
+		- Fixed serveral minor issues.
+		- Improved memory leak free coding, now using weakref and conversions for server/client.
+		- Removed the logging module, suggest using System.Log instead for improved loggin capabilities provided by the system.
+		- Express.VERSION_STRING is now a constant.
+	#tag EndNote
+
+	#tag Note, Name = 5.0.2
+		- Added descriptions to almost all methods and properties which will be displayed in the code editor syntax help area in the Xojo IDE.
+		- Removed a few Xojo deprecations.
+		- Local variables now all begin with a lowercase letter.
+		- Refactored a few string concatenating methods to use the faster String.FromArray method.
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1465,13 +1480,6 @@ Protected Module Express
 		- Removed slower functions and classes. Replaced JSONItem with Dictionary (ParseJSON, GenerateJSON) to improve speed.
 		- Removed functions to go from primitives to boolean, string, integer etc. Since API 2.0 has those natively using .ToString, FromString etc.
 		
-	#tag EndNote
-
-	#tag Note, Name = Express 5.0.1
-		- Fixed serveral minor issues.
-		- Improved memory leak free coding, now using weakref and conversions for server/client.
-		- Removed the logging module, suggest using System.Log instead for improved loggin capabilities provided by the system.
-		- Express.VERSION_STRING is now a constant.
 	#tag EndNote
 
 	#tag Note, Name = License
@@ -1536,6 +1544,16 @@ Protected Module Express
 		Jürg Otter for his numerous contributions, including the improved RequestThread class
 		and other multi-threading improvements, suggesting the EventLog class, and more.
 		
+		
+	#tag EndNote
+
+	#tag Note, Name = Thanks (Express)
+		-----------------------------------------------------------------------------------------
+		Special thanks to... For work on Express
+		-----------------------------------------------------------------------------------------
+		
+		Dr Garry Pettet (https://garrypettet.com) for adding documentation and refactoring
+		several methods.
 		
 	#tag EndNote
 
