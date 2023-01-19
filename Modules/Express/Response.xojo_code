@@ -117,7 +117,7 @@ Protected Class Response
 		    
 		    // Add the string representation of the cookie to the headers string.
 		    headersString = headersString _
-		    + "Set-Cookie: " + cookieString + EndOfLine.Windows
+		    + "Set-Cookie: " + cookieString + EndOfLine.CRLF
 		    
 		  Next key
 		  
@@ -132,17 +132,17 @@ Protected Class Response
 		  
 		  Var html As String
 		  
-		  html = html + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.Windows
+		  html = html + "<p>HTTP Version: " + HTTPVersion + "</p>" + EndOfLine.CRLF
 		  
-		  html = html + "<p>Headers: " + EndOfLine.Windows
-		  html = html + "<ul>" + EndOfLine.Windows
+		  html = html + "<p>Headers: " + EndOfLine.CRLF
+		  html = html + "<ul>" + EndOfLine.CRLF
 		  For Each key As Variant in Headers.keys
-		    html = html + "<li>" + Key + "=" + Headers.Value(key) + "</li>"+ EndOfLine.Windows
+		    html = html + "<li>" + Key + "=" + Headers.Value(key) + "</li>"+ EndOfLine.CRLF
 		  Next key
-		  html = html + "</ul>" + EndOfLine.Windows
-		  html = html + "</p>" + EndOfLine.Windows
+		  html = html + "</ul>" + EndOfLine.CRLF
+		  html = html + "</p>" + EndOfLine.CRLF
 		  
-		  html = html + "<p>Response Content...<br /><br />" + Content + "</p>" + EndOfLine.Windows
+		  html = html + "<p>Response Content...<br /><br />" + Content + "</p>" + EndOfLine.CRLF
 		  
 		  Return html
 		  
@@ -161,7 +161,7 @@ Protected Class Response
 		  End If
 		  
 		  // Return the response, including headers and content.
-		  Return HeadersToString + CookiesToHeaders + EndOfLine.Windows + Content
+		  Return HeadersToString + CookiesToHeaders + EndOfLine.CRLF + Content
 		  
 		End Function
 	#tag EndMethod
@@ -207,7 +207,7 @@ Protected Class Response
 		  rh = rh.DefineEncoding(Encodings.UTF8)
 		  
 		  // Add the initial header.
-		  rh = "HTTP/" + HTTPVersion + " " + Status + EndOfLine.Windows
+		  RH = "HTTP/" + HTTPVersion + " " + Status + EndOfLine.CRLF
 		  
 		  // Specify the content length.
 		  Headers.Value("Content-Length") = Content.Bytes.ToString
@@ -220,7 +220,7 @@ Protected Class Response
 		    End If
 		    
 		    // Add the value.
-		    rh = rh + Key + ": " + Headers.Value(Key).StringValue + EndOfLine.Windows
+		    RH = RH + Key + ": " + Headers.Value(Key).StringValue + EndOfLine.CRLF
 		    
 		  Next key
 		  
