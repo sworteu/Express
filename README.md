@@ -4,7 +4,7 @@ Note that we aim to keep all features, but they may break over time since the Xo
 Improvements to code efficiency is in the works and will be the main target for this repository.
 
 
-# Express supports http Keep-Alive 
+# Express supports http Keep-Alive And WebSockets (server)
 in combination with URLConnection (in for example desktop/ios etc). This improves connectivity 
 and drastically speeds up the connections. This allows for the removal of SSE (server sent events) etc
 and just keep the connection itself (single connection) alive allowing for much more clients to remain
