@@ -1457,6 +1457,7 @@ Protected Module Express
 		- Request, Method "Process": Try-Catch a possible ThreadEndException
 		  - If the Thread gets killed, we'll notice that here, and can safely 'return'
 		    without having to send or do anything
+		- Request, Method 'Reset': Also set RequestThread = nil
 		
 	#tag EndNote
 

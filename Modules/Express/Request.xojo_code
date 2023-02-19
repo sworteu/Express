@@ -969,6 +969,7 @@ Inherits SSLSocket
 		  PathComponents = Nil
 		  POST = Nil
 		  Response = Nil
+		  RequestThread = Nil
 		  Session = Nil
 		  StaticPath = Nil
 		  URLParams = ""
