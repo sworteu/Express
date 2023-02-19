@@ -1430,7 +1430,7 @@ Inherits SSLSocket
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5468697320736F636B657427732049442E
-		SocketID As Integer
+		SocketID As UInteger
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546865206C6F636174696F6E206F66207374617469632066696C65732E
