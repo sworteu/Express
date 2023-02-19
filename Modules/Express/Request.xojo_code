@@ -908,17 +908,28 @@ Inherits SSLSocket
 		  /// Called (1) by a RequestThread's Run event handler, if multithreading is enabled and 
 		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
-		  // Create the POST and Files dictionaries.
-		  BodyProcess
-		  
-		  // Hand the request off to the RequestHandler.
-		  App.RequestHandler(Self, Self.Response)
-		  
-		  // Return the response.
-		  ResponseReturn
-		  
-		  // Reset the data received counter. 
-		  DataReceivedCount = 0
+		  Try
+		    // Create the POST and Files dictionaries.
+		    BodyProcess
+		    
+		    // Hand the request off to the RequestHandler.
+		    App.RequestHandler(Self, Self.Response)
+		    
+		  Catch err As ThreadEndException
+		    
+		    //RequestThread has been killed
+		    DataReceivedCount = 0
+		    Return
+		    
+		  Finally
+		    
+		    // Return the response.
+		    ResponseReturn
+		    
+		    // Reset the data received counter. 
+		    DataReceivedCount = 0
+		    
+		  End Try
 		  
 		End Sub
 	#tag EndMethod

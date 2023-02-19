@@ -1454,6 +1454,9 @@ Protected Module Express
 		- Request, Event "SendComplete": Close and Return
 		  - Close calls "Reset", so no need to call it twice
 		  - should both conditions be true, this would lead to calling super.Close 2x
+		- Request, Method "Process": Try-Catch a possible ThreadEndException
+		  - If the Thread gets killed, we'll notice that here, and can safely 'return'
+		    without having to send or do anything
 		
 	#tag EndNote
 
