@@ -148,18 +148,18 @@ Inherits SSLSocket
 		  If KeepAlive = False Then
 		    // Close the connection.
 		    Close
+		    Return
 		  End If
 		  
 		  // If this was a multipart form...
 		  If ContentType.Split("multipart/form-data").LastIndex = 1 Then
 		    // Close the connection.
 		    Close
+		    Return
 		  End If
 		  
 		  // Reset the socket's properties.
 		  Reset
-		  
-		  
 		  
 		End Sub
 	#tag EndEvent
@@ -235,6 +235,8 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0, Description = 436C6F7365732074686520736F636B657420616E642072657365747320637573746F6D2070726F706572746965732E
 		Sub Close()
 		  /// Closes the socket and resets custom properties.
+		  
+		  System.DebugLog "Socket " + SocketID.totext + ": Close"
 		  
 		  Reset
 		  

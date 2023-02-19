@@ -1451,6 +1451,9 @@ Protected Module Express
 		- Request, Event "Error (102"): If Multithreadingthen kill the still running Thread
 		  - otherwise processing in this Thread continues and uses resources, even though no response
 		    is required and possible –> blocking processing power for other Requests
+		- Request, Event "SendComplete": Close and Return
+		  - Close calls "Reset", so no need to call it twice
+		  - should both conditions be true, this would lead to calling super.Close 2x
 		
 	#tag EndNote
 
