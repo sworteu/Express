@@ -863,13 +863,14 @@ Protected Module Express
 		  Var output As String
 		  
 		  Select Case s
+		    
 		  Case SSLSocket.SSLConnectionTypes.SSLv23
 		    
-		    output = "SSL version 3"
+		    output = "SSLv3, TLSv1, TLSv1.1, TLSv1.2"
 		    
 		  Case SSLSocket.SSLConnectionTypes.TLSv1
 		    
-		    output = "TLS version 1" 
+		    output = "TLS version 1"
 		    
 		  Case SSLSocket.SSLConnectionTypes.TLSv11
 		    
