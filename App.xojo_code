@@ -63,12 +63,13 @@ Inherits ConsoleApplication
 		  // Uncomment the demo module that you want to use.
 		  
 		  // Hello, world demo.
-		  'DemoHelloWorld.RequestProcess(Request)
+		  DemoHelloWorld.RequestProcess(Request)
+		  
 		  // Or simply...
 		  'Request.Response.Content = "Hello, world!"
 		  
 		  // Express.CacheEngine.
-		  DemoCaching.RequestProcess(Request)
+		  'DemoCaching.RequestProcess(Request)
 		  
 		  // Express.Logger.
 		  'DemoLogging.RequestProcess(Request)
