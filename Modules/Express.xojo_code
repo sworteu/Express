@@ -1446,6 +1446,8 @@ Protected Module Express
 	#tag Note, Name = 5.0.3
 		- Fix Description of SSLConnectionTypes
 		- Server.CurrentSocketID and Request.SocketID: UInteger
+		- Fix Conditional Compilation of XSProcessor
+		  - XojoScriptAvailable=False: XSProcessor should not be compiled and causing the app to include XojoScript Libs
 		
 	#tag EndNote
 

@@ -1259,33 +1259,39 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 4576616C75617465732074686520636F6E74656E74206F6620603C786F6A6F7363726970743E3C2F786F6A6F7363726970743E6020617320586F6A6F5363726970742C207265706C6163696E672074686520636F6E74656E7420776974682074686520726573756C7473206F6620746865207363726970742E
 		Sub XojoScriptsParse()
-		  /// Evaluates the content of `<xojoscript></xojoscript>` as XojoScript, replacing the content with the results of the script.
-		  
-		  // Determine the number of scripts in the content.
-		  Var scripts() As String = Response.Content.Split("<xojoscript>")
-		  
-		  // If there are no scripts in the content.
-		  If scripts.LastIndex = 0 Then
-		    Return
-		  End If
-		  
-		  // Create an instance of the XojoScript evaluator.
-		  Var evaluator As New XSProcessor
-		  
-		  // Loop over the XojoScript blocks.
-		  Var lastScriptsIndex As Integer = scripts.LastIndex
-		  For x As Integer = 0 To lastScriptsIndex
+		  #If XojoScriptAvailable Then
 		    
-		    // Get the next XojoScript block.
-		    evaluator.Source = Express.BlockGet(Response.Content, "<xojoscript>", "</xojoscript>", 0)
+		    // Evaluates the content of `<xojoscript></xojoscript>` as XojoScript,
+		    // replacing the content with the results of the script.
 		    
-		    // Run the XojoScript.
-		    evaluator.Run
+		    // Determine the number of scripts in the content.
+		    Var scripts() As String = Response.Content.Split("<xojoscript>")
 		    
-		    // Replace the block with the result.
-		    Response.Content = Express.BlockReplace(Response.Content, "<xojoscript>", "</xojoscript>", 0, evaluator.Result)
+		    // If there are no scripts in the content.
+		    If scripts.LastIndex = 0 Then
+		      Return
+		    End If
 		    
-		  Next x
+		    // Create an instance of the XojoScript evaluator.
+		    Var evaluator As New XSProcessor
+		    
+		    // Loop over the XojoScript blocks.
+		    Var lastScriptsIndex As Integer = scripts.LastIndex
+		    For x As Integer = 0 To lastScriptsIndex
+		      
+		      // Get the next XojoScript block.
+		      evaluator.Source = Express.BlockGet(Response.Content, "<xojoscript>", "</xojoscript>", 0)
+		      
+		      // Run the XojoScript.
+		      evaluator.Run
+		      
+		      // Replace the block with the result.
+		      Response.Content = Express.BlockReplace(Response.Content, "<xojoscript>", "</xojoscript>", 0, evaluator.Result)
+		      
+		    Next x
+		    
+		  #EndIf
+		  
 		End Sub
 	#tag EndMethod
 
