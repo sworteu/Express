@@ -1443,6 +1443,12 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 5.0.3
+		- Fix Description of SSLConnectionTypes
+		- Server.CurrentSocketID and Request.SocketID: UInteger
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
