@@ -113,8 +113,27 @@ Inherits SSLSocket
 		  ///
 		  /// Typically, this will be a 102 error, where the client has closed the connection.
 		  
-		  If err.ErrorNumber <> 102 Then
+		  Select Case err.ErrorNumber
+		    
+		  Case 102
+		    
+		    System.DebugLog "Socket " + SocketID.totext + ": Disconnected / LostConnection"
+		    
+		    If Multithreading And (Me.RequestThread <> Nil) And (Me.RequestThread.ThreadState <> Thread.ThreadStates.NotRunning) Then
+		      System.DebugLog "Socket " + SocketID.totext + ": Killing RequestThread"
+		      Me.RequestThread.Stop
+		    End If
+		    
+		    Me.Close
+		    
+		  Else
+		    
 		    System.DebugLog "Socket " + SocketID.ToString + " Error: " + err.ErrorNumber.ToString
+		    
+		  End Select
+		  
+		  If err.ErrorNumber <> 102 Then
+		    
 		  End If
 		End Sub
 	#tag EndEvent
