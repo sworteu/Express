@@ -390,7 +390,7 @@ Inherits ServerSocket
 			Visible=false
 			Group="Behavior"
 			InitialValue="0"
-			Type="Integer"
+			Type="UInteger"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty

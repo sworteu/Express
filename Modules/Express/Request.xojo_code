@@ -1620,7 +1620,7 @@ Inherits SSLSocket
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="UInteger"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
