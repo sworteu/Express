@@ -1448,7 +1448,7 @@ Protected Module Express
 		- Server.CurrentSocketID and Request.SocketID: UInteger
 		- Fix Conditional Compilation of XSProcessor
 		  - XojoScriptAvailable=False: XSProcessor should not be compiled and causing the app to include XojoScript Libs
-		- Request, Event "Error (102"): If Multithreading then kill the still running Thread
+		- Request, Event "Error (102)": If Multithreading then kill the still running Thread
 		  - otherwise processing in this Thread continues and uses resources, even though no response
 		    is required and possible –> blocking processing power for other Requests
 		- Request, Event "SendComplete": Close and Return
