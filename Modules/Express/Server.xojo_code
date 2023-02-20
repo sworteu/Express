@@ -119,6 +119,10 @@ Inherits ServerSocket
 		      KeepAlive = False
 		    End If
 		    
+		    If arguments.HasKey("--SilentStart") Then
+		      SilentStart = True
+		    End If
+		    
 		  End If
 		  
 		  // Initlialise the Custom dictionary.
@@ -136,36 +140,39 @@ Inherits ServerSocket
 		  info.Add(EndOfLine)
 		  
 		  info.Add(Name + " has started... ")
-		  info.Add("• Xojo Version: " + XojoVersionString)
-		  info.Add("• Express Version: " + Express.VERSION_STRING)
-		  info.Add("• Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
-		  info.Add("• Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
-		  info.Add("• Loopback: " + If(Loopback , "Enabled", "Disabled"))
-		  info.Add("• Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
-		  info.Add("• Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
-		  info.Add("• Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
-		  info.Add("• Maximum Entity Size: " + MaxEntitySize.ToString)
-		  info.Add("• Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
-		  info.Add("• Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
-		  info.Add("• Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
-		  info.Add("• Port: " + Port.ToString)
-		  info.Add("• Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
-		  info.Add("• SSL: " + If(Secure , "Enabled", "Disabled"))
-		  info.Add("• WebSocket Timeout: " + WSTimeout.ToString + " seconds")
+		  info.Add("→ Xojo Version: " + XojoVersionString)
+		  info.Add("→ Express Version: " + Express.VERSION_STRING)
+		  info.Add("→ Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
+		  info.Add("→ Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
+		  info.Add("→ Loopback: " + If(Loopback , "Enabled", "Disabled"))
+		  info.Add("→ Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
+		  info.Add("→ Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
+		  info.Add("→ Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
+		  info.Add("→ Maximum Entity Size: " + MaxEntitySize.ToString)
+		  info.Add("→ Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
+		  info.Add("→ Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
+		  info.Add("→ Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
+		  info.Add("→ Port: " + Port.ToString)
+		  info.Add("→ Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
+		  info.Add("→ SSL: " + If(Secure , "Enabled", "Disabled"))
+		  info.Add("→ WebSocket Timeout: " + WSTimeout.ToString + " seconds")
 		  
 		  If Secure Then
-		    info.Add("• SSL Certificate Path: " + CertificateFile.NativePath)
-		    info.Add("• SSL Connection Type: " + ConnectionType.ToString)
+		    info.Add("→ SSL Certificate Path: " + CertificateFile.NativePath)
+		    info.Add("→ SSL Connection Type: " + ConnectionType.ToString)
 		  End If
 		  
 		  If AdditionalServerDisplayInfo <> Nil Then
 		    For Each entry As DictionaryEntry In AdditionalServerDisplayInfo
-		      info.Add("• " + entry.Key.StringValue + ": " + entry.Value.StringValue)
+		      info.Add("→ " + entry.Key.StringValue + ": " + entry.Value.StringValue)
 		    Next entry
 		  End If
 		  
-		  System.Log( System.LogLevelNotice, String.FromArray(info, EndOfLine) )
+		  Var log_output As String = String.FromArray(info, EndOfLine)
+		  System.Log( System.LogLevelNotice, log_output )
 		  
+		  // on windows (possibly other systems) there is no stdout output from system.log:
+		  Print(log_output)
 		End Sub
 	#tag EndMethod
 
