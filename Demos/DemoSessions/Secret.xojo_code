@@ -65,7 +65,7 @@ Protected Class Secret
 		  // Create a folderitem that points to the template file.
 		  Var f as FolderItem = Request.StaticPath.Child("template.html")
 		  
-		  // Use Aloe's FileRead method to load the file.
+		  // Use Express' FileRead method to load the file.
 		  HTML = Express.FileRead(f)
 		  
 		End Sub

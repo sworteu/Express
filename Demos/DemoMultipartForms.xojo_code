@@ -3,6 +3,9 @@ Protected Module DemoMultipartForms
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub RequestProcess(request As Express.Request)
+		  #Pragma Warning "TODO: There is a bug in this demo. I can't get it to work as is"
+		  ' Not sure if it's to do with browser pre-fetching resources?
+		  
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
 		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-multipart-forms")
@@ -17,12 +20,12 @@ Protected Module DemoMultipartForms
 		    fp.UploadFolder = App.ExecutableFile.Parent.Parent.Child("uploads")
 		    
 		    // This is an optional prefix that will be added to files that are saved.
-		    'FP.FilenamePrefix = Express.UUIDGenerate
+		    'fp.FilenamePrefix = Express.UUIDGenerate
 		    
 		    // Process the form.
 		    fp.Process
 		    
-		    // Load the template...
+		    // Load the template.
 		    Var f as FolderItem = request.StaticPath.Child("templates").Child("upload-response.html")
 		    Var template As String = Express.FileRead(f)
 		    

@@ -18,7 +18,7 @@ Protected Class Confidential
 		  // Create a folderitem that points to the template file.
 		  Var f as FolderItem = request.StaticPath.Child("protected").Child("confidential.pdf")
 		  
-		  // Use Aloe's FileRead method to load the file.
+		  // Use Express' FileRead method to load the file.
 		  Var PDFContent As String = Express.FileRead(f)
 		  
 		  // Update the response content.

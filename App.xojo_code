@@ -56,11 +56,11 @@ Inherits ConsoleApplication
 	#tag Method, Flags = &h0, Description = 50726F63657373657320616E204854545020726571756573742E
 		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
 		  /// Processes an HTTP request.
+		  ///
+		  /// Uncomment the demo module that you want to use.
 		  
 		  // Keep the analyser happy.
 		  #Pragma Unused Response
-		  
-		  // Uncomment the demo module that you want to use.
 		  
 		  // Hello, world demo.
 		  DemoHelloWorld.RequestProcess(Request)
@@ -71,11 +71,8 @@ Inherits ConsoleApplication
 		  // Express.CacheEngine.
 		  'DemoCaching.RequestProcess(Request)
 		  
-		  // Express.Logger.
-		  'DemoLogging.RequestProcess(Request)
-		  
 		  // Multipart forms demo.
-		  'DemoMultipartForms.RequestProcess(Request)
+		  DemoMultipartForms.RequestProcess(Request)
 		  
 		  // Express.SessionEngine.
 		  'DemoSessions.RequestProcess(Request)

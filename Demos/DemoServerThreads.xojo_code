@@ -27,8 +27,7 @@ Protected Module DemoServerThreads
 		Sub ServersLaunch()
 		  // See the comments in the App.Run event handler for information about this method.
 		  
-		  
-		  // Create AloeExpress ServerThread instances with servers listening on port 64000, 64001, etc.
+		  // Create ServerThread instances with servers listening on port 64000, 64001, etc.
 		  Var serverThread1 As New Express.ServerThread
 		  serverThread1.Server.Port = 64000
 		  serverThread1.Start
