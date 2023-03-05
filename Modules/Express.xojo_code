@@ -819,6 +819,10 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Sub RequestHandlerDelegate(Request As Express . Request)
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h1, Description = 436F6E7665727473206120526F7753657420746F2061204A534F4E4974656D2E
 		Protected Function RowSetToJSONItem(records As RowSet, close As Boolean = True) As JSONItem
 		  /// Converts a RowSet to a JSONItem.

@@ -6,7 +6,8 @@ Inherits ConsoleApplication
 		  StartTimestamp = DateTime.Now
 		  
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
-		  Server = New Express.Server(args)
+		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
+		  Server = New Express.Server(args, AddressOf RequestHandler)
 		  
 		  // Configure server-level session management. 
 		  // This is used by the DemoSessions demo module.
@@ -54,13 +55,10 @@ Inherits ConsoleApplication
 
 
 	#tag Method, Flags = &h0, Description = 50726F63657373657320616E204854545020726571756573742E
-		Sub RequestHandler(Request As Express.Request, Response As Express.Response)
+		Sub RequestHandler(Request As Express.Request)
 		  /// Processes an HTTP request.
 		  ///
 		  /// Uncomment the demo module that you want to use.
-		  
-		  // Keep the analyser happy.
-		  #Pragma Unused Response
 		  
 		  // Hello, world demo.
 		  DemoHelloWorld.RequestProcess(Request)
@@ -72,7 +70,7 @@ Inherits ConsoleApplication
 		  'DemoCaching.RequestProcess(Request)
 		  
 		  // Multipart forms demo.
-		  DemoMultipartForms.RequestProcess(Request)
+		  'DemoMultipartForms.RequestProcess(Request)
 		  
 		  // Express.SessionEngine.
 		  'DemoSessions.RequestProcess(Request)
@@ -90,19 +88,12 @@ Inherits ConsoleApplication
 		  //DemoXojoScript.RequestProcess(Request)
 		  
 		  // Express.ServerThread demo.
-		  // *** Before using this demo... *** 
-		  // Replace the App.Run event handler with this: 
-		  // DemoServerThreads.ServersLaunch
 		  // Test ports are: 64000, 64001, 64002, and 64003.
 		  // Requests sent to 64003 will respond with an error,
 		  // to demonstrate a misconfigured app.
-		  'DemoServerThreads.RequestProcess(Request)
-		  
-		  
-		  
-		  
-		  
-		  
+		  // *** Before using this demo... *** 
+		  // Replace the App.Run event handler with this: 
+		  'DemoServerThreads.ServersLaunch(args, AddressOf DemoServerThreads.RequestProcess)
 		  
 		End Sub
 	#tag EndMethod
