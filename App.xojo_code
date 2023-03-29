@@ -3,8 +3,6 @@ Protected Class App
 Inherits ConsoleApplication
 	#tag Event
 		Function Run(args() as String) As Integer
-		  StartTimestamp = DateTime.Now
-		  
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf RequestHandler)

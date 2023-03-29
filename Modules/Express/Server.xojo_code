@@ -189,6 +189,9 @@ Inherits ServerSocket
 	#tag Method, Flags = &h0, Description = 537461727473207468652073657276657220736F2074686174206974206C697374656E7320666F7220696E636F6D696E672072657175657374732E
 		Sub Start()
 		  /// Starts the server so that it listens for incoming requests.
+		  If (StartTimestamp = Nil) Then
+		    StartTimestamp = DateTime.Now
+		  End If
 		  
 		  // If the server should use the loopback network interface.
 		  If Loopback Then
