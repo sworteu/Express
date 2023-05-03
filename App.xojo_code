@@ -15,7 +15,7 @@ Inherits ConsoleApplication
 		  Print " 1: Hello World"
 		  Print " 2: Hello World (simple plain text response)"
 		  Print " 3: Caching (Drummers)"
-		  Print " 4: Multipart Forms [BUG, doesn't work as is]"
+		  Print " 4: Multipart Forms"
 		  Print " 5: Sessions"
 		  Print " 6: Templates Client Side"
 		  Print " 7: Templates Server Side"
@@ -55,9 +55,6 @@ Inherits ConsoleApplication
 		    Me.Demo_01_HelloWorld(args)
 		    
 		  End Select
-		  
-		  
-		  
 		  
 		End Function
 	#tag EndEvent
