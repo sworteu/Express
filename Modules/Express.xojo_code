@@ -819,6 +819,10 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Sub RequestHandlerDelegate(Request As Express . Request)
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h1, Description = 436F6E7665727473206120526F7753657420746F2061204A534F4E4974656D2E
 		Protected Function RowSetToJSONItem(records As RowSet, close As Boolean = True) As JSONItem
 		  /// Converts a RowSet to a JSONItem.
@@ -1428,6 +1432,23 @@ Protected Module Express
 		- Fixed a bug where the StaticPath in some examples was set to the wrong main folder (parent.parent.. changed to parent..)
 	#tag EndNote
 
+	#tag Note, Name = 5.0.0 - Express
+		"AloeExpress" converted to (fork) "Express"
+		
+		
+		Major changes:
+		- Changed project name to "Express" from "AloeExpress" 
+		- Added Express.Response as the second parameter of the RequestHandler
+		- Moved Request handling to Dictionary lookup based by default for dynamic requests. 
+		For Static files (or with xojoscript handling) it will be checked if it's a valid path into the "public_html" folder. 
+		If the path is invalid a 404 will be given, if it's valid and parsable it will be checked for xojoscript (if .htm, .html or .xs and will be executed if it 
+		exists inside the file, otherwise if will just forward the file.
+		
+		- Removed slower functions and classes. Replaced JSONItem with Dictionary (ParseJSON, GenerateJSON) to improve speed.
+		- Removed functions to go from primitives to boolean, string, integer etc. Since API 2.0 has those natively using .ToString, FromString etc.
+		
+	#tag EndNote
+
 	#tag Note, Name = 5.0.1
 		- Fixed serveral minor issues.
 		- Improved memory leak free coding, now using weakref and conversions for server/client.
@@ -1461,6 +1482,60 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 6.0.0 - RequestHandlerDelegate
+		Express 6.0.0
+		*************
+		
+		Introduces: Express.RequestHandlerDelegate
+		------------------------------------------
+		Express is designed to be a standalone component that can be dropped into any Xojo project.
+		
+		Express 5.x required to have the Xojo project an explicit method in the App object to handle the responses:
+		App.RequestHandler(Request As Express.Request, Response As Express.Response)
+		
+		Express 6.0.0 decouples this hardcoded requirement by introducing the Express.RequestHandlerDelegate.
+		
+		The Module 'Express' now is a completely independent component.
+		A Xojo project using it can now specify which Method (that implements the delegate) an Express instance
+		should use as it's request handler.
+		
+		The Express Demo project has been refactored.
+		Trying the various provided demos no longer requires (un)commenting code.
+		Upon launch an Input asks which demo you'd like to try.
+		
+		
+		Breaking Changes | Update from 5.x to 6.0
+		*****************************************
+		
+		1. Update Request Handler
+		-------------------------
+		before: App.RequestHandler(Request As Express.Request, Response As Express.Response)
+		new:    App.RequestHandler(Request As Express.Request)
+		
+		- The second parameter has been removed. Update your RequestHandler Method accordingly.
+		  In the method, you can always refer to the Response object like this:
+		  Request.Response
+		- A method with the single Parameter "Request As Express.Request" conforms
+		  to the new Express.RequestHandlerDelegate.
+		- It is no longer required to have this RequestHandler Method be placed in "App"
+		  and named exactly "RequestHandler". You can rename place it whereever it fits
+		  your app's structure and name it the way you want.
+		  See e.g. in this example project:
+		  Demos -> DemoHelloWorld.SimplePlainTextResponse(request As Express.Request)
+		
+		2. Update instanciation of new Express.Server
+		---------------------------------------------
+		before: New Express.Server(args)
+		new   : New Express.Server(args, AddressOf RequestHandler)
+		
+		- creating a new Express.Server now requires to assign the Express.RequestHandlerDelegate
+		  which this instance of the Express.Server is going to use in order to process the requests
+		- See for example the simple plain text response demo:
+		  - Request Handler (Method, implementing delegate): DemoHelloWorld.SimplePlainTextResponse(request As Express.Request)
+		  - Server: New Express.Server(args, AddressOf DemoHelloWorld.SimplePlainTextResponse)
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1481,23 +1556,6 @@ Protected Module Express
 		-> If you want to collaborate, please request it via github.com
 		
 		
-		
-	#tag EndNote
-
-	#tag Note, Name = Express 5.0.0 - API 2.0
-		"AloeExpress" converted to (fork) "Express"
-		
-		
-		Major changes:
-		- Changed project name to "Express" from "AloeExpress" 
-		- Added Express.Response as the second parameter of the RequestHandler
-		- Moved Request handling to Dictionary lookup based by default for dynamic requests. 
-		For Static files (or with xojoscript handling) it will be checked if it's a valid path into the "public_html" folder. 
-		If the path is invalid a 404 will be given, if it's valid and parsable it will be checked for xojoscript (if .htm, .html or .xs and will be executed if it 
-		exists inside the file, otherwise if will just forward the file.
-		
-		- Removed slower functions and classes. Replaced JSONItem with Dictionary (ParseJSON, GenerateJSON) to improve speed.
-		- Removed functions to go from primitives to boolean, string, integer etc. Since API 2.0 has those natively using .ToString, FromString etc.
 		
 	#tag EndNote
 
@@ -1577,12 +1635,12 @@ Protected Module Express
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0, Description = 546865204461746554696D652074686520617070206C61756E636865642E204D75737420626520736574206D616E75616C6C7920647572696E6720746865206C61756E6368206F6620796F7572206170706C69636174696F6E2E
-		StartTimestamp As DateTime
+	#tag Property, Flags = &h1, Description = 546865204461746554696D652074686520617070206C61756E636865642E204D75737420626520736574206D616E75616C6C7920647572696E6720746865206C61756E6368206F6620796F7572206170706C69636174696F6E2E
+		Protected StartTimestamp As DateTime
 	#tag EndProperty
 
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"5.0.3", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.0.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 

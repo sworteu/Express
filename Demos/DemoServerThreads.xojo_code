@@ -24,24 +24,24 @@ Protected Module DemoServerThreads
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ServersLaunch()
+		Sub ServersLaunch(args() As String, requestHandler As Express.RequestHandlerDelegate)
 		  // See the comments in the App.Run event handler for information about this method.
 		  
 		  // Create ServerThread instances with servers listening on port 64000, 64001, etc.
-		  Var serverThread1 As New Express.ServerThread
+		  Var serverThread1 As New Express.ServerThread(args, requestHandler)
 		  serverThread1.Server.Port = 64000
 		  serverThread1.Start
 		  
-		  Var serverThread2 As New Express.ServerThread
+		  Var serverThread2 As New Express.ServerThread(args, requestHandler)
 		  serverThread2.Server.Port = 64001
 		  serverThread2.Server.SessionsEnabled = True
 		  serverThread2.Start
 		  
-		  Var serverThread3 As New Express.ServerThread
+		  Var serverThread3 As New Express.ServerThread(args, requestHandler)
 		  serverThread3.Server.Port = 64002
 		  serverThread3.Start
 		  
-		  Var serverThread4 As New Express.ServerThread
+		  Var serverThread4 As New Express.ServerThread(args, requestHandler)
 		  serverThread4.Server.Port = 64003
 		  serverThread4.Start
 		  

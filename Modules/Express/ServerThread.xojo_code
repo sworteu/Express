@@ -11,10 +11,10 @@ Inherits Thread
 
 
 	#tag Method, Flags = &h0, Description = 43726561746520616E20696E7374616E6365206F6620457870726573732E536572766572
-		Sub Constructor()
+		Sub Constructor(args() As String, requestHandler As Express.RequestHandlerDelegate)
 		  /// Create an instance of Express.Server
 		  
-		  Server = New Express.Server
+		  Server = New Express.Server(args, requestHandler)
 		  
 		End Sub
 	#tag EndMethod

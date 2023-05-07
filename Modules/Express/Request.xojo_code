@@ -32,8 +32,9 @@ Inherits SSLSocket
 		      Return
 		    End If
 		    
-		    // Hand the message off to the app's RequestHandler.
-		    App.RequestHandler(Self, Self.Response)
+		    // Hand the request off to the RequestHandler.
+		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		    Return
 		    
@@ -913,7 +914,8 @@ Inherits SSLSocket
 		    BodyProcess
 		    
 		    // Hand the request off to the RequestHandler.
-		    App.RequestHandler(Self, Self.Response)
+		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		  Catch err As ThreadEndException
 		    

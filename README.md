@@ -1,6 +1,6 @@
 # Express is a Xojo API 2.0 compliant WebServer
 
-Express is optimized for speed. It's based on AloeExpress *(API 1.0)* and will be cleaned up and improved continuesly.
+Express is optimized for speed. It's based on AloeExpress *(API 1.0)* and will be cleaned up and improved continuously.
 Note that we aim to keep all features, but they may break over time since the Xojo API changed to 2.0.
 Improvements to code efficiency is in the works and will be the main target for this repository.
 
@@ -14,6 +14,10 @@ connected. This directly competes against Xojo's WebApplication that does NOT al
 *(at least not in the same App.HandleURL context)* and thus is not HTTP/1.1 compliant. 
 Express aims to be as much as we can to be HTTP 1.1 compliant. If something is missing
 please create an issue. 
+
+## Express Change Log
+The change logs are available within the provided Express Demo project:
+- Modules -> Express -> Notes
 
 
 ## Important changes in Express that fixes some issues from AloeExpress 4.1 (last version of AE)

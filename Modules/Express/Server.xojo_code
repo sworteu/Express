@@ -56,8 +56,17 @@ Inherits ServerSocket
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0, Description = 436F6E7374727563746F7220746861742077696C6C207573652064656661756C742076616C7565732073696E6365206E6F2061726773207370656369666965642E
+		Sub Constructor(addRequestHandler As Express.RequestHandlerDelegate)
+		  /// Constructor that will use default values since no args specified.
+		  
+		  Self.Constructor(Nil, addRequestHandler)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F7220746861742074616B6573206F7074696F6E616C20617267756D656E74732E
-		Sub Constructor(args() As String = Nil)
+		Sub Constructor(args() As String, addRequestHandler As Express.RequestHandlerDelegate)
 		  /// Default constructor that takes optional arguments.
 		  
 		  // Set defaults.
@@ -73,6 +82,7 @@ Inherits ServerSocket
 		  ConnectionType = SSLSocket.SSLConnectionTypes.TLSv12
 		  CertificatePassword = ""
 		  KeepAlive = True
+		  RequestHandler = addRequestHandler
 		  
 		  // Any arguments?
 		  If args <> Nil Then
@@ -179,6 +189,9 @@ Inherits ServerSocket
 	#tag Method, Flags = &h0, Description = 537461727473207468652073657276657220736F2074686174206974206C697374656E7320666F7220696E636F6D696E672072657175657374732E
 		Sub Start()
 		  /// Starts the server so that it listens for incoming requests.
+		  If (StartTimestamp = Nil) Then
+		    StartTimestamp = DateTime.Now
+		  End If
 		  
 		  // If the server should use the loopback network interface.
 		  If Loopback Then
@@ -312,6 +325,10 @@ Inherits ServerSocket
 
 	#tag Property, Flags = &h0, Description = 546865206E616D65206F662074686973207365727665722E
 		Name As String = "Express Server"
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RequestHandler As Express.RequestHandlerDelegate
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 54727565206966207468697320736572766572206973207573696E672053534C2E

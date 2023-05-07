@@ -50,6 +50,12 @@ Protected Module DemoHelloWorld
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SimplePlainTextResponse(request As Express.Request)
+		  request.Response.Content = "Hello, world!"
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
