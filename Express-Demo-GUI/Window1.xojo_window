@@ -67,7 +67,7 @@ Begin DesktopWindow Window1
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   132
+      Left            =   130
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -83,7 +83,7 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   448
+      Width           =   450
    End
    Begin DesktopSeparator sepDemo
       AllowAutoDeactivate=   True
@@ -149,7 +149,7 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   132
+      Left            =   240
       LockBottom      =   False
       LockedInPosition=   False
       LockLeft        =   True
@@ -169,7 +169,7 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   316
+      Width           =   205
    End
    Begin DesktopButton Button1
       AllowAutoDeactivate=   True
@@ -202,7 +202,7 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   120
    End
-   Begin DesktopSeparator sepDemo1
+   Begin DesktopSeparator sepExpress
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -219,10 +219,179 @@ Begin DesktopWindow Window1
       TabIndex        =   6
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   105
+      Top             =   165
       Transparent     =   False
       Visible         =   True
       Width           =   600
+   End
+   Begin Timer timGUI
+      Enabled         =   True
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Period          =   250
+      RunMode         =   2
+      Scope           =   2
+      TabPanelIndex   =   0
+   End
+   Begin DesktopLabel labExpressPort
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   240
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "..."
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   105
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   205
+   End
+   Begin DesktopLabel labExpressStatusTitle
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Status:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   75
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopLabel labExpressPortTitle
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Port:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   105
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopLabel labExpressActiveConnections
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   240
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "..."
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   137
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   205
+   End
+   Begin DesktopLabel labExpressActiveConnectionsTitle
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Connections:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   137
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
    End
 End
 #tag EndDesktopWindow
@@ -230,6 +399,8 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
+		  IsOpened = True
+		  
 		  Self.Start
 		  
 		End Sub
@@ -238,6 +409,8 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Start()
+		  If (Not Self.IsOpened) Then Return
+		  
 		  If (Server <> Nil) Then
 		    Server.StopListening
 		    Server = Nil
@@ -294,6 +467,28 @@ End
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub Status()
+		  Dim sStatus As String = "---"
+		  Dim sPort As String = "---"
+		  Dim sActiveConnections As String = "---"
+		  
+		  If (Server <> Nil) Then
+		    sStatus = If(Server.IsListening, "Started", "Stopped")
+		    sPort = Server.Port.ToString
+		    sActiveConnections = Server.ConnectedSocketCount.ToString
+		  End If
+		  
+		  If (labExpressStatus.Text <> sStatus) Then labExpressStatus.Text = sStatus
+		  If (labExpressPort.Text <> sPort) Then labExpressPort.Text = sPort
+		  if (labExpressActiveConnections.Text <> sActiveConnections) then labExpressActiveConnections.Text = sActiveConnections
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private IsOpened As Boolean
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private Server As Express.Server
@@ -335,6 +530,22 @@ End
 		  Me.RowTagAt(Me.LastAddedRowIndex) = 9
 		  
 		  Me.SelectedRowIndex = 0
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  If (Not Self.IsOpened) Then Return
+		  
+		  Self.Start
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events timGUI
+	#tag Event
+		Sub Action()
+		  Self.Status
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
