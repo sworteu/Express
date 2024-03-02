@@ -3,6 +3,7 @@ RBProjectVersion=2023.04
 MinIDEVersion=20210300
 OrigIDEVersion=20230400
 Folder=Express-Demo-GUI;Express-Demo-GUI;&h0000000009B38FFF;&h0000000000000000;false
+MultiImage=imgExpress;Express-Demo-GUI/imgExpress.xojo_image;&h000000006286B7FF;&h0000000009B38FFF;false
 BuildSteps=Build Automation;Build Automation.xojo_code;&h0000000034D847FF;&h0000000000000000;false
 MenuBar=MainMenuBar;Express-Demo-GUI/MainMenuBar.xojo_menu;&h0000000079A12FFF;&h0000000009B38FFF;false
 DesktopWindow=Window1;Express-Demo-GUI/Window1.xojo_window;&h00000000316B57FF;&h0000000009B38FFF;false

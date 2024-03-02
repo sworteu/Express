@@ -8,18 +8,18 @@ Begin DesktopWindow Window1
    HasBackgroundColor=   False
    HasCloseButton  =   True
    HasFullScreenButton=   False
-   HasMaximizeButton=   True
-   HasMinimizeButton=   True
-   Height          =   400
+   HasMaximizeButton=   False
+   HasMinimizeButton=   False
+   Height          =   195
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   2040606719
    MenuBarVisible  =   False
-   MinimumHeight   =   64
-   MinimumWidth    =   64
-   Resizeable      =   True
+   MinimumHeight   =   195
+   MinimumWidth    =   600
+   Resizeable      =   False
    Title           =   "Express Demo"
    Type            =   0
    Visible         =   True
@@ -43,14 +43,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   0
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Demo:"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   20
+      Top             =   155
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -75,75 +75,15 @@ Begin DesktopWindow Window1
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   0
-      TabIndex        =   1
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   20
+      Top             =   155
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   450
-   End
-   Begin DesktopSeparator sepDemo
-      Active          =   False
-      AllowAutoDeactivate=   True
-      AllowTabStop    =   True
-      Enabled         =   True
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Left            =   0
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      PanelIndex      =   0
-      Scope           =   2
-      TabIndex        =   2
-      TabPanelIndex   =   0
-      Tooltip         =   ""
-      Top             =   52
-      Transparent     =   False
-      Visible         =   True
-      Width           =   600
-      _mIndex         =   0
-      _mInitialParent =   ""
-      _mName          =   ""
-      _mPanelIndex    =   0
-   End
-   Begin DesktopLabel labExpress
-      AllowAutoDeactivate=   True
-      Bold            =   True
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   False
-      LockedInPosition=   True
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Multiline       =   False
-      Scope           =   2
-      Selectable      =   False
-      TabIndex        =   3
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Text            =   "Server"
-      TextAlignment   =   0
-      TextColor       =   &c000000
-      Tooltip         =   ""
-      Top             =   75
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   100
    End
    Begin DesktopLabel labExpressStatus
       AllowAutoDeactivate=   True
@@ -164,14 +104,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   5
+      TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   75
+      Top             =   35
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -198,11 +138,11 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   6
+      TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   75
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -224,10 +164,10 @@ Begin DesktopWindow Window1
       LockTop         =   True
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   11
+      TabIndex        =   8
       TabPanelIndex   =   0
       Tooltip         =   ""
-      Top             =   165
+      Top             =   126
       Transparent     =   False
       Visible         =   True
       Width           =   600
@@ -264,14 +204,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   8
+      TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   105
+      Top             =   60
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -296,14 +236,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   4
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Status:"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   75
+      Top             =   35
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -328,14 +268,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   7
+      TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Port:"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   105
+      Top             =   60
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -360,14 +300,14 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   10
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   137
+      Top             =   85
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -392,16 +332,41 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   9
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Connections:"
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   137
+      Top             =   85
       Transparent     =   False
       Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopCanvas cnvExpress
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   100
+      Index           =   -2147483648
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   True
       Visible         =   True
       Width           =   100
    End
@@ -604,6 +569,15 @@ End
 		Sub Action()
 		  Self.Status
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events cnvExpress
+	#tag Event
+		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma Unused areas
+		  
+		  g.DrawPicture imgExpress, 0, 0, g.Width, g.Height, 0, 0, imgExpress.Width, imgExpress.Height
 		End Sub
 	#tag EndEvent
 #tag EndEvents
