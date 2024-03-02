@@ -2,6 +2,16 @@
 			Begin BuildStepList Linux
 				Begin BuildProjectStep Build
 				End
+				Begin CopyFilesBuildStep CopyFilesLinux
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 0
+					Subdirectory = 
+					FolderItem = Li4vaHRkb2NzLw==
+					FolderItem = Li4vZGF0YS8=
+					FolderItem = Li4vY2VydGlmaWNhdGVzLw==
+				End
 			End
 			Begin BuildStepList Mac OS X
 				Begin BuildProjectStep Build
@@ -22,6 +32,16 @@
 			End
 			Begin BuildStepList Windows
 				Begin BuildProjectStep Build
+				End
+				Begin CopyFilesBuildStep CopyFilesWindows
+					AppliesTo = 0
+					Architecture = 0
+					Target = 0
+					Destination = 0
+					Subdirectory = 
+					FolderItem = Li4vaHRkb2NzLw==
+					FolderItem = Li4vZGF0YS8=
+					FolderItem = Li4vY2VydGlmaWNhdGVzLw==
 				End
 			End
 #tag EndBuildAutomation
