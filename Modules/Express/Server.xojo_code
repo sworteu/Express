@@ -181,8 +181,10 @@ Inherits ServerSocket
 		  Var log_output As String = String.FromArray(info, EndOfLine)
 		  System.Log( System.LogLevelNotice, log_output )
 		  
-		  // on windows (possibly other systems) there is no stdout output from system.log:
-		  Print(log_output)
+		  #If TargetConsole Then
+		    Print(log_output)
+		  #EndIf
+		  
 		End Sub
 	#tag EndMethod
 
