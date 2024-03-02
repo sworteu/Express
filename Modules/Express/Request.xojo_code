@@ -879,7 +879,7 @@ Inherits SSLSocket
 		  
 		  // Set the default resources folder and index filenames.
 		  // These are used by the "MapToFile" method.
-		  StaticPath = App.ExecutableFile.Parent.Child("htdocs")
+		  StaticPath = Specialfolder.Resources.Child("htdocs")
 		  System.Log System.LogLevelDebug, "StaticPath = " + StaticPath.NativePath
 		  IndexFilenames = Array("index.html", "index.htm")
 		  

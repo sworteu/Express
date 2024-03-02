@@ -8,7 +8,7 @@ Protected Module DemoTemplatesClientSide
 		  #If DebugBuild Then
 		    request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-templates-client-side")
 		  #Else
-		    request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-templates-client-side")
+		    request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-templates-client-side")
 		  #EndIf
 		  
 		  // Process the request based on the path of the requested resource...

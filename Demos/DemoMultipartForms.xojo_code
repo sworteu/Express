@@ -68,14 +68,6 @@ Protected Module DemoMultipartForms
 		    
 		  End If
 		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

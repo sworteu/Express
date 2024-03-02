@@ -32,13 +32,6 @@ Protected Module DemoCaching
 		    
 		  End If
 		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 

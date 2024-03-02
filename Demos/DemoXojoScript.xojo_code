@@ -8,7 +8,7 @@ Protected Module DemoXojoScript
 		  #If DebugBuild Then
 		    Request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-xojoscript")
 		  #Else
-		    Request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-xojoscript")
+		    Request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-xojoscript")
 		  #EndIf
 		  
 		  // Map the request to a file.
@@ -23,10 +23,6 @@ Protected Module DemoXojoScript
 		    Return
 		    
 		  End If
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
