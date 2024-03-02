@@ -18,9 +18,6 @@ Protected Module DemoMultipartForms
 
 	#tag Method, Flags = &h0
 		Sub RequestProcess(request As Express.Request)
-		  #Pragma Warning "TODO: There is a bug in this demo. I can't get it to work as is"
-		  ' Not sure if it's to do with browser pre-fetching resources?
-		  
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
 		  request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-multipart-forms")

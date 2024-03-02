@@ -57,19 +57,14 @@ Inherits SSLSocket
 		    
 		  End If
 		  
-		  // Get the request data.
-		  DataGet
-		  
-		  // Get the body from the data.
-		  BodyGet
 		  
 		  // Get the length of the content that has been received.
-		  Var contentReceivedLength As Integer = Body.Bytes
+		  Var DataReceivedLength As Integer = Lookahead.LenB
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
 		  // and sending large entities.
-		  If contentReceivedLength > MaxEntitySize Then
+		  If DataReceivedLength > MaxEntitySize Then
 		    Response.Status = "413 Request Entity Too Large"
 		    Response.Content = "Error 413: Request Entity Too Large"
 		    ResponseReturn
@@ -77,17 +72,8 @@ Inherits SSLSocket
 		  End If
 		  
 		  // If we haven't received all of the content...
-		  If contentReceivedLength < ContentLength Then
+		  If DataReceivedLength < ContentLength Then
 		    // Continue receiving data...
-		    Return
-		  End If
-		  
-		  // If the body is not the expected length we have a problem
-		  If contentReceivedLength <> ContentLength Then
-		    System.Log System.LogLevelCritical, CurrentMethodName + " Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString
-		    Response.Status = "400 Bad Request"
-		    Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
-		    ResponseReturn
 		    Return
 		  End If
 		  
@@ -187,13 +173,15 @@ Inherits SSLSocket
 		    requestParts.RemoveAt(0)
 		  End If
 		  
+		  // Merge the remaining parts to form the entire request body.
+		  Body = String.FromArray(requestParts, EndOfLine.Windows + EndOfLine.Windows)
+		  
 		  // If what should be the body is not = Content-Length, don't set the body value.
-		  If requestParts(0).Bytes <> ContentLength Then
+		  If Body.Bytes <> ContentLength Then
+		    Body = ""
 		    Return
 		  End If
 		  
-		  // Merge the remaining parts to form the entire request body.
-		  Body = String.FromArray(requestParts, EndOfLine.Windows + EndOfLine.Windows)
 		  
 		  
 		End Sub
@@ -910,8 +898,23 @@ Inherits SSLSocket
 		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
 		  Try
+		    // Get the request data.
+		    DataGet
+		    
+		    // Get the body from the data.
+		    BodyGet
+		    
 		    // Create the POST and Files dictionaries.
 		    BodyProcess
+		    
+		    // If the body is not the expected length we have a problem
+		    If Body.Bytes <> ContentLength Then
+		      System.Log System.LogLevelCritical, CurrentMethodName + " Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString
+		      Response.Status = "400 Bad Request"
+		      Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
+		      ResponseReturn
+		      Return
+		    End If
 		    
 		    // Hand the request off to the RequestHandler.
 		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler

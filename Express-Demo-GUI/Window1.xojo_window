@@ -86,6 +86,7 @@ Begin DesktopWindow Window1
       Width           =   450
    End
    Begin DesktopSeparator sepDemo
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -98,6 +99,7 @@ Begin DesktopWindow Window1
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
+      PanelIndex      =   0
       Scope           =   2
       TabIndex        =   2
       TabPanelIndex   =   0
@@ -106,6 +108,10 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Visible         =   True
       Width           =   600
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
    Begin DesktopLabel labExpress
       AllowAutoDeactivate=   True
@@ -203,6 +209,7 @@ Begin DesktopWindow Window1
       Width           =   120
    End
    Begin DesktopSeparator sepExpress
+      Active          =   False
       AllowAutoDeactivate=   True
       AllowTabStop    =   True
       Enabled         =   True
@@ -215,6 +222,7 @@ Begin DesktopWindow Window1
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
+      PanelIndex      =   0
       Scope           =   2
       TabIndex        =   6
       TabPanelIndex   =   0
@@ -223,6 +231,10 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Visible         =   True
       Width           =   600
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
    End
    Begin Timer timGUI
       Enabled         =   True
@@ -559,6 +571,8 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub SelectionChanged(item As DesktopMenuItem)
+		  #Pragma unused item
+		  
 		  If (Not Self.IsOpened) Then Return
 		  
 		  Self.StartDemo
