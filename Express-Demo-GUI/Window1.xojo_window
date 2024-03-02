@@ -20,16 +20,324 @@ Begin DesktopWindow Window1
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "Express Demo"
    Type            =   0
    Visible         =   True
    Width           =   600
+   Begin DesktopLabel labDemo
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Demo:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopPopupMenu lstDemo
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   132
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      SelectedRowIndex=   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   448
+   End
+   Begin DesktopSeparator sepDemo
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   52
+      Transparent     =   False
+      Visible         =   True
+      Width           =   600
+   End
+   Begin DesktopLabel labExpress
+      AllowAutoDeactivate=   True
+      Bold            =   True
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Express"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   75
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopLabel labExpressStatus
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   132
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "..."
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   75
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   316
+   End
+   Begin DesktopButton Button1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Start | Stop"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   460
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   75
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin DesktopSeparator sepDemo1
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Scope           =   2
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   105
+      Transparent     =   False
+      Visible         =   True
+      Width           =   600
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  Self.Start
+		  
+		End Sub
+	#tag EndEvent
+
+
+	#tag Method, Flags = &h21
+		Private Sub Start()
+		  If (Server <> Nil) Then
+		    Server.StopListening
+		    Server = Nil
+		  End If
+		  
+		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
+		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
+		  Select Case lstDemo.RowTagAt(lstDemo.SelectedRowIndex)
+		    
+		  Case 1
+		    Server = New Express.Server(AddressOf DemoHelloWorld.RequestProcess)
+		    
+		  Case 2
+		    Server = New Express.Server(AddressOf DemoHelloWorld.SimplePlainTextResponse)
+		    
+		  Case 3
+		    Server = New Express.Server(AddressOf DemoCaching.RequestProcess)
+		    
+		    // Configure server-level caching.
+		    // This is used by the DemoCaching demo module.
+		    Server.CachingEnabled = True
+		    
+		  Case 4
+		    Server = New Express.Server(AddressOf DemoMultipartForms.RequestProcess)
+		    
+		  Case 5
+		    Server = New Express.Server(AddressOf DemoSessions.RequestProcess)
+		    
+		    // Configure server-level session management. 
+		    // This is used by the DemoSessions demo module.
+		    Server.SessionsEnabled = True
+		    
+		  Case 6
+		    Server = New Express.Server(AddressOf DemoTemplatesClientSide.RequestProcess)
+		    
+		  Case 7
+		    Server = New Express.Server(AddressOf DemoTemplatesServerSide.RequestProcess)
+		    
+		  Case 8
+		    Server = New Express.Server(AddressOf DemoWebSockets.RequestProcess)
+		    
+		  Case 9
+		    Server = New Express.Server(AddressOf DemoXojoScript.RequestProcess)
+		    
+		  Else
+		    Server = Nil
+		    MessageBox "Invalid Demo"
+		    Return
+		    
+		  End Select
+		  
+		  Server.Start
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private Server As Express.Server
+	#tag EndProperty
+
+
 #tag EndWindowCode
 
+#tag Events lstDemo
+	#tag Event
+		Sub Opening()
+		  Me.RemoveAllRows
+		  
+		  Me.AddRow "Hello World"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 1
+		  
+		  Me.AddRow "Hello World (simple plain text response)"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 2
+		  
+		  Me.AddRow "Caching (Drummers)"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 3
+		  
+		  Me.AddRow "Multipart Forms"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 4
+		  
+		  Me.AddRow "Sessions"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 5
+		  
+		  Me.AddRow "Templates Client Side"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 6
+		  
+		  Me.AddRow "Templates Server Side"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 7
+		  
+		  Me.AddRow "WebSockets (simple chat app)"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 8
+		  
+		  Me.AddRow "XojoScript"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = 9
+		  
+		  Me.SelectedRowIndex = 0
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"
