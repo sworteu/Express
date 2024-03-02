@@ -8,7 +8,7 @@ Protected Module DemoMultipartForms
 		  
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-multipart-forms")
+		  request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-multipart-forms")
 		  
 		  // If content has been posted...
 		  If request.Method = "POST" Then

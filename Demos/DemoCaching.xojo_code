@@ -5,7 +5,7 @@ Protected Module DemoCaching
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-caching")
+		  request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-caching")
 		  
 		  // If this is a request for the root.
 		  If request.Path = "/" or request.Path = "/index.html" Then

@@ -6,7 +6,7 @@ Protected Module DemoXojoScript
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
 		  #If DebugBuild Then
-		    Request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-xojoscript")
+		    Request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-xojoscript")
 		  #Else
 		    Request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-xojoscript")
 		  #EndIf

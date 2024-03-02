@@ -6,7 +6,7 @@
 					AppliesTo = 0
 					Architecture = 0
 					Target = 0
-					Destination = 0
+					Destination = 1
 					Subdirectory = 
 					FolderItem = Li4vaHRkb2NzLw==
 					FolderItem = Li4vZGF0YS8=
@@ -20,7 +20,7 @@
 					AppliesTo = 0
 					Architecture = 0
 					Target = 0
-					Destination = 0
+					Destination = 1
 					Subdirectory = 
 					FolderItem = Li4vaHRkb2NzLw==
 					FolderItem = Li4vZGF0YS8=
@@ -37,7 +37,7 @@
 					AppliesTo = 0
 					Architecture = 0
 					Target = 0
-					Destination = 0
+					Destination = 1
 					Subdirectory = 
 					FolderItem = Li4vaHRkb2NzLw==
 					FolderItem = Li4vZGF0YS8=

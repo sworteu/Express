@@ -6,7 +6,7 @@ Protected Module DemoTemplatesClientSide
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
 		  #If DebugBuild Then
-		    request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-client-side")
+		    request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-templates-client-side")
 		  #Else
 		    request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-templates-client-side")
 		  #EndIf
