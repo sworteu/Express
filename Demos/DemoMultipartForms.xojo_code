@@ -1,6 +1,21 @@
 #tag Module
 Protected Module DemoMultipartForms
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
+	#tag Method, Flags = &h21
+		Private Function GetOrCreateUploadsFolder() As FolderItem
+		  Var base As FolderItem = SpecialFolder.Desktop
+		  If (base = Nil) Or (Not base.IsFolder) Or (Not base.Exists) Then
+		    base = SpecialFolder.UserHome
+		  End If
+		  
+		  base = base.Child("express-demo-uploads")
+		  If (Not base.Exists) Then base.CreateFolder
+		  
+		  Return base
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub RequestProcess(request As Express.Request)
 		  #Pragma Warning "TODO: There is a bug in this demo. I can't get it to work as is"
@@ -17,7 +32,7 @@ Protected Module DemoMultipartForms
 		    Var fp As New FormProcessor(request)
 		    
 		    // This is the folder that files will be uploaded to.
-		    fp.UploadFolder = App.ExecutableFile.Parent.Parent.Child("uploads")
+		    fp.UploadFolder = GetOrCreateUploadsFolder
 		    
 		    // This is an optional prefix that will be added to files that are saved.
 		    'fp.FilenamePrefix = Express.UUIDGenerate

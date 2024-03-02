@@ -190,7 +190,9 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 537461727473207468652073657276657220736F2074686174206974206C697374656E7320666F7220696E636F6D696E672072657175657374732E
 		Sub Start()
-		  /// Starts the server so that it listens for incoming requests.
+		  // Starts the server so that it listens for incoming requests.
+		  ServerIsRunning = True
+		  
 		  If (StartTimestamp = Nil) Then
 		    StartTimestamp = DateTime.Now
 		  End If
@@ -224,22 +226,44 @@ Inherits ServerSocket
 		    ServerInfoDisplay
 		  End If
 		  
-		  // Speed up if we have more than 10 connections active to keep the server responsive.
-		  Var connCount As Integer = 0
-		  While True
-		    connCount = ConnectedSocketCount
-		    If connCount > 10 Then
-		      // Speed up.
-		      If Multithreading Then
-		        App.DoEvents(0) // Fast switch between threads after doing events
+		  #If TargetConsole Then
+		    // Rock on.
+		    
+		    // Speed up if we have more than 10 connections active to keep the server responsive.
+		    Var connCount As Integer = 0
+		    While ServerIsRunning
+		      connCount = ConnectedSocketCount
+		      If connCount > 10 Then
+		        // Speed up.
+		        If Multithreading Then
+		          App.DoEvents(0) // Fast switch between threads after doing events
+		        Else
+		          App.DoEvents(-1) // Fast do events (default)
+		        End If
 		      Else
-		        App.DoEvents(-1) // Fast do events (default)
+		        // Slow down a little
+		        App.DoEvents(2)
 		      End If
-		    Else
-		      // Slow down a little
-		      App.DoEvents(2)
-		    End If
-		  Wend
+		    Wend
+		  #EndIf
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Stop()
+		  Me.StopListening
+		  
+		  // Close Active Connections
+		  Var sActiveConnections() As TCPSocket = Me.ActiveConnections()
+		  For Each socket As TCPSocket In sActiveConnections
+		    socket.Close
+		  Next
+		  
+		  // Exit the 'Rock on' Loop (in Method 'Start')
+		  ServerIsRunning = False
+		  StartTimestamp = Nil
+		  
 		End Sub
 	#tag EndMethod
 
@@ -335,6 +359,10 @@ Inherits ServerSocket
 
 	#tag Property, Flags = &h0, Description = 54727565206966207468697320736572766572206973207573696E672053534C2E
 		Secure As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private ServerIsRunning As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5468652073657276657227732073657373696F6E20656E67696E652E

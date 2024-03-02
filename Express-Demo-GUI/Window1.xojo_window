@@ -171,7 +171,7 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   205
    End
-   Begin DesktopButton Button1
+   Begin DesktopButton btnStartStop
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -401,7 +401,7 @@ End
 		Sub Opening()
 		  IsOpened = True
 		  
-		  Self.Start
+		  Self.StartDemo
 		  
 		End Sub
 	#tag EndEvent
@@ -409,10 +409,22 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Start()
+		  If (Server = Nil) Then
+		    Me.StartDemo
+		    Return
+		  End If
+		  
+		  Server.Start
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub StartDemo()
 		  If (Not Self.IsOpened) Then Return
 		  
 		  If (Server <> Nil) Then
-		    Server.StopListening
+		    Me.Stop
 		    Server = Nil
 		  End If
 		  
@@ -472,16 +484,29 @@ End
 		  Dim sStatus As String = "---"
 		  Dim sPort As String = "---"
 		  Dim sActiveConnections As String = "---"
+		  Dim sAction As String = "Start"
 		  
 		  If (Server <> Nil) Then
 		    sStatus = If(Server.IsListening, "Started", "Stopped")
 		    sPort = Server.Port.ToString
 		    sActiveConnections = Server.ConnectedSocketCount.ToString
+		    sAction = If(Server.IsListening, "Stop", "Start")
 		  End If
 		  
 		  If (labExpressStatus.Text <> sStatus) Then labExpressStatus.Text = sStatus
 		  If (labExpressPort.Text <> sPort) Then labExpressPort.Text = sPort
-		  if (labExpressActiveConnections.Text <> sActiveConnections) then labExpressActiveConnections.Text = sActiveConnections
+		  If (labExpressActiveConnections.Text <> sActiveConnections) Then labExpressActiveConnections.Text = sActiveConnections
+		  If (btnStartStop.Caption <> sAction) Then btnStartStop.Caption = sAction
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub Stop()
+		  If (Server = Nil) Then Return
+		  
+		  Server.Stop
+		  
 		End Sub
 	#tag EndMethod
 
@@ -536,7 +561,26 @@ End
 		Sub SelectionChanged(item As DesktopMenuItem)
 		  If (Not Self.IsOpened) Then Return
 		  
-		  Self.Start
+		  Self.StartDemo
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnStartStop
+	#tag Event
+		Sub Pressed()
+		  If (Not Self.IsOpened) Then Return
+		  
+		  If (Self.Server = Nil) Then
+		    Self.StartDemo
+		    Return
+		  End If
+		  
+		  If Self.Server.IsListening Then
+		    Self.Stop
+		  Else
+		    Self.Start
+		  End If
 		  
 		End Sub
 	#tag EndEvent

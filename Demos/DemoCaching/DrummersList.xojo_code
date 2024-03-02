@@ -27,7 +27,7 @@ Protected Class DrummersList
 		  /// Opens a connection to the SQLite database.
 		  
 		  // Create a folderitem that points to the database file.
-		  DatabaseFile = App.ExecutableFile.Parent.Parent.Child("data").Child("drummers.sqlite")
+		  DatabaseFile = SpecialFolder.Resources.Child("data").Child("drummers.sqlite")
 		  
 		  // Create a new database instance.
 		  Database = New SQLiteDatabase
