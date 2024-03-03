@@ -7,6 +7,8 @@ Protected Module Express
 		  
 		  Var arguments As New Dictionary
 		  
+		  If (args = Nil) Then Return arguments
+		  
 		  For Each argument As String In args
 		    
 		    Var argParts() As String = argument.Split("=")
@@ -1117,7 +1119,7 @@ Protected Module Express
 		desktop app.
 		
 		The Server's Constructor method has changed slightly so that default ServerSocket
-		properties are set. The default Port is 8080, MaximumSocketsConnected default is 200
+		properties are set. The default Port is 80, MaximumSocketsConnected default is 200
 		and MinimumSocketsAvailable default is 50. Command line arguments are still supported.
 		
 		The MajorVersion, MinorVersion, and BugVersion constants have been removed. Use
@@ -1643,7 +1645,7 @@ Protected Module Express
 		Fixes: Multipart Forms Demo
 		---------------------------
 		The issue had been in the Express.Request.
-		- DataAvailable: uses Lookahead.LenB to determine if the Content has been fully received
+		- DataAvailable: uses Lookahead.Bytes to determine if the Content has been fully received
 		- Fix in Method BodyGet, so that Multipart Form Content is no longer stripped
 		- DataGet and BodyGet in now called in Method "Process"
 		

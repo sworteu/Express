@@ -774,42 +774,44 @@ End
 		  
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
+		  Var args() As String = Array("--Port=8080")
+		  
 		  Select Case lstDemo.RowTagAt(lstDemo.SelectedRowIndex)
 		    
 		  Case 1
-		    Server = New Express.Server(AddressOf DemoHelloWorld.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoHelloWorld.RequestProcess)
 		    
 		  Case 2
-		    Server = New Express.Server(AddressOf DemoHelloWorld.SimplePlainTextResponse)
+		    Server = New Express.Server(args, AddressOf DemoHelloWorld.SimplePlainTextResponse)
 		    
 		  Case 3
-		    Server = New Express.Server(AddressOf DemoCaching.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoCaching.RequestProcess)
 		    
 		    // Configure server-level caching.
 		    // This is used by the DemoCaching demo module.
 		    Server.CachingEnabled = True
 		    
 		  Case 4
-		    Server = New Express.Server(AddressOf DemoMultipartForms.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoMultipartForms.RequestProcess)
 		    
 		  Case 5
-		    Server = New Express.Server(AddressOf DemoSessions.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoSessions.RequestProcess)
 		    
 		    // Configure server-level session management. 
 		    // This is used by the DemoSessions demo module.
 		    Server.SessionsEnabled = True
 		    
 		  Case 6
-		    Server = New Express.Server(AddressOf DemoTemplatesClientSide.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoTemplatesClientSide.RequestProcess)
 		    
 		  Case 7
-		    Server = New Express.Server(AddressOf DemoTemplatesServerSide.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoTemplatesServerSide.RequestProcess)
 		    
 		  Case 8
-		    Server = New Express.Server(AddressOf DemoWebSockets.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoWebSockets.RequestProcess)
 		    
 		  Case 9
-		    Server = New Express.Server(AddressOf DemoXojoScript.RequestProcess)
+		    Server = New Express.Server(args, AddressOf DemoXojoScript.RequestProcess)
 		    
 		  Else
 		    Server = Nil
@@ -916,7 +918,7 @@ End
 		  Me.AddRow "XojoScript"
 		  Me.RowTagAt(Me.LastAddedRowIndex) = 9
 		  
-		  Me.SelectedRowIndex = 0
+		  Me.SelectRowWithTag(1)
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -992,7 +994,7 @@ End
 		  Me.AddRow "Debug"
 		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Debug
 		  
-		  Me.SelectedRowIndex = Me.LastAddedRowIndex
+		  Me.SelectRowWithTag(Express.LogLevel.Info)
 		  
 		End Sub
 	#tag EndEvent

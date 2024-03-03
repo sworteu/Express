@@ -3,6 +3,13 @@ Protected Class App
 Inherits ConsoleApplication
 	#tag Event
 		Function Run(args() as String) As Integer
+		  // Use Port 8080 for this demo if not specified otherwise
+		  Var arguments As Dictionary = Express.ArgsToDictionary(args)
+		  If (Not arguments.HasKey("--Port")) Then
+		    args.Add("--Port=8080")
+		  End If
+		  
+		  // Express Demo
 		  Print "----------------"
 		  Print "- Express-Demo -"
 		  Print "----------------"
