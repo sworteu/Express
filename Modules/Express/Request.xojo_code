@@ -165,7 +165,7 @@ Inherits SSLSocket
 		  /// Gets the request body.
 		  
 		  // Split the data into headers and the body.
-		  Var requestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var requestParts() As String = Data.Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		  // We no longer need the data that was received, so clear it.
 		  Data = ""
@@ -182,7 +182,7 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Merge the remaining parts to form the entire request body.
-		  Body = String.FromArray(requestParts, EndOfLine.Windows + EndOfLine.Windows)
+		  Body = String.FromArray(requestParts, EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		  // If what should be the body is not = Content-Length, don't set the body value.
 		  If Body.Bytes <> ContentLength Then
@@ -401,7 +401,7 @@ Inherits SSLSocket
 		  End If
 		  html.Add(Body + "</p>" )
 		  
-		  Return String.FromArray(html, EndOfLine.Windows)
+		  Return String.FromArray(html, EndOfLine.CRLF)
 		  
 		End Function
 	#tag EndMethod
@@ -679,7 +679,7 @@ Inherits SSLSocket
 		  For i As Integer = 1 To lastPartsIndex
 		    
 		    // Split the part into its header and content.
-		    Var partComponents() As String = parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
+		    Var partComponents() As String = parts(i).Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		    
 		    // If this part has no content then continue.
 		    If partComponents.LastIndex < 1 Then
@@ -699,7 +699,7 @@ Inherits SSLSocket
 		    // Example Header:
 		    //   Content-Disposition: form-data; name="file1"; filename="woot.png"
 		    //   Content-Type: image/png
-		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.Windows)
+		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.CRLF)
 		    
 		    // Loop over the part headers.
 		    For Each partHeader As String In partHeaders
@@ -829,7 +829,7 @@ Inherits SSLSocket
 		  /// This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
-		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		  // If the request is valid...
 		  If requestParts.LastIndex > -1 Then
@@ -838,7 +838,7 @@ Inherits SSLSocket
 		    HeadersRaw = requestParts(0)
 		    
 		    // Split the headers into an array of strings.
-		    HeadersRawArray = HeadersRaw.Split(EndOfLine.Windows)
+		    HeadersRawArray = HeadersRaw.Split(EndOfLine.CRLF)
 		    
 		  End If
 		  

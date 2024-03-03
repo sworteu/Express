@@ -1026,7 +1026,7 @@ Protected Module Express
 		    boundary = "--" + uniqueBoundary + "-bOuNdArY"
 		  End If
 		  
-		  Static CRLF As String = EndOfLine.Windows
+		  Static CRLF As String = EndOfLine.CRLF
 		  Var data As New MemoryBlock(0)
 		  Var out As New BinaryStream(data)
 		  
