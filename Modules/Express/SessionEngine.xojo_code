@@ -43,6 +43,7 @@ Inherits Timer
 		  
 		  // Removed the expired sessions.
 		  For Each sessionID As String In expiredSessionIDs
+		    Express.EventLog("SessionEngine: Removing expired SessionID " + SessionID, Express.LogLevel.Debug)
 		    sessions.Remove(sessionID)
 		  Next sessionID
 		  
@@ -185,6 +186,8 @@ Inherits Timer
 		  
 		  // If the session still exists...
 		  If Sessions.HasKey(session.Value("SessionID")) Then
+		    
+		    Express.EventLog("SessionEngine: Terminate SessionID " + Session.Value("SessionID"), Express.LogLevel.Debug)
 		    
 		    // Remove the session from the array of sessions.
 		    Sessions.Remove(session.Value("SessionID"))

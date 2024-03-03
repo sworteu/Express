@@ -7,12 +7,15 @@ Inherits SSLSocket
 		  // A connection has been made to one of the sockets.
 		  // The request's data will be read, and when that's complete, the DataAvailable event will occur.
 		  // We are implementing this to prevent it be handled by the user.
+		  
+		  Express.EventLog("Socket " + SocketID.ToString + ": Connected", Express.LogLevel.Debug)
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub DataAvailable()
 		  /// Data has been received.
+		  Express.EventLog("Socket " + SocketID.ToString + ": Data Available", Express.LogLevel.Debug)
 		  
 		  // Increment the data received counter.
 		  DataReceivedCount = DataReceivedCount + 1
@@ -23,6 +26,7 @@ Inherits SSLSocket
 		  
 		  // If this socket is servicing an active Websocket...
 		  If WSStatus = "Active" Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Active WebSocket - Get Message", Express.LogLevel.Debug)
 		    
 		    // Get the incoming message.
 		    WSMessageGet
@@ -31,6 +35,8 @@ Inherits SSLSocket
 		    If Self.IsConnected = False Then
 		      Return
 		    End If
+		    
+		    Express.EventLog("Socket " + SocketID.ToString + ": Active WebSocket - Process", Express.LogLevel.Debug)
 		    
 		    // Hand the request off to the RequestHandler.
 		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
@@ -65,6 +71,8 @@ Inherits SSLSocket
 		  // This prevents a client from spoofing of the Content-Length header
 		  // and sending large entities.
 		  If DataReceivedLength > MaxEntitySize Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Request Entity Too Large", Express.LogLevel.Critical)
+		    
 		    Response.Status = "413 Request Entity Too Large"
 		    Response.Content = "Error 413: Request Entity Too Large"
 		    ResponseReturn
@@ -74,11 +82,14 @@ Inherits SSLSocket
 		  // If we haven't received all of the content...
 		  If DataReceivedLength < ContentLength Then
 		    // Continue receiving data...
+		    Express.EventLog("Socket " + SocketID.ToString + ": Continue receiving data...", Express.LogLevel.Debug)
 		    Return
 		  End If
 		  
 		  // Is the server using threads?
 		  If Multithreading Then
+		    
+		    Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request in Thread", Express.LogLevel.Debug)
 		    
 		    // Hand the request off to a RequestThread instance for processing.
 		    RequestThread = New Express.RequestThread
@@ -89,6 +100,7 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Process the request immediately, on the primary thread.
+		  Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request", Express.LogLevel.Debug)
 		  Process
 		  
 		End Sub
@@ -103,33 +115,28 @@ Inherits SSLSocket
 		  Select Case err.ErrorNumber
 		    
 		  Case 102
-		    
-		    System.DebugLog "Socket " + SocketID.totext + ": Disconnected / LostConnection"
+		    Express.EventLog("Socket " + SocketID.ToString + ": Disconnected / LostConnection", Express.LogLevel.Debug)
 		    
 		    If Multithreading And (Me.RequestThread <> Nil) And (Me.RequestThread.ThreadState <> Thread.ThreadStates.NotRunning) Then
-		      System.DebugLog "Socket " + SocketID.totext + ": Killing RequestThread"
+		      Express.EventLog("Socket " + SocketID.ToString + ": Killing RequestThread", Express.LogLevel.Debug)
 		      Me.RequestThread.Stop
 		    End If
 		    
 		    Me.Close
 		    
 		  Else
-		    
-		    System.DebugLog "Socket " + SocketID.ToString + " Error: " + err.ErrorNumber.ToString
+		    Express.EventLog("Socket " + SocketID.ToString + " Error: " + err.Message + " (" + err.ErrorNumber.ToString + ")", Express.LogLevel.Error)
 		    
 		  End Select
 		  
-		  If err.ErrorNumber <> 102 Then
-		    
-		  End If
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub SendComplete(UserAborted As Boolean)
-		  /// The response has been sent back to the client.
-		  
 		  #Pragma Unused UserAborted
+		  /// The response has been sent back to the client.
+		  Express.EventLog("Socket " + SocketID.ToString + ": SendComplete", Express.LogLevel.Debug)
 		  
 		  // If persistent connections are disabled...
 		  If KeepAlive = False Then
@@ -224,8 +231,7 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0, Description = 436C6F7365732074686520736F636B657420616E642072657365747320637573746F6D2070726F706572746965732E
 		Sub Close()
 		  /// Closes the socket and resets custom properties.
-		  
-		  System.DebugLog "Socket " + SocketID.totext + ": Close"
+		  Express.EventLog("Socket " + SocketID.toString + ": Close", Express.LogLevel.Debug)
 		  
 		  Reset
 		  
@@ -880,7 +886,7 @@ Inherits SSLSocket
 		  // Set the default resources folder and index filenames.
 		  // These are used by the "MapToFile" method.
 		  StaticPath = Specialfolder.Resources.Child("htdocs")
-		  System.Log System.LogLevelDebug, "StaticPath = " + StaticPath.NativePath
+		  Express.EventLog("Request.StaticPath = " + StaticPath.NativePath, Express.LogLevel.Debug)
 		  IndexFilenames = Array("index.html", "index.htm")
 		  
 		  // Initlialise the `Custom` dictionary.
@@ -909,7 +915,8 @@ Inherits SSLSocket
 		    
 		    // If the body is not the expected length we have a problem
 		    If Body.Bytes <> ContentLength Then
-		      System.Log System.LogLevelCritical, CurrentMethodName + " Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString
+		      Express.EventLog("Bad Request: Unexpected Content Length. Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString, Express.LogLevel.Critical)
+		      
 		      Response.Status = "400 Bad Request"
 		      Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
 		      ResponseReturn
@@ -1034,9 +1041,10 @@ Inherits SSLSocket
 		      
 		      Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		      
-		      System.DebugLog "ResponseReturn Exception: Socket " + SocketID.ToString _
+		      Express.EventLog("ResponseReturn Exception: Socket " + SocketID.ToString _
 		      + ", Last Error: " + LastErrorCode.ToString _
-		      + ", Exception Type: " + typeInfo.Name
+		      + ", Exception Type: " + typeInfo.Name, _
+		      Express.LogLevel.Error)
 		      
 		    End Try
 		    

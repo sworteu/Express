@@ -14,16 +14,17 @@ Inherits ServerSocket
 		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
+		    Express.EventLog("Server: Adding Socket " + NewSocket.SocketID.ToString, Express.LogLevel.Debug)
+		    
 		    // Return the socket.
 		    Return newSocket
 		    
 		  Catch e As RunTimeException
 		    
-		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
-		    #Pragma Unused typeInfo
+		    'Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		    '#Pragma Unused typeInfo
 		    
-		    System.DebugLog "Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
-		    
+		    Express.EventLog("Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString, Express.LogLevel.Error)
 		  End Try
 		  
 		End Function
@@ -31,8 +32,13 @@ Inherits ServerSocket
 
 	#tag Event
 		Sub Error(ErrorCode As Integer, err As RuntimeException)
-		  #Pragma Unused err
-		  System.DebugLog "Express Server Error: Code: " + ErrorCode.ToString
+		  Express.EventLog("Express Server Error: Code: " + ErrorCode.ToString, Express.LogLevel.Error)
+		  
+		  If (err <> Nil) Then
+		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(err)
+		    
+		    Express.EventLog("Express Server " + typeInfo.Name + ": " + err.Message + " (Code: " + err.ErrorNumber.ToString + ")", Express.LogLevel.Error)
+		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -145,11 +151,9 @@ Inherits ServerSocket
 		Sub ServerInfoDisplay()
 		  /// Displays server configuration info.
 		  
+		  Express.EventLog(Name + " has started... ", Express.LogLevel.Always)
+		  
 		  Var info() As String
-		  
-		  info.Add(EndOfLine)
-		  
-		  info.Add(Name + " has started... ")
 		  info.Add("→ Xojo Version: " + XojoVersionString)
 		  info.Add("→ Express Version: " + Express.VERSION_STRING)
 		  info.Add("→ Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
@@ -178,12 +182,12 @@ Inherits ServerSocket
 		    Next entry
 		  End If
 		  
-		  Var log_output As String = String.FromArray(info, EndOfLine)
-		  System.Log( System.LogLevelNotice, log_output )
+		  For Each infoLine As String In info
+		    Express.EventLog(infoLine, Express.LogLevel.Always)
+		  Next
 		  
-		  #If TargetConsole Then
-		    Print(log_output)
-		  #EndIf
+		  Express.EventLog("", Express.LogLevel.Always)
+		  Express.EventLog("", Express.LogLevel.Always)
 		  
 		End Sub
 	#tag EndMethod

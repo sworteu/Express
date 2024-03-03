@@ -148,6 +148,64 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub EventLog(Message As String, Level As Express.LogLevel)
+		  // Logs an event.
+		  // See LogLevel enumeration for log levels.
+		  
+		  
+		  If (CType(EventLogLevel, Integer) = CType(Express.LogLevel.None, Integer)) Then
+		    //Configured to be silent, so don't output anything
+		    Return
+		  End If
+		  
+		  If (CType(Level, Integer) <> CType(Express.LogLevel.Always, Integer)) And _
+		    (CType(Level, Integer) > CType(EventLogLevel, Integer)) Then
+		    //EventLog is not 'always', and it's importance is less relevant than configured to be logged
+		    //so don't show this type of Log
+		    Return
+		  End If
+		  
+		  //Forward Message if we have an EventLogHandler
+		  If (EventLogHandler <> Nil) And EventLogHandler.Invoke(Message, Level) Then
+		    //EventLogHandler is handling the Log
+		    Return
+		  End If
+		  
+		  
+		  //Without an EventLogHandler - do Log now
+		  Select Case CType(Level, Integer)
+		  Case CType(Express.LogLevel.None, Integer)
+		    Return
+		  Case CType(Express.LogLevel.Critical, Integer)
+		    Message = "CRITICAL: " + Message
+		  Case CType(Express.LogLevel.Error, Integer)
+		    Message = "ERROR: " + Message
+		  Case CType(Express.LogLevel.Debug, Integer)
+		    Message = "DEBUG: " + Message
+		  Case CType(Express.LogLevel.Warning, Integer)
+		    Message = "WARNING: " + Message
+		  End Select
+		  
+		  
+		  #If TargetConsole Then
+		    stdout.WriteLine Message
+		    stdout.Flush
+		  #Else
+		    // Xojo Documentation: System.DebuLog
+		    'Outputs msg To the System debug Log.
+		    'On Windows, it logs To the debugger, so programs like DebugView can be used To view the String. On macOS, it logs To the Console. On Linux, it prints the message To stderr.
+		    'You can also view DebugLog output Using the Messages panel In Xojo which Is displayed by clicking the Messages icon at the bottom Of the Xojo workspace Window.
+		    System.DebugLog Message
+		  #EndIf
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function EventLogHandlerDelegate(Message As String, Level As Express . LogLevel) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h1, Description = 526561647320616E642072657475726E732074686520636F6E74656E7473206F6620612066696C652C20676976656E206120466F6C6465724974656D2E204966206066602063616E6E6F74206265207265616420666F7220776861746576657220726561736F6E207468656E20616E20656D70747920737472696E672069732072657475726E65642E
 		Protected Function FileRead(f As FolderItem, encoding As TextEncoding = Nil) As String
 		  /// Reads and returns the contents of a file, given a FolderItem.
@@ -860,8 +918,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F6620616E2053534C436F6E6E656374696F6E547970652E
-		Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
+	#tag Method, Flags = &h1, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F6620616E2053534C436F6E6E656374696F6E547970652E
+		Protected Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
 		  /// Returns a string representation of an SSLConnectionType.
 		  
 		  Var output As String
@@ -944,7 +1002,7 @@ Protected Module Express
 		    db.Close
 		    Return GUID
 		  Catch error As DatabaseException
-		    System.DebugLog("SQLite Error: " + error.Message)
+		    Express.EventLog("UUIDGenerate - SQLite Error: " + error.Message, Express.LogLevel.Error)
 		  End Try
 		  
 		End Function
@@ -1635,6 +1693,14 @@ Protected Module Express
 	#tag EndNote
 
 
+	#tag Property, Flags = &h0
+		EventLogHandler As Express.EventLogHandlerDelegate
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		EventLogLevel As LogLevel = Express.LogLevel.Debug
+	#tag EndProperty
+
 	#tag Property, Flags = &h1, Description = 546865204461746554696D652074686520617070206C61756E636865642E204D75737420626520736574206D616E75616C6C7920647572696E6720746865206C61756E6368206F6620796F7572206170706C69636174696F6E2E
 		Protected StartTimestamp As DateTime
 	#tag EndProperty
@@ -1642,6 +1708,17 @@ Protected Module Express
 
 	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.0.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
+
+
+	#tag Enum, Name = LogLevel, Flags = &h0
+		None = 0
+		  Always = 1
+		  Critical = 2
+		  Error = 3
+		  Warning = 4
+		  Info = 5
+		Debug = 6
+	#tag EndEnum
 
 
 	#tag ViewBehavior
@@ -1684,6 +1761,23 @@ Protected Module Express
 			InitialValue="0"
 			Type="Integer"
 			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EventLogLevel"
+			Visible=false
+			Group="Behavior"
+			InitialValue="Express.LogLevel.Debug"
+			Type="LogLevel"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - None"
+				"1 - Always"
+				"2 - Critical"
+				"3 - Error"
+				"4 - Warning"
+				"5 - Info"
+				"6 - Debug"
+			#tag EndEnumValues
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module
