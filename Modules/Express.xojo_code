@@ -197,7 +197,7 @@ Protected Module Express
 		    stdout.WriteLine Message
 		    stdout.Flush
 		  #Else
-		    // Xojo Documentation: System.DebuLog
+		    // Xojo Documentation: System.DebugLog
 		    'Outputs msg To the System debug Log.
 		    'On Windows, it logs To the debugger, so programs like DebugView can be used To view the String. On macOS, it logs To the Console. On Linux, it prints the message To stderr.
 		    'You can also view DebugLog output Using the Messages panel In Xojo which Is displayed by clicking the Messages icon at the bottom Of the Xojo workspace Window.
