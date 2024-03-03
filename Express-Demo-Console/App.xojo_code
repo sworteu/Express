@@ -312,10 +312,12 @@ Inherits ConsoleApplication
 		    Message = "CRITICAL: " + Message
 		  Case CType(Express.LogLevel.Error, Integer)
 		    Message = "ERROR: " + Message
-		  Case CType(Express.LogLevel.Debug, Integer)
-		    Message = "DEBUG: " + Message
 		  Case CType(Express.LogLevel.Warning, Integer)
 		    Message = "WARNING: " + Message
+		  Case CType(Express.LogLevel.Info, Integer)
+		    Message = "INFO: " + Message
+		  Case CType(Express.LogLevel.Debug, Integer)
+		    Message = "DEBUG: " + Message
 		    
 		  End Select
 		  
