@@ -737,7 +737,7 @@ End
 		  
 		  #Pragma BreakOnExceptions False
 		  Try
-		    Var lastLineNumber As Integer = EventLogEntries.LineNumber(EventLogEntries.Text.Len)
+		    Var lastLineNumber As Integer = EventLogEntries.LineNumber(EventLogEntries.Text.Length)
 		    If (lastLineNumber > 2) Then
 		      lastLineNumber = lastLineNumber - 1
 		      EventLogEntries.VerticalScrollPosition = lastLineNumber

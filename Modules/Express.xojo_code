@@ -189,12 +189,11 @@ Protected Module Express
 		    Message = "WARNING: " + Message
 		  End Select
 		  
+		  #If TargetWindows Then
+		    Message = ConvertEncoding(Message, Encodings.WindowsANSI)
+		  #EndIf
 		  
 		  #If TargetConsole Then
-		    #If TargetWindows Then
-		      Message = ConvertEncoding(Message, Encodings.WindowsANSI)
-		    #EndIf
-		    
 		    stdout.WriteLine Message
 		    stdout.Flush
 		  #Else
