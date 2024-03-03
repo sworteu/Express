@@ -5,7 +5,7 @@ Protected Module DemoWebSockets
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-websockets")
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-websockets")
 		  
 		  // If the request was for the "/chat" path...
 		  If request.Path = "/chat" Then

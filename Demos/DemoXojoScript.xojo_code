@@ -5,7 +5,7 @@ Protected Module DemoXojoScript
 		Sub RequestProcess(Request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  Request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-xojoscript")
+		  Request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-xojoscript")
 		  
 		  // Map the request to a file.
 		  Request.MapToFile

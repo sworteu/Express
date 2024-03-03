@@ -20,7 +20,7 @@ Protected Module DemoMultipartForms
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = Specialfolder.Resources.Child("htdocs").Child("demo-multipart-forms")
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-multipart-forms")
 		  
 		  // If content has been posted...
 		  If request.Method = "POST" Then
