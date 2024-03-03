@@ -1594,6 +1594,79 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 6.1.0 - EventLogHandlerDelegate
+		Express 6.1.0
+		*************
+		
+		Introduces: Express.EventLogHandlerDelegate
+		-------------------------------------------
+		Express is designed to be a standalone component that can be dropped into any Xojo project.
+		
+		Each Xojo project might want to handle Logs differently.
+		
+		Express provides a default logging facility in: Express.EventLog
+		- TargetConsole: write to StdOut
+		- TargetDesktop: write to System.DebugLog (see Xojo's Documentation)
+		
+		If an application wants Express to redirect Logs to it's own Logging facility, then Express needed to
+		be modified accordingly.
+		
+		Express 6.1.0 decouples this hardcoded requirement by introducing the Express.EventLogHandlerDelegate.
+		
+		A Xojo project using it can now specify which Method (that implements the delegate) an Express instance
+		should use as it's Event Log handler.
+		
+		Usage:
+		// Configure App to handle Express EventLog with LogLevel Warning
+		Express.EventLogLevel = Express.LogLevel.Warning
+		
+		// Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		// Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		
+		
+		Introduces: Express Demo GUI
+		----------------------------
+		This repository is now a MonoRepo containing two example projects:
+		- Express-Demo-Console.xojo_project
+		- Express-Demo-GUI.xojo_project
+		
+		The new "Express Demo GUI" shows how to:
+		- use Express in a Desktop application
+		- switch between the provided Demos on the fly
+		- adjust Log Level on the fly
+		- use the recently added Delegates:
+		  - Express.RequestHandlerDelegate
+		  - Express.EventLogHandlerDelegate
+		
+		
+		Fixes: Multipart Forms Demo
+		---------------------------
+		The issue had been in the Express.Request.
+		- DataAvailable: uses Lookahead.LenB to determine if the Content has been fully received
+		- Fix in Method BodyGet, so that Multipart Form Content is no longer stripped
+		- DataGet and BodyGet in now called in Method "Process"
+		
+		
+		Demos: SpecialFolder.Resources
+		------------------------------
+		A Copy File Post Build Step now copies the demo's ressources to the Resources Folder.
+		All Demos have been updated to look for the resources in SpecialFolder.Resources.
+		
+		Note: The Multipart Forms Upload will go into the following folder
+		      SpecialFolder.(Desktop | UserHome).Child("express-demo-uploads")
+		
+		
+		Breaking Changes | Update from 6.0 to 6.1
+		*****************************************
+		
+		None.
+		
+		If you don't assign an own Event Log Handler (see above), then Express will continue
+		to use it's default logging mechanism.
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1706,7 +1779,7 @@ Protected Module Express
 	#tag EndProperty
 
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.0.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.1.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 
