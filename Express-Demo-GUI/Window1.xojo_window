@@ -7,19 +7,19 @@ Begin DesktopWindow Window1
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
-   HasFullScreenButton=   False
-   HasMaximizeButton=   False
-   HasMinimizeButton=   False
-   Height          =   195
+   HasFullScreenButton=   True
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
+   Height          =   450
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
    MaximumWidth    =   32000
    MenuBar         =   2040606719
    MenuBarVisible  =   False
-   MinimumHeight   =   195
+   MinimumHeight   =   450
    MinimumWidth    =   600
-   Resizeable      =   False
+   Resizeable      =   True
    Title           =   "Express Demo"
    Type            =   0
    Visible         =   True
@@ -34,7 +34,7 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   20
+      Left            =   130
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
@@ -43,7 +43,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   9
+      TabIndex        =   10
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Demo:"
@@ -54,7 +54,7 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   120
    End
    Begin DesktopPopupMenu lstDemo
       AllowAutoDeactivate=   True
@@ -67,15 +67,15 @@ Begin DesktopWindow Window1
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   130
+      Left            =   250
       LockBottom      =   False
       LockedInPosition=   True
       LockLeft        =   True
-      LockRight       =   True
+      LockRight       =   False
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   0
-      TabIndex        =   10
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -83,7 +83,7 @@ Begin DesktopWindow Window1
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   450
+      Width           =   330
    End
    Begin DesktopLabel labExpressStatus
       AllowAutoDeactivate=   True
@@ -95,9 +95,9 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   240
+      Left            =   250
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -111,11 +111,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   35
+      Top             =   45
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   205
+      Width           =   200
    End
    Begin DesktopButton btnStartStop
       AllowAutoDeactivate=   True
@@ -195,9 +195,9 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   240
+      Left            =   250
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -211,11 +211,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   60
+      Top             =   70
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   205
+      Width           =   200
    End
    Begin DesktopLabel labExpressStatusTitle
       AllowAutoDeactivate=   True
@@ -229,7 +229,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -243,11 +243,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   35
+      Top             =   45
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   120
    End
    Begin DesktopLabel labExpressPortTitle
       AllowAutoDeactivate=   True
@@ -261,7 +261,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -275,11 +275,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   60
+      Top             =   70
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   120
    End
    Begin DesktopLabel labExpressActiveConnections
       AllowAutoDeactivate=   True
@@ -291,9 +291,9 @@ Begin DesktopWindow Window1
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   240
+      Left            =   250
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -307,11 +307,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   85
+      Top             =   95
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   205
+      Width           =   200
    End
    Begin DesktopLabel labExpressActiveConnectionsTitle
       AllowAutoDeactivate=   True
@@ -325,7 +325,7 @@ Begin DesktopWindow Window1
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   True
+      LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -339,11 +339,11 @@ Begin DesktopWindow Window1
       TextAlignment   =   0
       TextColor       =   &c000000
       Tooltip         =   ""
-      Top             =   85
+      Top             =   95
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   100
+      Width           =   120
    End
    Begin DesktopCanvas cnvExpress
       AllowAutoDeactivate=   True
@@ -370,6 +370,301 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   100
    End
+   Begin DesktopSeparator sepDemo
+      Active          =   False
+      AllowAutoDeactivate=   True
+      AllowTabStop    =   True
+      Enabled         =   True
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   0
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      PanelIndex      =   0
+      Scope           =   2
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      Tooltip         =   ""
+      Top             =   185
+      Transparent     =   False
+      Visible         =   True
+      Width           =   600
+      _mIndex         =   0
+      _mInitialParent =   ""
+      _mName          =   ""
+      _mPanelIndex    =   0
+   End
+   Begin DesktopLabel labEventLogLevel
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Event Log Level:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   205
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin DesktopPopupMenu lstEventLogLevel
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   250
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   2
+      SelectedRowIndex=   0
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   205
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   200
+   End
+   Begin DesktopTextArea EventLogEntries
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   True
+      AllowStyledText =   True
+      AllowTabs       =   False
+      BackgroundColor =   &cFFFFFF
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Format          =   ""
+      HasBorder       =   True
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
+      Height          =   193
+      HideSelection   =   True
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LineHeight      =   0.0
+      LineSpacing     =   1.0
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      MaximumCharactersAllowed=   0
+      Multiline       =   True
+      ReadOnly        =   True
+      Scope           =   2
+      TabIndex        =   17
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   237
+      Transparent     =   False
+      Underline       =   False
+      UnicodeMode     =   1
+      ValidationMask  =   ""
+      Visible         =   True
+      Width           =   560
+   End
+   Begin DesktopLabel labLog
+      AllowAutoDeactivate=   True
+      Bold            =   True
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   13
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Log"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   205
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopLabel labExpress
+      AllowAutoDeactivate=   True
+      Bold            =   True
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Express"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   155
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin DesktopButton btnLogClear
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Clear"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   460
+      LockBottom      =   False
+      LockedInPosition=   True
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   2
+      TabIndex        =   16
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   205
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin DesktopLabel labUrlTitle
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   18
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "URL:"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   120
+   End
+   Begin DesktopLabel labUrl
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   250
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   19
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "..."
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   200
+   End
 End
 #tag EndDesktopWindow
 
@@ -383,6 +678,76 @@ End
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h21
+		Private Sub ClearLog()
+		  Redim PendingEventLogEntries(-1)
+		  EventLogEntries.Text = ""
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ExpressEventLog(Message As String, Level As Express.LogLevel) As Boolean
+		  //If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
+		  //System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
+		  //handle the Logging there.
+		  //Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
+		  
+		  //So this would be the place to forward the Logs to your App's own Log-Handling facility
+		  
+		  Select Case CType(Level, Integer)
+		    
+		  Case CType(Express.LogLevel.None, Integer)
+		    // Confirm that we have handled this Log, so that Express doesn't handle it, too.
+		    Return True
+		    
+		  Case CType(Express.LogLevel.Critical, Integer)
+		    Message = "CRITICAL: " + Message
+		  Case CType(Express.LogLevel.Error, Integer)
+		    Message = "ERROR: " + Message
+		  Case CType(Express.LogLevel.Debug, Integer)
+		    Message = "DEBUG: " + Message
+		  Case CType(Express.LogLevel.Warning, Integer)
+		    Message = "WARNING: " + Message
+		    
+		  End Select
+		  
+		  // Let's append all Logs to PendingEventLogEntries
+		  // Note: Express might send Log Entries from a Thread, so don't try to display it
+		  //       in the GUI from here. Let's use a Timer to show pending log entries.
+		  PendingEventLogEntries.Add Message
+		  
+		  // Confirm that we have handled this Log, so that Express doesn't handle it, too.
+		  Return True
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ProcessPendingEventLogEntries()
+		  If (PendingEventLogEntries.LastIndex < 0) Then Return
+		  
+		  For Each logEntry As String In PendingEventLogEntries
+		    EventLogEntries.AddText logEntry + EndOfLine
+		  Next
+		  
+		  Redim PendingEventLogEntries(-1)
+		  
+		  #Pragma BreakOnExceptions False
+		  Try
+		    Var lastLineNumber As Integer = EventLogEntries.LineNumber(EventLogEntries.Text.Len)
+		    If (lastLineNumber > 2) Then
+		      lastLineNumber = lastLineNumber - 1
+		      EventLogEntries.VerticalScrollPosition = lastLineNumber
+		    End If
+		  Catch err As RuntimeException
+		    'ignore
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Start()
@@ -404,6 +769,8 @@ End
 		    Me.Stop
 		    Server = Nil
 		  End If
+		  
+		  Me.ClearLog
 		  
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
@@ -451,6 +818,14 @@ End
 		    
 		  End Select
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = lstEventLogLevel.RowTagAt(lstEventLogLevel.SelectedRowIndex)
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
+		  // Start the server.
 		  Server.Start
 		  
 		End Sub
@@ -458,22 +833,28 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Status()
+		  Dim sUrl As String = "---"
 		  Dim sStatus As String = "---"
 		  Dim sPort As String = "---"
 		  Dim sActiveConnections As String = "---"
 		  Dim sAction As String = "Start"
 		  
 		  If (Server <> Nil) Then
+		    sUrl = "http://" + Server.LocalAddress + ":" + Server.Port.ToString + "/"
 		    sStatus = If(Server.IsListening, "Started", "Stopped")
 		    sPort = Server.Port.ToString
 		    sActiveConnections = Server.ConnectedSocketCount.ToString
 		    sAction = If(Server.IsListening, "Stop", "Start")
 		  End If
 		  
+		  If (labUrl.Text <> sUrl) Then labUrl.Text = sUrl
 		  If (labExpressStatus.Text <> sStatus) Then labExpressStatus.Text = sStatus
 		  If (labExpressPort.Text <> sPort) Then labExpressPort.Text = sPort
 		  If (labExpressActiveConnections.Text <> sActiveConnections) Then labExpressActiveConnections.Text = sActiveConnections
 		  If (btnStartStop.Caption <> sAction) Then btnStartStop.Caption = sAction
+		  
+		  Var colStatus As Color = If(Server.IsListening, Color.Green, Color.Red)
+		  If (labExpressStatus.TextColor <> colStatus) Then labExpressStatus.TextColor = colStatus
 		  
 		End Sub
 	#tag EndMethod
@@ -490,6 +871,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private IsOpened As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private PendingEventLogEntries() As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -568,7 +953,7 @@ End
 	#tag Event
 		Sub Action()
 		  Self.Status
-		  
+		  self.ProcessPendingEventLogEntries
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -577,8 +962,94 @@ End
 		Sub Paint(g As Graphics, areas() As Rect)
 		  #Pragma Unused areas
 		  
-		  g.DrawPicture imgExpress, 0, 0, g.Width, g.Height, 0, 0, imgExpress.Width, imgExpress.Height
+		  g.DrawPicture Express_512, 0, 0, g.Width, g.Height, 0, 0, Express_512.Width, Express_512.Height
 		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lstEventLogLevel
+	#tag Event
+		Sub Opening()
+		  Me.RemoveAllRows
+		  
+		  Me.AddRow "None"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.None
+		  
+		  Me.AddRow "Always"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Always
+		  
+		  Me.AddRow "Critical"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Critical
+		  
+		  Me.AddRow "Error"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Error
+		  
+		  Me.AddRow "Warning"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Warning
+		  
+		  Me.AddRow "Info"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Info
+		  
+		  Me.AddRow "Debug"
+		  Me.RowTagAt(Me.LastAddedRowIndex) = Express.LogLevel.Debug
+		  
+		  Me.SelectedRowIndex = Me.LastAddedRowIndex
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub SelectionChanged(item As DesktopMenuItem)
+		  #Pragma unused item
+		  
+		  If (Not Self.IsOpened) Then Return
+		  
+		  Express.EventLogLevel = me.RowTagAt(me.SelectedRowIndex)
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events btnLogClear
+	#tag Event
+		Sub Pressed()
+		  self.ClearLog
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labUrl
+	#tag Event
+		Sub Opening()
+		  Me.TextColor = Color.RGB(0, 114, 206)
+		  Me.Underline = True
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseUp(x As Integer, y As Integer)
+		  If (x >= 0) And (x < Me.Width) And (y > 0) And (y < Me.Height) Then
+		    If Me.Text.Left(4) = "http" Then
+		      System.GotoURL(Me.Text)
+		    End If
+		  End If
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  Me.MouseCursor = Nil
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  Me.MouseCursor = System.Cursors.FingerPointer
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Function MouseDown(x As Integer, y As Integer) As Boolean
+		  #Pragma unused X
+		  #Pragma unused Y
+		  
+		  Return True
+		End Function
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior

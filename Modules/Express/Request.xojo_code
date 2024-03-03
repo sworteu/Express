@@ -886,8 +886,11 @@ Inherits SSLSocket
 		  // Set the default resources folder and index filenames.
 		  // These are used by the "MapToFile" method.
 		  StaticPath = Specialfolder.Resources.Child("htdocs")
-		  Express.EventLog("Request.StaticPath = " + StaticPath.NativePath, Express.LogLevel.Debug)
 		  IndexFilenames = Array("index.html", "index.htm")
+		  
+		  #If DebugBuild Then
+		    Express.EventLog("Request.StaticPath = " + StaticPath.NativePath, Express.LogLevel.Debug)
+		  #EndIf
 		  
 		  // Initlialise the `Custom` dictionary.
 		  Custom = New Dictionary

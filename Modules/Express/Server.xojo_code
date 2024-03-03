@@ -222,13 +222,13 @@ Inherits ServerSocket
 		  // Start listening for incoming requests.
 		  Listen
 		  
-		  // If the server is running as part of a desktop app then we're done.
-		  If TargetDesktop Then Return
-		  
 		  // If the server isn't starting silently then display server info.
 		  If Not SilentStart Then
 		    ServerInfoDisplay
 		  End If
+		  
+		  // If the server is running as part of a desktop app then we're done.
+		  If TargetDesktop Then Return
 		  
 		  #If TargetConsole Then
 		    // Rock on.
