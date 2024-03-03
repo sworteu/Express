@@ -65,7 +65,7 @@ Inherits SSLSocket
 		  
 		  
 		  // Get the length of the content that has been received.
-		  Var DataReceivedLength As Integer = Lookahead.LenB
+		  Var DataReceivedLength As Integer = Lookahead.Bytes
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
@@ -86,10 +86,12 @@ Inherits SSLSocket
 		    Return
 		  End If
 		  
+		  Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request at Path " + Me.Path, Express.LogLevel.Info)
+		  
 		  // Is the server using threads?
 		  If Multithreading Then
 		    
-		    Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request in Thread", Express.LogLevel.Debug)
+		    Express.EventLog("Socket " + SocketID.ToString + ": Processing in RequestThread", Express.LogLevel.Debug)
 		    
 		    // Hand the request off to a RequestThread instance for processing.
 		    RequestThread = New Express.RequestThread
@@ -100,7 +102,6 @@ Inherits SSLSocket
 		  End If
 		  
 		  // Process the request immediately, on the primary thread.
-		  Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request", Express.LogLevel.Debug)
 		  Process
 		  
 		End Sub
