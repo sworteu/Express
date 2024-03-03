@@ -1656,6 +1656,9 @@ Protected Module Express
 		Note: The Multipart Forms Upload will go into the following folder
 		      SpecialFolder.(Desktop | UserHome).Child("express-demo-uploads")
 		
+		Demos have been updated with Nil checks for Request.Server (which is a WeakRef).
+		Server might be Nil if stopped while Request is still alive.
+		
 		
 		Breaking Changes | Update from 6.0 to 6.1
 		*****************************************
