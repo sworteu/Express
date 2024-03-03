@@ -154,36 +154,36 @@ Inherits ServerSocket
 		  Express.EventLog(Name + " has started... ", Express.LogLevel.Always)
 		  
 		  Var info() As String
-		  info.Add("→ Xojo Version: " + XojoVersionString)
-		  info.Add("→ Express Version: " + Express.VERSION_STRING)
-		  info.Add("→ Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
-		  info.Add("→ Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
-		  info.Add("→ Loopback: " + If(Loopback , "Enabled", "Disabled"))
-		  info.Add("→ Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
-		  info.Add("→ Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
-		  info.Add("→ Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
-		  info.Add("→ Maximum Entity Size: " + MaxEntitySize.ToString)
-		  info.Add("→ Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
-		  info.Add("→ Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
-		  info.Add("→ Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
-		  info.Add("→ Port: " + Port.ToString)
-		  info.Add("→ Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
-		  info.Add("→ SSL: " + If(Secure , "Enabled", "Disabled"))
-		  info.Add("→ WebSocket Timeout: " + WSTimeout.ToString + " seconds")
+		  info.Add("Xojo Version: " + XojoVersionString)
+		  info.Add("Express Version: " + Express.VERSION_STRING)
+		  info.Add("Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
+		  info.Add("Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
+		  info.Add("Loopback: " + If(Loopback , "Enabled", "Disabled"))
+		  info.Add("Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
+		  info.Add("Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
+		  info.Add("Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
+		  info.Add("Maximum Entity Size: " + MaxEntitySize.ToString)
+		  info.Add("Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
+		  info.Add("Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
+		  info.Add("Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
+		  info.Add("Port: " + Port.ToString)
+		  info.Add("Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
+		  info.Add("SSL: " + If(Secure , "Enabled", "Disabled"))
+		  info.Add("WebSocket Timeout: " + WSTimeout.ToString + " seconds")
 		  
 		  If Secure Then
-		    info.Add("→ SSL Certificate Path: " + CertificateFile.NativePath)
-		    info.Add("→ SSL Connection Type: " + ConnectionType.ToString)
+		    info.Add("SSL Certificate Path: " + CertificateFile.NativePath)
+		    info.Add("SSL Connection Type: " + ConnectionType.ToString)
 		  End If
 		  
 		  If AdditionalServerDisplayInfo <> Nil Then
 		    For Each entry As DictionaryEntry In AdditionalServerDisplayInfo
-		      info.Add("→ " + entry.Key.StringValue + ": " + entry.Value.StringValue)
+		      info.Add(entry.Key.StringValue + ": " + entry.Value.StringValue)
 		    Next entry
 		  End If
 		  
 		  For Each infoLine As String In info
-		    Express.EventLog(infoLine, Express.LogLevel.Always)
+		    Express.EventLog(CHAR_LOG_BULLET + " " + infoLine, Express.LogLevel.Always)
 		  Next
 		  
 		  Express.EventLog("", Express.LogLevel.Always)

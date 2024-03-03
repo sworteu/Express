@@ -191,6 +191,10 @@ Protected Module Express
 		  
 		  
 		  #If TargetConsole Then
+		    #If TargetWindows Then
+		      Message = ConvertEncoding(Message, Encodings.WindowsANSI)
+		    #EndIf
+		    
 		    stdout.WriteLine Message
 		    stdout.Flush
 		  #Else
@@ -1783,6 +1787,10 @@ Protected Module Express
 		Protected StartTimestamp As DateTime
 	#tag EndProperty
 
+
+	#tag Constant, Name = CHAR_LOG_BULLET, Type = String, Dynamic = False, Default = \"\xE2\x86\x92", Scope = Public
+		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
+	#tag EndConstant
 
 	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.1.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant

@@ -13,7 +13,7 @@ Inherits ConsoleApplication
 		  Print "----------------"
 		  Print "- Express-Demo -"
 		  Print "----------------"
-		  Print "→ Express Version: " + Express.VERSION_STRING
+		  Print Express.CHAR_LOG_BULLET + " Express Version: " + Express.VERSION_STRING
 		  Print ""
 		  Print ""
 		  Print "-----------------"

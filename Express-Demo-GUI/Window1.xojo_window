@@ -43,7 +43,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   10
+      TabIndex        =   12
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Demo:"
@@ -75,7 +75,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   0
-      TabIndex        =   11
+      TabIndex        =   13
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -92,19 +92,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   250
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   3
+      TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -138,7 +138,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   1
+      TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -164,7 +164,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   8
+      TabIndex        =   10
       TabPanelIndex   =   0
       Tooltip         =   ""
       Top             =   126
@@ -192,19 +192,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   250
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   5
+      TabIndex        =   7
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -224,19 +224,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   2
+      TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Status:"
@@ -256,19 +256,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   4
+      TabIndex        =   6
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Port:"
@@ -288,19 +288,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   250
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   7
+      TabIndex        =   9
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -320,19 +320,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   6
+      TabIndex        =   8
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Connections:"
@@ -386,7 +386,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       PanelIndex      =   0
       Scope           =   2
-      TabIndex        =   12
+      TabIndex        =   14
       TabPanelIndex   =   0
       Tooltip         =   ""
       Top             =   185
@@ -417,7 +417,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   14
+      TabIndex        =   16
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Event Log Level:"
@@ -449,7 +449,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       Scope           =   2
       SelectedRowIndex=   0
-      TabIndex        =   15
+      TabIndex        =   17
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -491,7 +491,7 @@ Begin DesktopWindow Window1
       Multiline       =   True
       ReadOnly        =   True
       Scope           =   2
-      TabIndex        =   17
+      TabIndex        =   19
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   ""
@@ -525,7 +525,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   13
+      TabIndex        =   15
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Log"
@@ -557,7 +557,7 @@ Begin DesktopWindow Window1
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   9
+      TabIndex        =   11
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Express"
@@ -591,7 +591,7 @@ Begin DesktopWindow Window1
       LockTop         =   True
       MacButtonStyle  =   0
       Scope           =   2
-      TabIndex        =   16
+      TabIndex        =   18
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
@@ -608,19 +608,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   130
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   18
+      TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "URL:"
@@ -640,19 +640,19 @@ Begin DesktopWindow Window1
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      Height          =   20
+      Height          =   25
       Index           =   -2147483648
       Italic          =   False
       Left            =   250
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
       Multiline       =   False
       Scope           =   2
       Selectable      =   False
-      TabIndex        =   19
+      TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "..."
@@ -886,9 +886,25 @@ End
 
 #tag EndWindowCode
 
+#tag Events labDemo
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events lstDemo
 	#tag Event
 		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
 		  Me.RemoveAllRows
 		  
 		  Me.AddRow "Hello World"
@@ -919,6 +935,7 @@ End
 		  Me.RowTagAt(Me.LastAddedRowIndex) = 9
 		  
 		  Me.SelectRowWithTag(1)
+		  
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -950,6 +967,15 @@ End
 		  
 		End Sub
 	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
+		End Sub
+	#tag EndEvent
 #tag EndEvents
 #tag Events timGUI
 	#tag Event
@@ -968,9 +994,25 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events labEventLogLevel
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events lstEventLogLevel
 	#tag Event
 		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
 		  Me.RemoveAllRows
 		  
 		  Me.AddRow "None"
@@ -1009,10 +1051,41 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events labLog
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events labExpress
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag Events btnLogClear
 	#tag Event
 		Sub Pressed()
 		  self.ClearLog
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Opening()
+		  #If TargetLinux Then
+		    Me.Height = 30
+		    Me.Top = Me.Top - 5
+		  #EndIf
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
