@@ -28,6 +28,12 @@ Protected Class Chat
 
 	#tag Method, Flags = &h0
 		Sub JoinProcess()
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  If (serverInstance = Nil) Then
+		    Request.Response.Status = "500"
+		    Return
+		  End If
 		  
 		  // Get the username.
 		  Var newUsername As String = Payload.Lookup("username", "")
@@ -37,7 +43,7 @@ Protected Class Chat
 		  
 		  // Get the names of the other users that are online...
 		  Var usernames() As String
-		  For Each webSockets As Express.Request In Request.Server.WebSockets
+		  For Each webSockets As Express.Request In serverInstance.WebSockets
 		    Var username As String = webSockets.Custom.Lookup("username", "")
 		    If username <> newUsername Then
 		      usernames.Add(username)
@@ -73,7 +79,7 @@ Protected Class Chat
 		    responseJSON.Value("type") = "message"
 		    responseJSON.Value("username") = "Server"
 		    responseJSON.Value("message") = newUsername + " has joined the chat."
-		    Request.Server.WSMessageBroadcast(responseJSON.ToString)
+		    serverInstance.WSMessageBroadcast(responseJSON.ToString)
 		    
 		  End If
 		  
@@ -86,6 +92,10 @@ Protected Class Chat
 		  // Close the connection.
 		  Request.WSConnectionClose
 		  
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  If (serverInstance = Nil) Then Return
+		  
 		  // Get the username.
 		  Var Username As String = Payload.Lookup("username", "")
 		  
@@ -94,7 +104,7 @@ Protected Class Chat
 		  responseJSON.Value("type") = "message"
 		  responseJSON.Value("username") = "Server"
 		  responseJSON.Value("message") = username + " has left the chat."
-		  Request.Server.WSMessageBroadcast(responseJSON.ToString)
+		  serverInstance.WSMessageBroadcast(responseJSON.ToString)
 		  
 		  
 		  
@@ -112,13 +122,16 @@ Protected Class Chat
 
 	#tag Method, Flags = &h0
 		Sub MessageProcess()
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  If (serverInstance = Nil) Then Return
+		  
 		  // Broadcasts a message.
 		  
 		  // If the message isn't blank...
 		  If Request.Body <> "" Then
-		    Request.Server.WSMessageBroadcast(Request.Body)
+		    serverInstance.WSMessageBroadcast(Request.Body)
 		  End If
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -156,16 +169,21 @@ Protected Class Chat
 
 	#tag Method, Flags = &h0
 		Sub WhoProcess()
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  
 		  // If this is a request to get a list of users...
 		  
 		  // Get the names of the users that are online...
 		  Var usernames() As String
-		  For Each req As Express.Request In Request.Server.WebSockets
-		    Var username As String = req.Custom.Lookup("username", "")
-		    If username <> "" Then
-		      usernames.Add(username)
-		    End If
-		  Next req
+		  If (serverInstance <> Nil) Then
+		    For Each req As Express.Request In serverInstance.WebSockets
+		      Var username As String = req.Custom.Lookup("username", "")
+		      If username <> "" Then
+		        usernames.Add(username)
+		      End If
+		    Next req
+		  End If
 		  
 		  // Return the list.
 		  Var responseJSON As New JSONItem

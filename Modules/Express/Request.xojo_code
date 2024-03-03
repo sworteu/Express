@@ -39,7 +39,7 @@ Inherits SSLSocket
 		    Express.EventLog("Socket " + SocketID.ToString + ": Active WebSocket - Process", Express.LogLevel.Debug)
 		    
 		    // Hand the request off to the RequestHandler.
-		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    Var RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
 		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		    Return
@@ -927,7 +927,9 @@ Inherits SSLSocket
 		    End If
 		    
 		    // Hand the request off to the RequestHandler.
-		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    Var RequestHandler As Express.RequestHandlerDelegate
+		    Var serverInstance As Express.Server = Me.Server
+		    If (serverInstance <> Nil) Then RequestHandler = serverInstance.RequestHandler
 		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		  Catch err As ThreadEndException
@@ -1061,7 +1063,10 @@ Inherits SSLSocket
 		Sub SessionGet(assignNewID As Boolean = True)
 		  /// Gets a session for the request and associates it with the `Session` property.
 		  
-		  Session = Server.SessionEngine.SessionGet(Self, assignNewID)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance = Nil) Then Return
+		  
+		  Session = server.SessionEngine.SessionGet(Self, assignNewID)
 		End Sub
 	#tag EndMethod
 
@@ -1070,7 +1075,10 @@ Inherits SSLSocket
 		  /// Terminates the current session.
 		  
 		  If Session <> Nil Then
-		    Server.SessionEngine.SessionTerminate(Session)
+		    Var serverInstance As Express.Server = Me.Server
+		    If (serverInstance = Nil) Then Return
+		    
+		    serverInstance.SessionEngine.SessionTerminate(Session)
 		  End If
 		End Sub
 	#tag EndMethod
@@ -1132,13 +1140,16 @@ Inherits SSLSocket
 		Sub WSConnectionClose()
 		  /// Closes this websocket connection.
 		  
-		  If server.WebSockets.Count > 0 Then
-		    Var myIndex As Integer = Server.WebSockets.IndexOf(Self)
-		    
-		    If myIndex > -1 Then
-		      Server.WebSockets.RemoveAt(myIndex)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance <> Nil) Then
+		    If serverInstance.WebSockets.Count > 0 Then
+		      Var myIndex As Integer = serverInstance.WebSockets.IndexOf(Self)
+		      
+		      If myIndex > -1 Then
+		        serverInstance.WebSockets.RemoveAt(myIndex)
+		      End If
+		      
 		    End If
-		    
 		  End If
 		  
 		  // Close the connection.
@@ -1172,7 +1183,11 @@ Inherits SSLSocket
 		  WSStatus = "Active"
 		  
 		  // Register the socket as a WebSocket.
-		  Server.WebSockets.Add(Self)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance <> Nil) Then
+		    serverInstance.WebSockets.Add(Self)
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 

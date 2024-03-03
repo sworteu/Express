@@ -833,11 +833,11 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Status()
-		  Dim sUrl As String = "---"
-		  Dim sStatus As String = "---"
-		  Dim sPort As String = "---"
-		  Dim sActiveConnections As String = "---"
-		  Dim sAction As String = "Start"
+		  Var sUrl As String = "---"
+		  Var sStatus As String = "---"
+		  Var sPort As String = "---"
+		  Var sActiveConnections As String = "---"
+		  Var sAction As String = "Start"
 		  
 		  If (Server <> Nil) Then
 		    sUrl = "http://" + Server.LocalAddress + ":" + Server.Port.ToString + "/"
