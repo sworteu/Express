@@ -5,7 +5,7 @@ Protected Module DemoHelloWorld
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-hello-world")
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-hello-world")
 		  
 		  // If the request was for the "/hello" path.
 		  If request.Path = "/hello" Then
@@ -45,14 +45,13 @@ Protected Module DemoHelloWorld
 		    
 		  End If
 		  
-		  
-		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SimplePlainTextResponse(request As Express.Request)
 		  request.Response.Content = "Hello, world!"
+		  
 		End Sub
 	#tag EndMethod
 

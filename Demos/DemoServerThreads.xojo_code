@@ -20,6 +20,7 @@ Protected Module DemoServerThreads
 		    Request.Response.Status = "501 Not Implemented"
 		    Request.Response.Content = "The server is not configured to handle requests on port " + Request.Port.ToString + "."
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 
@@ -48,6 +49,7 @@ Protected Module DemoServerThreads
 		  While True
 		    App.DoEvents
 		  Wend
+		  
 		End Sub
 	#tag EndMethod
 

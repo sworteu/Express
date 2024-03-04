@@ -5,7 +5,7 @@ Protected Module DemoTemplatesServerSide
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-server-side")
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-templates-server-side")
 		  
 		  // Process the request based on the path of the requested resource...
 		  If request.Path = "/" or request.Path = "/index.html" Then

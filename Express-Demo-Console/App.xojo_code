@@ -3,10 +3,17 @@ Protected Class App
 Inherits ConsoleApplication
 	#tag Event
 		Function Run(args() as String) As Integer
+		  // Use Port 8080 for this demo if not specified otherwise
+		  Var arguments As Dictionary = Express.ArgsToDictionary(args)
+		  If (Not arguments.HasKey("--Port")) Then
+		    args.Add("--Port=8080")
+		  End If
+		  
+		  // Express Demo
 		  Print "----------------"
 		  Print "- Express-Demo -"
 		  Print "----------------"
-		  Print "→ Express Version: " + Express.VERSION_STRING
+		  Print Express.CHAR_LOG_BULLET + " Express Version: " + Express.VERSION_STRING
 		  Print ""
 		  Print ""
 		  Print "-----------------"
@@ -94,6 +101,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoHelloWorld.RequestProcess)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -106,6 +120,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoHelloWorld.SimplePlainTextResponse)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -117,6 +138,13 @@ Inherits ConsoleApplication
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoCaching.RequestProcess)
+		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
 		  
 		  // Configure server-level caching.
 		  // This is used by the DemoCaching demo module.
@@ -134,6 +162,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoMultipartForms.RequestProcess)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -145,6 +180,13 @@ Inherits ConsoleApplication
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoSessions.RequestProcess)
+		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
 		  
 		  // Configure server-level session management. 
 		  // This is used by the DemoSessions demo module.
@@ -162,6 +204,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoTemplatesClientSide.RequestProcess)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -173,6 +222,13 @@ Inherits ConsoleApplication
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoTemplatesServerSide.RequestProcess)
+		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
 		  
 		  // Start the server.
 		  Server.Start
@@ -186,6 +242,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoWebSockets.RequestProcess)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -198,6 +261,13 @@ Inherits ConsoleApplication
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
 		  Server = New Express.Server(args, AddressOf DemoXojoScript.RequestProcess)
 		  
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Start the server.
 		  Server.Start
 		  
@@ -206,6 +276,13 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h21, Description = 50726F63657373657320616E204854545020726571756573742E
 		Private Sub Demo_10_ServerThread(args() As String)
+		  // Configure App to handle Express EventLog with LogLevel Debug
+		  Express.EventLogLevel = Express.LogLevel.Debug
+		  
+		  // Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		  // Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		  Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		  
 		  // Express.ServerThread demo.
 		  // Test ports are: 64000, 64001, 64002, and 64003.
 		  // Requests sent to 64003 will respond with an error,
@@ -214,6 +291,45 @@ Inherits ConsoleApplication
 		  DemoServerThreads.ServersLaunch(args, AddressOf DemoServerThreads.RequestProcess)
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ExpressEventLog(Message As String, Level As Express.LogLevel) As Boolean
+		  //If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
+		  //System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
+		  //handle the Logging there.
+		  //Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
+		  
+		  //So this would be the place to forward the Logs to your App's own Log-Handling facility
+		  
+		  Select Case CType(Level, Integer)
+		    
+		  Case CType(Express.LogLevel.None, Integer)
+		    // Confirm that we have handled this Log, so that Express doesn't handle it, too.
+		    Return True
+		    
+		  Case CType(Express.LogLevel.Critical, Integer)
+		    Message = "CRITICAL: " + Message
+		  Case CType(Express.LogLevel.Error, Integer)
+		    Message = "ERROR: " + Message
+		  Case CType(Express.LogLevel.Warning, Integer)
+		    Message = "WARNING: " + Message
+		  Case CType(Express.LogLevel.Info, Integer)
+		    Message = "INFO: " + Message
+		  Case CType(Express.LogLevel.Debug, Integer)
+		    Message = "DEBUG: " + Message
+		    
+		  End Select
+		  
+		  // Let's write all Output to StdOut in this Demo
+		  stdout.WriteLine Message
+		  stdout.Flush
+		  
+		  // Confirm that we have handled this Log, so that Express doesn't handle it, too.
+		  Return True
+		  
+		  
+		End Function
 	#tag EndMethod
 
 

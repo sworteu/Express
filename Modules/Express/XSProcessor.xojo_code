@@ -11,9 +11,7 @@ Inherits XojoScript
 		  
 		  Result = "<!-- XojoScript Error: " + ErrorCodeToString(error) + " -->"
 		  
-		  #If DebugBuild Then
-		    System.DebugLog(CurrentMethodName + ": "+ ErrorCodeToString(error))
-		  #EndIf
+		  Express.EventLog(CurrentMethodName + ": " + ErrorCodeToString(error), Express.LogLevel.Error)
 		  
 		  
 		End Function
@@ -27,9 +25,7 @@ Inherits XojoScript
 		  #Pragma Unused Warning
 		  #Pragma Unused warningInfo
 		  
-		  #If DebugBuild Then
-		    System.DebugLog(CurrentMethodName)
-		  #EndIf
+		  Express.EventLog(CurrentMethodName, Express.LogLevel.Warning)
 		  
 		End Sub
 	#tag EndEvent
@@ -49,9 +45,7 @@ Inherits XojoScript
 		  
 		  Result = "<!-- XojoScript Error: " + error.Message + " -->"
 		  
-		  #If DebugBuild Then
-		    System.DebugLog(CurrentMethodName)
-		  #EndIf
+		  Express.EventLog(CurrentMethodName + ": " + error.Message, Express.LogLevel.Error)
 		  
 		End Sub
 	#tag EndEvent

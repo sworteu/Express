@@ -14,16 +14,17 @@ Inherits ServerSocket
 		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
+		    Express.EventLog("Server: Adding Socket " + NewSocket.SocketID.ToString, Express.LogLevel.Debug)
+		    
 		    // Return the socket.
 		    Return newSocket
 		    
 		  Catch e As RunTimeException
 		    
-		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
-		    #Pragma Unused typeInfo
+		    'Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
+		    '#Pragma Unused typeInfo
 		    
-		    System.DebugLog "Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString
-		    
+		    Express.EventLog("Aloe Express Server Error: Unable to Add Socket w/ID " + CurrentSocketID.ToString, Express.LogLevel.Error)
 		  End Try
 		  
 		End Function
@@ -31,8 +32,13 @@ Inherits ServerSocket
 
 	#tag Event
 		Sub Error(ErrorCode As Integer, err As RuntimeException)
-		  #Pragma Unused err
-		  System.DebugLog "Express Server Error: Code: " + ErrorCode.ToString
+		  Express.EventLog("Express Server Error: Code: " + ErrorCode.ToString, Express.LogLevel.Error)
+		  
+		  If (err <> Nil) Then
+		    Var typeInfo As Introspection.TypeInfo = Introspection.GetType(err)
+		    
+		    Express.EventLog("Express Server " + typeInfo.Name + ": " + err.Message + " (Code: " + err.ErrorNumber.ToString + ")", Express.LogLevel.Error)
+		  End If
 		  
 		End Sub
 	#tag EndEvent
@@ -145,50 +151,52 @@ Inherits ServerSocket
 		Sub ServerInfoDisplay()
 		  /// Displays server configuration info.
 		  
+		  Express.EventLog(Name + " has started... ", Express.LogLevel.Always)
+		  
 		  Var info() As String
-		  
-		  info.Add(EndOfLine)
-		  
-		  info.Add(Name + " has started... ")
-		  info.Add("→ Xojo Version: " + XojoVersionString)
-		  info.Add("→ Express Version: " + Express.VERSION_STRING)
-		  info.Add("→ Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
-		  info.Add("→ Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
-		  info.Add("→ Loopback: " + If(Loopback , "Enabled", "Disabled"))
-		  info.Add("→ Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
-		  info.Add("→ Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
-		  info.Add("→ Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
-		  info.Add("→ Maximum Entity Size: " + MaxEntitySize.ToString)
-		  info.Add("→ Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
-		  info.Add("→ Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
-		  info.Add("→ Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
-		  info.Add("→ Port: " + Port.ToString)
-		  info.Add("→ Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
-		  info.Add("→ SSL: " + If(Secure , "Enabled", "Disabled"))
-		  info.Add("→ WebSocket Timeout: " + WSTimeout.ToString + " seconds")
+		  info.Add("Xojo Version: " + XojoVersionString)
+		  info.Add("Express Version: " + Express.VERSION_STRING)
+		  info.Add("Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
+		  info.Add("Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
+		  info.Add("Loopback: " + If(Loopback , "Enabled", "Disabled"))
+		  info.Add("Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
+		  info.Add("Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
+		  info.Add("Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
+		  info.Add("Maximum Entity Size: " + MaxEntitySize.ToString)
+		  info.Add("Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
+		  info.Add("Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
+		  info.Add("Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
+		  info.Add("Port: " + Port.ToString)
+		  info.Add("Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
+		  info.Add("SSL: " + If(Secure , "Enabled", "Disabled"))
+		  info.Add("WebSocket Timeout: " + WSTimeout.ToString + " seconds")
 		  
 		  If Secure Then
-		    info.Add("→ SSL Certificate Path: " + CertificateFile.NativePath)
-		    info.Add("→ SSL Connection Type: " + ConnectionType.ToString)
+		    info.Add("SSL Certificate Path: " + CertificateFile.NativePath)
+		    info.Add("SSL Connection Type: " + ConnectionType.ToString)
 		  End If
 		  
 		  If AdditionalServerDisplayInfo <> Nil Then
 		    For Each entry As DictionaryEntry In AdditionalServerDisplayInfo
-		      info.Add("→ " + entry.Key.StringValue + ": " + entry.Value.StringValue)
+		      info.Add(entry.Key.StringValue + ": " + entry.Value.StringValue)
 		    Next entry
 		  End If
 		  
-		  Var log_output As String = String.FromArray(info, EndOfLine)
-		  System.Log( System.LogLevelNotice, log_output )
+		  For Each infoLine As String In info
+		    Express.EventLog(CHAR_LOG_BULLET + " " + infoLine, Express.LogLevel.Always)
+		  Next
 		  
-		  // on windows (possibly other systems) there is no stdout output from system.log:
-		  Print(log_output)
+		  Express.EventLog("", Express.LogLevel.Always)
+		  Express.EventLog("", Express.LogLevel.Always)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 537461727473207468652073657276657220736F2074686174206974206C697374656E7320666F7220696E636F6D696E672072657175657374732E
 		Sub Start()
-		  /// Starts the server so that it listens for incoming requests.
+		  // Starts the server so that it listens for incoming requests.
+		  ServerIsRunning = True
+		  
 		  If (StartTimestamp = Nil) Then
 		    StartTimestamp = DateTime.Now
 		  End If
@@ -214,30 +222,52 @@ Inherits ServerSocket
 		  // Start listening for incoming requests.
 		  Listen
 		  
-		  // If the server is running as part of a desktop app then we're done.
-		  If TargetDesktop Then Return
-		  
 		  // If the server isn't starting silently then display server info.
 		  If Not SilentStart Then
 		    ServerInfoDisplay
 		  End If
 		  
-		  // Speed up if we have more than 10 connections active to keep the server responsive.
-		  Var connCount As Integer = 0
-		  While True
-		    connCount = ConnectedSocketCount
-		    If connCount > 10 Then
-		      // Speed up.
-		      If Multithreading Then
-		        App.DoEvents(0) // Fast switch between threads after doing events
+		  // If the server is running as part of a desktop app then we're done.
+		  If TargetDesktop Then Return
+		  
+		  #If TargetConsole Then
+		    // Rock on.
+		    
+		    // Speed up if we have more than 10 connections active to keep the server responsive.
+		    Var connCount As Integer = 0
+		    While ServerIsRunning
+		      connCount = ConnectedSocketCount
+		      If connCount > 10 Then
+		        // Speed up.
+		        If Multithreading Then
+		          App.DoEvents(0) // Fast switch between threads after doing events
+		        Else
+		          App.DoEvents(-1) // Fast do events (default)
+		        End If
 		      Else
-		        App.DoEvents(-1) // Fast do events (default)
+		        // Slow down a little
+		        App.DoEvents(2)
 		      End If
-		    Else
-		      // Slow down a little
-		      App.DoEvents(2)
-		    End If
-		  Wend
+		    Wend
+		  #EndIf
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Stop()
+		  Me.StopListening
+		  
+		  // Close Active Connections
+		  Var sActiveConnections() As TCPSocket = Me.ActiveConnections()
+		  For Each socket As TCPSocket In sActiveConnections
+		    socket.Close
+		  Next
+		  
+		  // Exit the 'Rock on' Loop (in Method 'Start')
+		  ServerIsRunning = False
+		  StartTimestamp = Nil
+		  
 		End Sub
 	#tag EndMethod
 
@@ -333,6 +363,10 @@ Inherits ServerSocket
 
 	#tag Property, Flags = &h0, Description = 54727565206966207468697320736572766572206973207573696E672053534C2E
 		Secure As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private ServerIsRunning As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5468652073657276657227732073657373696F6E20656E67696E652E

@@ -5,7 +5,7 @@ Protected Module DemoSessions
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-sessions")
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-sessions")
 		  
 		  // If this is a request for the root...
 		  If request.Path = "/" or request.Path = "/index.html" Then
@@ -52,11 +52,6 @@ Protected Module DemoSessions
 		    End If
 		    
 		  End If
-		  
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod

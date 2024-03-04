@@ -7,6 +7,8 @@ Protected Module Express
 		  
 		  Var arguments As New Dictionary
 		  
+		  If (args = Nil) Then Return arguments
+		  
 		  For Each argument As String In args
 		    
 		    Var argParts() As String = argument.Split("=")
@@ -147,6 +149,67 @@ Protected Module Express
 		  
 		End Function
 	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub EventLog(Message As String, Level As Express.LogLevel)
+		  // Logs an event.
+		  // See LogLevel enumeration for log levels.
+		  
+		  
+		  If (CType(EventLogLevel, Integer) = CType(Express.LogLevel.None, Integer)) Then
+		    //Configured to be silent, so don't output anything
+		    Return
+		  End If
+		  
+		  If (CType(Level, Integer) <> CType(Express.LogLevel.Always, Integer)) And _
+		    (CType(Level, Integer) > CType(EventLogLevel, Integer)) Then
+		    //EventLog is not 'always', and it's importance is less relevant than configured to be logged
+		    //so don't show this type of Log
+		    Return
+		  End If
+		  
+		  //Forward Message if we have an EventLogHandler
+		  If (EventLogHandler <> Nil) And EventLogHandler.Invoke(Message, Level) Then
+		    //EventLogHandler is handling the Log
+		    Return
+		  End If
+		  
+		  
+		  //Without an EventLogHandler - do Log now
+		  Select Case CType(Level, Integer)
+		  Case CType(Express.LogLevel.None, Integer)
+		    Return
+		  Case CType(Express.LogLevel.Critical, Integer)
+		    Message = "CRITICAL: " + Message
+		  Case CType(Express.LogLevel.Error, Integer)
+		    Message = "ERROR: " + Message
+		  Case CType(Express.LogLevel.Debug, Integer)
+		    Message = "DEBUG: " + Message
+		  Case CType(Express.LogLevel.Warning, Integer)
+		    Message = "WARNING: " + Message
+		  End Select
+		  
+		  #If TargetWindows Then
+		    Message = ConvertEncoding(Message, Encodings.WindowsANSI)
+		  #EndIf
+		  
+		  #If TargetConsole Then
+		    stdout.WriteLine Message
+		    stdout.Flush
+		  #Else
+		    // Xojo Documentation: System.DebugLog
+		    'Outputs msg To the System debug Log.
+		    'On Windows, it logs To the debugger, so programs like DebugView can be used To view the String. On macOS, it logs To the Console. On Linux, it prints the message To stderr.
+		    'You can also view DebugLog output Using the Messages panel In Xojo which Is displayed by clicking the Messages icon at the bottom Of the Xojo workspace Window.
+		    System.DebugLog Message
+		  #EndIf
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function EventLogHandlerDelegate(Message As String, Level As Express . LogLevel) As Boolean
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h1, Description = 526561647320616E642072657475726E732074686520636F6E74656E7473206F6620612066696C652C20676976656E206120466F6C6465724974656D2E204966206066602063616E6E6F74206265207265616420666F7220776861746576657220726561736F6E207468656E20616E20656D70747920737472696E672069732072657475726E65642E
 		Protected Function FileRead(f As FolderItem, encoding As TextEncoding = Nil) As String
@@ -860,8 +923,8 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F6620616E2053534C436F6E6E656374696F6E547970652E
-		Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
+	#tag Method, Flags = &h1, Description = 52657475726E73206120737472696E6720726570726573656E746174696F6E206F6620616E2053534C436F6E6E656374696F6E547970652E
+		Protected Function ToString(extends s as SSLSocket.SSLConnectionTypes) As String
 		  /// Returns a string representation of an SSLConnectionType.
 		  
 		  Var output As String
@@ -944,7 +1007,7 @@ Protected Module Express
 		    db.Close
 		    Return GUID
 		  Catch error As DatabaseException
-		    System.DebugLog("SQLite Error: " + error.Message)
+		    Express.EventLog("UUIDGenerate - SQLite Error: " + error.Message, Express.LogLevel.Error)
 		  End Try
 		  
 		End Function
@@ -963,7 +1026,7 @@ Protected Module Express
 		    boundary = "--" + uniqueBoundary + "-bOuNdArY"
 		  End If
 		  
-		  Static CRLF As String = EndOfLine.Windows
+		  Static CRLF As String = EndOfLine.CRLF
 		  Var data As New MemoryBlock(0)
 		  Var out As New BinaryStream(data)
 		  
@@ -1059,7 +1122,7 @@ Protected Module Express
 		desktop app.
 		
 		The Server's Constructor method has changed slightly so that default ServerSocket
-		properties are set. The default Port is 8080, MaximumSocketsConnected default is 200
+		properties are set. The default Port is 80, MaximumSocketsConnected default is 200
 		and MinimumSocketsAvailable default is 50. Command line arguments are still supported.
 		
 		The MajorVersion, MinorVersion, and BugVersion constants have been removed. Use
@@ -1536,6 +1599,82 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 6.1.0 - EventLogHandlerDelegate
+		Express 6.1.0
+		*************
+		
+		Introduces: Express.EventLogHandlerDelegate
+		-------------------------------------------
+		Express is designed to be a standalone component that can be dropped into any Xojo project.
+		
+		Each Xojo project might want to handle Logs differently.
+		
+		Express provides a default logging facility in: Express.EventLog
+		- TargetConsole: write to StdOut
+		- TargetDesktop: write to System.DebugLog (see Xojo's Documentation)
+		
+		If an application wants Express to redirect Logs to it's own Logging facility, then Express needed to
+		be modified accordingly.
+		
+		Express 6.1.0 decouples this hardcoded requirement by introducing the Express.EventLogHandlerDelegate.
+		
+		A Xojo project using it can now specify which Method (that implements the delegate) an Express instance
+		should use as it's Event Log handler.
+		
+		Usage:
+		// Configure App to handle Express EventLog with LogLevel Warning
+		Express.EventLogLevel = Express.LogLevel.Warning
+		
+		// Assign the Express.EventLogHandlerDelegate to tell Express which method is processing the EventLogs
+		// Comment out or Assign Nil if you want to use Express's default EventLog-Handling
+		Express.EventLogHandler = WeakAddressOf ExpressEventLog
+		
+		
+		Introduces: Express Demo GUI
+		----------------------------
+		This repository is now a MonoRepo containing two example projects:
+		- Express-Demo-Console.xojo_project
+		- Express-Demo-GUI.xojo_project
+		
+		The new "Express Demo GUI" shows how to:
+		- use Express in a Desktop application
+		- switch between the provided Demos on the fly
+		- adjust Log Level on the fly
+		- use the recently added Delegates:
+		  - Express.RequestHandlerDelegate
+		  - Express.EventLogHandlerDelegate
+		
+		
+		Fixes: Multipart Forms Demo
+		---------------------------
+		The issue had been in the Express.Request.
+		- DataAvailable: uses Lookahead.Bytes to determine if the Content has been fully received
+		- Fix in Method BodyGet, so that Multipart Form Content is no longer stripped
+		- DataGet and BodyGet in now called in Method "Process"
+		
+		
+		Demos: SpecialFolder.Resources
+		------------------------------
+		A Copy File Post Build Step now copies the demo's ressources to the Resources Folder.
+		All Demos have been updated to look for the resources in SpecialFolder.Resources.
+		
+		Note: The Multipart Forms Upload will go into the following folder
+		      SpecialFolder.(Desktop | UserHome).Child("express-demo-uploads")
+		
+		Demos have been updated with Nil checks for Request.Server (which is a WeakRef).
+		Server might be Nil if stopped while Request is still alive.
+		
+		
+		Breaking Changes | Update from 6.0 to 6.1
+		*****************************************
+		
+		None.
+		
+		If you don't assign an own Event Log Handler (see above), then Express will continue
+		to use it's default logging mechanism.
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1635,13 +1774,36 @@ Protected Module Express
 	#tag EndNote
 
 
+	#tag Property, Flags = &h0
+		EventLogHandler As Express.EventLogHandlerDelegate
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		EventLogLevel As LogLevel = Express.LogLevel.Debug
+	#tag EndProperty
+
 	#tag Property, Flags = &h1, Description = 546865204461746554696D652074686520617070206C61756E636865642E204D75737420626520736574206D616E75616C6C7920647572696E6720746865206C61756E6368206F6620796F7572206170706C69636174696F6E2E
 		Protected StartTimestamp As DateTime
 	#tag EndProperty
 
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.0.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = CHAR_LOG_BULLET, Type = String, Dynamic = False, Default = \"\xE2\x86\x92", Scope = Public
+		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
 	#tag EndConstant
+
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.1.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag EndConstant
+
+
+	#tag Enum, Name = LogLevel, Flags = &h0
+		None = 0
+		  Always = 1
+		  Critical = 2
+		  Error = 3
+		  Warning = 4
+		  Info = 5
+		Debug = 6
+	#tag EndEnum
 
 
 	#tag ViewBehavior
@@ -1684,6 +1846,23 @@ Protected Module Express
 			InitialValue="0"
 			Type="Integer"
 			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EventLogLevel"
+			Visible=false
+			Group="Behavior"
+			InitialValue="Express.LogLevel.Debug"
+			Type="LogLevel"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - None"
+				"1 - Always"
+				"2 - Critical"
+				"3 - Error"
+				"4 - Warning"
+				"5 - Info"
+				"6 - Debug"
+			#tag EndEnumValues
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module

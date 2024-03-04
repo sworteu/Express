@@ -5,11 +5,7 @@ Protected Module DemoTemplatesClientSide
 		Sub RequestProcess(request As Express.Request)
 		  // By default, the Request.StaticPath points to an "htdocs" folder.
 		  // In this example, we're using an alternate folder.
-		  #If DebugBuild Then
-		    request.StaticPath = App.ExecutableFile.Parent.Parent.Child("htdocs").Child("demo-templates-client-side")
-		  #Else
-		    request.StaticPath = App.ExecutableFile.Parent.Child("htdocs").Child("demo-templates-client-side")
-		  #EndIf
+		  request.StaticPath = SpecialFolder.Resources.Child("htdocs").Child("demo-templates-client-side")
 		  
 		  // Process the request based on the path of the requested resource...
 		  If request.Path = "/data" Then
@@ -18,12 +14,7 @@ Protected Module DemoTemplatesClientSide
 		    'Thread.SleepCurrent(10)
 		    
 		    // Get the orders.
-		    Var orders As String 
-		    #If DebugBuild Then
-		      orders = Express.FileRead(request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
-		    #Else
-		      Orders = Express.FileRead(request.StaticPath.Parent.Child("data").Child("orders.json"))
-		    #EndIf
+		    Var orders As String = Express.FileRead(request.StaticPath.Parent.Parent.Child("data").Child("orders.json"))
 		    
 		    Try
 		      
@@ -107,7 +98,7 @@ Protected Module DemoTemplatesClientSide
 		  // Add the Request object.
 		  Var requestData As New Dictionary
 		  requestData.Value("cookies") = request.Cookies
-		  requestData.Value("data") = request.Data
+		  requestData.Value("data") = request.Body
 		  requestData.Value("get") = request.GET
 		  requestData.Value("headers") = request.Headers
 		  requestData.Value("method") = request.Method

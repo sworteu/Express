@@ -69,8 +69,14 @@ Protected Class Sessions
 
 	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit))
 		Sub TableGenerate()
-		  // Generates an HTML table to display the sessions that SessionEngineAE is managing.
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  If (serverInstance = Nil) Then
+		    Request.Response.Status = "500"
+		    Return
+		  End If
 		  
+		  // Generates an HTML table to display the sessions that SessionEngineAE is managing.
 		  
 		  // Open a table.
 		  TableHTML = "" _
@@ -85,11 +91,11 @@ Protected Class Sessions
 		  
 		  
 		  // Loop over the server's session keys...
-		  For Each key As Variant in Request.Server.SessionEngine.Sessions.Keys
+		  For Each key As Variant In serverInstance.SessionEngine.Sessions.Keys
 		    
 		    // Get the entry's key and value.
 		    Var sessionID As String = key
-		    Var session As Dictionary = Request.Server.SessionEngine.Sessions.Value(key)
+		    Var session As Dictionary = serverInstance.SessionEngine.Sessions.Value(key)
 		    
 		    Var remoteAddress As String = session.Lookup("RemoteAddress", "")
 		    Var username As String = session.Lookup("Username", "n/a")

@@ -7,12 +7,15 @@ Inherits SSLSocket
 		  // A connection has been made to one of the sockets.
 		  // The request's data will be read, and when that's complete, the DataAvailable event will occur.
 		  // We are implementing this to prevent it be handled by the user.
+		  
+		  Express.EventLog("Socket " + SocketID.ToString + ": Connected", Express.LogLevel.Debug)
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub DataAvailable()
-		  /// Data has been received.
+		  // Data has been received.
+		  Express.EventLog("Socket " + SocketID.ToString + ": Data Available", Express.LogLevel.Debug)
 		  
 		  // Increment the data received counter.
 		  DataReceivedCount = DataReceivedCount + 1
@@ -23,6 +26,7 @@ Inherits SSLSocket
 		  
 		  // If this socket is servicing an active Websocket...
 		  If WSStatus = "Active" Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Active WebSocket - Get Message", Express.LogLevel.Debug)
 		    
 		    // Get the incoming message.
 		    WSMessageGet
@@ -32,8 +36,10 @@ Inherits SSLSocket
 		      Return
 		    End If
 		    
+		    Express.EventLog("Socket " + SocketID.ToString + ": Active WebSocket - Process", Express.LogLevel.Debug)
+		    
 		    // Hand the request off to the RequestHandler.
-		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    Var RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
 		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		    Return
@@ -57,19 +63,21 @@ Inherits SSLSocket
 		    
 		  End If
 		  
-		  // Get the request data.
-		  DataGet
+		  // Read/Append Data
+		  Me.DataGet
 		  
-		  // Get the body from the data.
-		  BodyGet
+		  // Get the Body out of Data
+		  Me.BodyGet
 		  
-		  // Get the length of the content that has been received.
-		  Var contentReceivedLength As Integer = Body.Bytes
+		  // Get the length of the content that has been received so far
+		  Var ContentReceivedLength As Integer = Me.Body.Bytes
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
 		  // and sending large entities.
-		  If contentReceivedLength > MaxEntitySize Then
+		  If ContentReceivedLength > MaxEntitySize Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Request Entity Too Large", Express.LogLevel.Critical)
+		    
 		    Response.Status = "413 Request Entity Too Large"
 		    Response.Content = "Error 413: Request Entity Too Large"
 		    ResponseReturn
@@ -77,22 +85,19 @@ Inherits SSLSocket
 		  End If
 		  
 		  // If we haven't received all of the content...
-		  If contentReceivedLength < ContentLength Then
+		  If ContentReceivedLength < ContentLength Then
 		    // Continue receiving data...
+		    Express.EventLog("Socket " + SocketID.ToString + ": Continue receiving data...", Express.LogLevel.Debug)
 		    Return
 		  End If
 		  
-		  // If the body is not the expected length we have a problem
-		  If contentReceivedLength <> ContentLength Then
-		    System.Log System.LogLevelCritical, CurrentMethodName + " Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString
-		    Response.Status = "400 Bad Request"
-		    Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
-		    ResponseReturn
-		    Return
-		  End If
+		  
+		  Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request at Path " + Me.Path, Express.LogLevel.Info)
 		  
 		  // Is the server using threads?
 		  If Multithreading Then
+		    
+		    Express.EventLog("Socket " + SocketID.ToString + ": Processing in RequestThread", Express.LogLevel.Debug)
 		    
 		    // Hand the request off to a RequestThread instance for processing.
 		    RequestThread = New Express.RequestThread
@@ -117,33 +122,28 @@ Inherits SSLSocket
 		  Select Case err.ErrorNumber
 		    
 		  Case 102
-		    
-		    System.DebugLog "Socket " + SocketID.totext + ": Disconnected / LostConnection"
+		    Express.EventLog("Socket " + SocketID.ToString + ": Disconnected / LostConnection", Express.LogLevel.Debug)
 		    
 		    If Multithreading And (Me.RequestThread <> Nil) And (Me.RequestThread.ThreadState <> Thread.ThreadStates.NotRunning) Then
-		      System.DebugLog "Socket " + SocketID.totext + ": Killing RequestThread"
+		      Express.EventLog("Socket " + SocketID.ToString + ": Killing RequestThread", Express.LogLevel.Debug)
 		      Me.RequestThread.Stop
 		    End If
 		    
 		    Me.Close
 		    
 		  Else
-		    
-		    System.DebugLog "Socket " + SocketID.ToString + " Error: " + err.ErrorNumber.ToString
+		    Express.EventLog("Socket " + SocketID.ToString + " Error: " + err.Message + " (" + err.ErrorNumber.ToString + ")", Express.LogLevel.Error)
 		    
 		  End Select
 		  
-		  If err.ErrorNumber <> 102 Then
-		    
-		  End If
 		End Sub
 	#tag EndEvent
 
 	#tag Event
 		Sub SendComplete(UserAborted As Boolean)
-		  /// The response has been sent back to the client.
-		  
 		  #Pragma Unused UserAborted
+		  /// The response has been sent back to the client.
+		  Express.EventLog("Socket " + SocketID.ToString + ": SendComplete", Express.LogLevel.Debug)
 		  
 		  // If persistent connections are disabled...
 		  If KeepAlive = False Then
@@ -168,13 +168,11 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420626F64792E
 		Private Sub BodyGet()
-		  /// Gets the request body.
+		  // Gets the request body.
+		  Body = ""
 		  
 		  // Split the data into headers and the body.
-		  Var requestParts() As String = Data.Split(EndOfLine.Windows + EndOfLine.Windows)
-		  
-		  // We no longer need the data that was received, so clear it.
-		  Data = ""
+		  Var requestParts() As String = Data.Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		  // If we were unable to split the data into a header and body...
 		  If requestParts.LastIndex < 0 Then
@@ -187,14 +185,8 @@ Inherits SSLSocket
 		    requestParts.RemoveAt(0)
 		  End If
 		  
-		  // If what should be the body is not = Content-Length, don't set the body value.
-		  If requestParts(0).Bytes <> ContentLength Then
-		    Return
-		  End If
-		  
 		  // Merge the remaining parts to form the entire request body.
-		  Body = String.FromArray(requestParts, EndOfLine.Windows + EndOfLine.Windows)
-		  
+		  Body = String.FromArray(requestParts, EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		End Sub
 	#tag EndMethod
@@ -236,8 +228,7 @@ Inherits SSLSocket
 	#tag Method, Flags = &h0, Description = 436C6F7365732074686520736F636B657420616E642072657365747320637573746F6D2070726F706572746965732E
 		Sub Close()
 		  /// Closes the socket and resets custom properties.
-		  
-		  System.DebugLog "Socket " + SocketID.totext + ": Close"
+		  Express.EventLog("Socket " + SocketID.toString + ": Close", Express.LogLevel.Debug)
 		  
 		  Reset
 		  
@@ -317,9 +308,9 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420646174612E
 		Private Sub DataGet()
-		  /// Gets the request data.
+		  // Gets the request data.
 		  
-		  Data = ReadAll(Encodings.UTF8)
+		  Data = Data + ReadAll(Encodings.UTF8)
 		  Data = Data.DefineEncoding(Encodings.UTF8)
 		  
 		End Sub
@@ -406,7 +397,7 @@ Inherits SSLSocket
 		  End If
 		  html.Add(Body + "</p>" )
 		  
-		  Return String.FromArray(html, EndOfLine.Windows)
+		  Return String.FromArray(html, EndOfLine.CRLF)
 		  
 		End Function
 	#tag EndMethod
@@ -684,7 +675,7 @@ Inherits SSLSocket
 		  For i As Integer = 1 To lastPartsIndex
 		    
 		    // Split the part into its header and content.
-		    Var partComponents() As String = parts(i).Split(EndOfLine.Windows + EndOfLine.Windows)
+		    Var partComponents() As String = parts(i).Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		    
 		    // If this part has no content then continue.
 		    If partComponents.LastIndex < 1 Then
@@ -704,7 +695,7 @@ Inherits SSLSocket
 		    // Example Header:
 		    //   Content-Disposition: form-data; name="file1"; filename="woot.png"
 		    //   Content-Type: image/png
-		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.Windows)
+		    Var partHeaders() As String = partComponents(0).Split(EndOfLine.CRLF)
 		    
 		    // Loop over the part headers.
 		    For Each partHeader As String In partHeaders
@@ -834,7 +825,7 @@ Inherits SSLSocket
 		  /// This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
-		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.Windows + EndOfLine.Windows)
+		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.CRLF + EndOfLine.CRLF)
 		  
 		  // If the request is valid...
 		  If requestParts.LastIndex > -1 Then
@@ -843,7 +834,7 @@ Inherits SSLSocket
 		    HeadersRaw = requestParts(0)
 		    
 		    // Split the headers into an array of strings.
-		    HeadersRawArray = HeadersRaw.Split(EndOfLine.Windows)
+		    HeadersRawArray = HeadersRaw.Split(EndOfLine.CRLF)
 		    
 		  End If
 		  
@@ -891,9 +882,12 @@ Inherits SSLSocket
 		  
 		  // Set the default resources folder and index filenames.
 		  // These are used by the "MapToFile" method.
-		  StaticPath = App.ExecutableFile.Parent.Child("htdocs")
-		  System.Log System.LogLevelDebug, "StaticPath = " + StaticPath.NativePath
+		  StaticPath = SpecialFolder.Resources.Child("htdocs")
 		  IndexFilenames = Array("index.html", "index.htm")
+		  
+		  #If DebugBuild Then
+		    Express.EventLog("Request.StaticPath = " + StaticPath.NativePath, Express.LogLevel.Debug)
+		  #EndIf
 		  
 		  // Initlialise the `Custom` dictionary.
 		  Custom = New Dictionary
@@ -910,11 +904,26 @@ Inherits SSLSocket
 		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
 		  Try
+		    // We no longer need the data that was received, so clear it.
+		    Data = ""
+		    
+		    // If the body is not the expected length we have a problem
+		    If Body.Bytes <> ContentLength Then
+		      Express.EventLog("Bad Request: Unexpected Content Length. Body.Bytes: " + body.Bytes.ToString + " - Content-Length: " + ContentLength.ToString, Express.LogLevel.Critical)
+		      
+		      Response.Status = "400 Bad Request"
+		      Response.Content = "Error 400: Bad Request. The length of the request's content differs from the Content-Length header."
+		      ResponseReturn
+		      Return
+		    End If
+		    
 		    // Create the POST and Files dictionaries.
 		    BodyProcess
 		    
 		    // Hand the request off to the RequestHandler.
-		    Dim RequestHandler As Express.RequestHandlerDelegate = Server.RequestHandler
+		    Var RequestHandler As Express.RequestHandlerDelegate
+		    Var serverInstance As Express.Server = Me.Server
+		    If (serverInstance <> Nil) Then RequestHandler = serverInstance.RequestHandler
 		    If (RequestHandler <> Nil) Then RequestHandler.Invoke(Self)
 		    
 		  Catch err As ThreadEndException
@@ -958,10 +967,10 @@ Inherits SSLSocket
 		  /// - Custom
 		  /// - Path
 		  
+		  Data = ""
 		  Body = ""
 		  ContentType = ""
 		  Cookies = Nil
-		  Data = ""
 		  Files = Nil
 		  GET = Nil
 		  Headers = Nil
@@ -1031,9 +1040,10 @@ Inherits SSLSocket
 		      
 		      Var typeInfo As Introspection.TypeInfo = Introspection.GetType(e)
 		      
-		      System.DebugLog "ResponseReturn Exception: Socket " + SocketID.ToString _
+		      Express.EventLog("ResponseReturn Exception: Socket " + SocketID.ToString _
 		      + ", Last Error: " + LastErrorCode.ToString _
-		      + ", Exception Type: " + typeInfo.Name
+		      + ", Exception Type: " + typeInfo.Name, _
+		      Express.LogLevel.Error)
 		      
 		    End Try
 		    
@@ -1047,7 +1057,10 @@ Inherits SSLSocket
 		Sub SessionGet(assignNewID As Boolean = True)
 		  /// Gets a session for the request and associates it with the `Session` property.
 		  
-		  Session = Server.SessionEngine.SessionGet(Self, assignNewID)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance = Nil) Then Return
+		  
+		  Session = server.SessionEngine.SessionGet(Self, assignNewID)
 		End Sub
 	#tag EndMethod
 
@@ -1056,7 +1069,10 @@ Inherits SSLSocket
 		  /// Terminates the current session.
 		  
 		  If Session <> Nil Then
-		    Server.SessionEngine.SessionTerminate(Session)
+		    Var serverInstance As Express.Server = Me.Server
+		    If (serverInstance = Nil) Then Return
+		    
+		    serverInstance.SessionEngine.SessionTerminate(Session)
 		  End If
 		End Sub
 	#tag EndMethod
@@ -1118,13 +1134,16 @@ Inherits SSLSocket
 		Sub WSConnectionClose()
 		  /// Closes this websocket connection.
 		  
-		  If server.WebSockets.Count > 0 Then
-		    Var myIndex As Integer = Server.WebSockets.IndexOf(Self)
-		    
-		    If myIndex > -1 Then
-		      Server.WebSockets.RemoveAt(myIndex)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance <> Nil) Then
+		    If serverInstance.WebSockets.Count > 0 Then
+		      Var myIndex As Integer = serverInstance.WebSockets.IndexOf(Self)
+		      
+		      If myIndex > -1 Then
+		        serverInstance.WebSockets.RemoveAt(myIndex)
+		      End If
+		      
 		    End If
-		    
 		  End If
 		  
 		  // Close the connection.
@@ -1158,7 +1177,11 @@ Inherits SSLSocket
 		  WSStatus = "Active"
 		  
 		  // Register the socket as a WebSocket.
-		  Server.WebSockets.Add(Self)
+		  Var serverInstance As Express.Server = Me.Server
+		  If (serverInstance <> Nil) Then
+		    serverInstance.WebSockets.Add(Self)
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1351,8 +1374,8 @@ Inherits SSLSocket
 		Custom As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0, Description = 546865207265717565737420646174612E
-		Data As String
+	#tag Property, Flags = &h21, Description = 546865207265717565737420646174612E
+		Private Data As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546865206E756D626572206F662074696D657320746865206044617461417661696C61626C6560206576656E742068617320666972656420666F72207468697320726571756573742E

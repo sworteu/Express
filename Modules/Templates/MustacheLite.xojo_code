@@ -203,7 +203,7 @@ Protected Class MustacheLite
 		  Var requestData As New JSONItem
 		  Var cookiesJSON As JSONItem = Request.Cookies
 		  requestData.Value("cookies") = cookiesJSON
-		  requestData.Value("data") = Request.Data
+		  requestData.Value("data") = Request.Body
 		  Var getParamsJSON As JSONItem = Request.GET
 		  requestData.Value("get") = getParamsJSON
 		  Var headersJSON As JSONItem = Request.Headers

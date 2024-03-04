@@ -76,6 +76,10 @@ Inherits Timer
 		        // Reset the socket's last connection time.
 		        socket.LastConnect = Nil
 		        
+		        If (Socket IsA Express.Request) Then
+		          Express.EventLog("ConnectionSweeper: Socket " + Express.Request(Socket).SocketID.ToString + ": Close (the socket's keep-alive has timed out)", Express.LogLevel.Debug)
+		        End If
+		        
 		        // Close the socket.
 		        socket.Close
 		        
@@ -121,6 +125,10 @@ Inherits Timer
 		      
 		      // Set the WebSocket status.
 		      socket.WSStatus = "Inactive"
+		      
+		      If (Socket IsA Express.Request) Then
+		        Express.EventLog("ConnectionSweeper: WebSocket " + Express.Request(Socket).SocketID.ToString + ": Close (the socket has timed out)", Express.LogLevel.Debug)
+		      End If
 		      
 		      // Close the socket.
 		      socket.Close

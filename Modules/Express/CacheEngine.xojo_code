@@ -32,6 +32,7 @@ Inherits Timer
 		  Next key
 		  
 		  // Removed the cache entries...
+		  Express.EventLog("CacheEngine: Removed the cache entries", Express.LogLevel.Debug)
 		  For Each cacheName As String In expiredCacheNames
 		    Cache.Remove(cacheName)
 		  Next cacheName

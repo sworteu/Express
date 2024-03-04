@@ -27,7 +27,7 @@ Protected Class DrummersList
 		  /// Opens a connection to the SQLite database.
 		  
 		  // Create a folderitem that points to the database file.
-		  DatabaseFile = App.ExecutableFile.Parent.Parent.Child("data").Child("drummers.sqlite")
+		  DatabaseFile = SpecialFolder.Resources.Child("data").Child("drummers.sqlite")
 		  
 		  // Create a new database instance.
 		  Database = New SQLiteDatabase
@@ -55,8 +55,15 @@ Protected Class DrummersList
 
 	#tag Method, Flags = &h0
 		Sub DrummersGet()
+		  // Server could be Nil if stopped
+		  Var serverInstance As Express.Server = Request.Server
+		  If (serverInstance = Nil) Then
+		    Request.Response.Status = "500"
+		    Return
+		  End If
+		  
 		  // Try to get the data from the cache.
-		  Var cacheEntry As Dictionary = Request.Server.CacheEngine.Get("Drummers")
+		  Var cacheEntry As Dictionary = serverInstance.CacheEngine.Get("Drummers")
 		  
 		  // If cached data is available.
 		  If cacheEntry <> Nil Then
@@ -88,10 +95,10 @@ Protected Class DrummersList
 		  Drummers = Express.RowSetToJSONItem(Records)
 		  
 		  // Cache the data.
-		  Request.Server.CacheEngine.Put("Drummers", Drummers, 300)
+		  serverInstance.CacheEngine.Put("Drummers", Drummers, 300)
 		  
 		  // Get the cache entry so that we have access to its expiration.
-		  cacheEntry = Request.Server.CacheEngine.Get("Drummers")
+		  cacheEntry = serverInstance.CacheEngine.Get("Drummers")
 		  CacheExpiration = cacheEntry.Value("Expiration")
 		  
 		  

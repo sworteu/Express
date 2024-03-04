@@ -22,7 +22,7 @@ Inherits Thread
 	#tag ComputedProperty, Flags = &h0, Description = 41207765616B207265666572656E636520746F207468697320746872656164277320726571756573742E
 		#tag Getter
 			Get
-			  If mRequest = Nil Or mRequest.Value = Nil Then
+			  If (mRequest = Nil) Or (mRequest.Value = Nil) Then
 			    Return Nil
 			  Else
 			    Return Express.Request(mRequest.Value)
