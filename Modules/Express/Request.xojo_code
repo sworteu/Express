@@ -14,7 +14,7 @@ Inherits SSLSocket
 
 	#tag Event
 		Sub DataAvailable()
-		  /// Data has been received.
+		  // Data has been received.
 		  Express.EventLog("Socket " + SocketID.ToString + ": Data Available", Express.LogLevel.Debug)
 		  
 		  // Increment the data received counter.
@@ -63,14 +63,19 @@ Inherits SSLSocket
 		    
 		  End If
 		  
+		  // Read/Append Data
+		  Me.DataGet
 		  
-		  // Get the length of the content that has been received.
-		  Var DataReceivedLength As Integer = Lookahead.Bytes
+		  // Get the Body out of Data
+		  Me.BodyGet
+		  
+		  // Get the length of the content that has been received so far
+		  Var ContentReceivedLength As Integer = Me.Body.Bytes
 		  
 		  // If the content that has actually been uploaded is too large...
 		  // This prevents a client from spoofing of the Content-Length header
 		  // and sending large entities.
-		  If DataReceivedLength > MaxEntitySize Then
+		  If ContentReceivedLength > MaxEntitySize Then
 		    Express.EventLog("Socket " + SocketID.ToString + ": Request Entity Too Large", Express.LogLevel.Critical)
 		    
 		    Response.Status = "413 Request Entity Too Large"
@@ -80,11 +85,12 @@ Inherits SSLSocket
 		  End If
 		  
 		  // If we haven't received all of the content...
-		  If DataReceivedLength < ContentLength Then
+		  If ContentReceivedLength < ContentLength Then
 		    // Continue receiving data...
 		    Express.EventLog("Socket " + SocketID.ToString + ": Continue receiving data...", Express.LogLevel.Debug)
 		    Return
 		  End If
+		  
 		  
 		  Express.EventLog("Socket " + SocketID.ToString + ": Start Processing Request at Path " + Me.Path, Express.LogLevel.Info)
 		  
@@ -162,13 +168,11 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420626F64792E
 		Private Sub BodyGet()
-		  /// Gets the request body.
+		  // Gets the request body.
+		  Body = ""
 		  
 		  // Split the data into headers and the body.
 		  Var requestParts() As String = Data.Split(EndOfLine.CRLF + EndOfLine.CRLF)
-		  
-		  // We no longer need the data that was received, so clear it.
-		  Data = ""
 		  
 		  // If we were unable to split the data into a header and body...
 		  If requestParts.LastIndex < 0 Then
@@ -183,14 +187,6 @@ Inherits SSLSocket
 		  
 		  // Merge the remaining parts to form the entire request body.
 		  Body = String.FromArray(requestParts, EndOfLine.CRLF + EndOfLine.CRLF)
-		  
-		  // If what should be the body is not = Content-Length, don't set the body value.
-		  If Body.Bytes <> ContentLength Then
-		    Body = ""
-		    Return
-		  End If
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -312,9 +308,9 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765747320746865207265717565737420646174612E
 		Private Sub DataGet()
-		  /// Gets the request data.
+		  // Gets the request data.
 		  
-		  Data = ReadAll(Encodings.UTF8)
+		  Data = Data + ReadAll(Encodings.UTF8)
 		  Data = Data.DefineEncoding(Encodings.UTF8)
 		  
 		End Sub
@@ -908,14 +904,8 @@ Inherits SSLSocket
 		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
 		  Try
-		    // Get the request data.
-		    DataGet
-		    
-		    // Get the body from the data.
-		    BodyGet
-		    
-		    // Create the POST and Files dictionaries.
-		    BodyProcess
+		    // We no longer need the data that was received, so clear it.
+		    Data = ""
 		    
 		    // If the body is not the expected length we have a problem
 		    If Body.Bytes <> ContentLength Then
@@ -926,6 +916,9 @@ Inherits SSLSocket
 		      ResponseReturn
 		      Return
 		    End If
+		    
+		    // Create the POST and Files dictionaries.
+		    BodyProcess
 		    
 		    // Hand the request off to the RequestHandler.
 		    Var RequestHandler As Express.RequestHandlerDelegate
@@ -974,10 +967,10 @@ Inherits SSLSocket
 		  /// - Custom
 		  /// - Path
 		  
+		  Data = ""
 		  Body = ""
 		  ContentType = ""
 		  Cookies = Nil
-		  Data = ""
 		  Files = Nil
 		  GET = Nil
 		  Headers = Nil
@@ -1381,8 +1374,8 @@ Inherits SSLSocket
 		Custom As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0, Description = 546865207265717565737420646174612E
-		Data As String
+	#tag Property, Flags = &h21, Description = 546865207265717565737420646174612E
+		Private Data As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546865206E756D626572206F662074696D657320746865206044617461417661696C61626C6560206576656E742068617320666972656420666F72207468697320726571756573742E

@@ -98,7 +98,7 @@ Protected Module DemoTemplatesClientSide
 		  // Add the Request object.
 		  Var requestData As New Dictionary
 		  requestData.Value("cookies") = request.Cookies
-		  requestData.Value("data") = request.Data
+		  requestData.Value("data") = request.Body
 		  requestData.Value("get") = request.GET
 		  requestData.Value("headers") = request.Headers
 		  requestData.Value("method") = request.Method
