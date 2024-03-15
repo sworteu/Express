@@ -269,6 +269,36 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function LaunchArgumentGetValue(args As Dictionary, argKey As String, envKey As String, ByRef argValue As String) As Boolean
+		  // Gets the Launch Argument from
+		  // 1. Launch Argument
+		  // 2. Environment Variable
+		  
+		  If (args = Nil) Then args = New Dictionary
+		  
+		  argValue = args.Lookup(argKey, "").StringValue.Trim
+		  If (argValue = "") Then argValue = System.EnvironmentVariable(envKey).Trim
+		  
+		  Return (argValue <> "")
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function LaunchArgumentIsSet(args As Dictionary, argKey As String, envKey As String) As Boolean
+		  // Is the Launch Argument set?
+		  // 1. Launch Argument
+		  // 2. Environment Variable
+		  
+		  If (args = Nil) Then args = New Dictionary
+		  
+		  If args.HasKey(argKey) Then Return True
+		  Return (System.EnvironmentVariable(envKey).Trim = "true")
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1, Description = 4D61707320612066696C6520657874656E73696F6E20746F20697473204D494D4520747970652E
 		Protected Function MIMETypeGet(extension As String) As String
 		  /// Maps a file extension to its MIME type.
@@ -1672,6 +1702,61 @@ Protected Module Express
 		
 		If you don't assign an own Event Log Handler (see above), then Express will continue
 		to use it's default logging mechanism.
+		
+	#tag EndNote
+
+	#tag Note, Name = 6.2.0 - Environment Variables
+		Express 6.2.0
+		*************
+		If you are going to deploy a service using Express to a WebServer 
+		with LifeBoat or run it in a Docker Container, then you want to configure
+		Express Settings depending on your needs.
+		
+		You could always launch the service application with arguments:
+		* --Port=xxx
+		* --MaxSockets=xxx
+		* --MinSockets=xxx
+		* --Loopback (use Loopback Network Interface)
+		* --Nothreads (disable MultiThreading)
+		* --Secure (use SSL)
+		* --ConnectionType=xxx (Xojo SSL Socket Connection Type)
+		* --CertificateFile=xxx
+		* --CertificatePassword
+		* --CloseConnections (disable Keep-Alive)
+		* --SilentStart
+		
+		In Docker Environments you might want a Container running an Express Instance in
+		various environments (Production, Development). So different Log Verbosity or
+		different Ports or other Settings are required in each environment.
+		
+		Environment Variables
+		---------------------
+		Creating an Express Server Instance:
+		Server = New Express.Server(args, AddressOf DemoHelloWorld.RequestProcess)
+		
+		This will pick up both Launch Arguments and Environment Variables in the
+		following priority:
+		1. Launch Argument
+		2. Environment Variable
+		
+		The following Environment Variables are respected:
+		* EXPRESS_PORT=xxx
+		* EXPRESS_MAXSOCKETS=xxx
+		* EXPRESS_MINSOCKETS=xxx
+		* EXPRESS_LOOPBACK=true
+		* EXPRESS_NOTHREADS=true
+		* EXPRESS_CLOSECONNECTIONS=true
+		* EXPRESS_SILENTSTART=true
+		
+		Note: you need to specify the value 'true' for the last four Environment Variables
+		
+		The SSL related launch arguments have not been implemented.
+		In hosted environments you could/should use a Gateway (e.g. nginx)
+		in front to handle SSL (and certificate renewals) and Load Balancing.
+		
+		Demo 1: Hello World
+		-------------------
+		This Demo has been updated to display Express Server Infos.
 		
 	#tag EndNote
 

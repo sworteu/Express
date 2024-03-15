@@ -64,7 +64,7 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 436F6E7374727563746F7220746861742077696C6C207573652064656661756C742076616C7565732073696E6365206E6F2061726773207370656369666965642E
 		Sub Constructor(addRequestHandler As Express.RequestHandlerDelegate)
-		  /// Constructor that will use default values since no args specified.
+		  // Constructor that will use default values since no args specified.
 		  
 		  Self.Constructor(Nil, addRequestHandler)
 		  
@@ -73,7 +73,7 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F7220746861742074616B6573206F7074696F6E616C20617267756D656E74732E
 		Sub Constructor(args() As String, addRequestHandler As Express.RequestHandlerDelegate)
-		  /// Default constructor that takes optional arguments.
+		  // Default constructor that takes optional arguments.
 		  
 		  // Set defaults.
 		  #If DebugBuild Then
@@ -90,56 +90,59 @@ Inherits ServerSocket
 		  KeepAlive = True
 		  RequestHandler = addRequestHandler
 		  
-		  // Any arguments?
-		  If args <> Nil Then
-		    
-		    // Convert any command line arguments into a dictionary.
-		    Var arguments As Dictionary = ArgsToDictionary(args)
-		    
-		    // Assign valid arguments to their corresponding properties.
-		    If arguments.HasKey("--Port") Then
-		      Port = Val(arguments.Value("--Port"))
-		    End If
-		    
-		    If arguments.HasKey("--MaxSockets") Then
-		      MaximumSocketsConnected = Val(arguments.Value("--MaxSockets"))
-		    End If
-		    
-		    If arguments.HasKey("--MinSockets") Then
-		      MinimumSocketsAvailable = Val(arguments.Value("--MinSockets"))
-		    End If
-		    
-		    Loopback = arguments.HasKey("--Loopback")
-		    
-		    If arguments.HasKey("--Nothreads") Then 
-		      Multithreading = False
-		    End If
-		    
-		    If arguments.HasKey("--Secure") Then 
-		      Secure = True
-		    End If
-		    
-		    If arguments.HasKey("--ConnectionType") Then 
-		      ConnectionType = arguments.Value("--ConnectionType")
-		    End If
-		    
-		    If arguments.HasKey("--CertificateFile") Then 
-		      CertificateFile = New FolderItem(arguments.Value("--CertificateFile"), FolderItem.PathModes.Shell)
-		    End If
-		    
-		    If arguments.HasKey("--CertificatePassword") Then 
-		      CertificatePassword = CertificatePassword
-		    End If
-		    
-		    If arguments.HasKey("--CloseConnections") Then 
-		      KeepAlive = False
-		    End If
-		    
-		    If arguments.HasKey("--SilentStart") Then
-		      SilentStart = True
-		    End If
-		    
+		  // Convert any command line arguments into a dictionary.
+		  Var arguments As Dictionary
+		  If (args <> Nil) Then
+		    arguments = ArgsToDictionary(args)
 		  End If
+		  If (arguments = Nil) Then
+		    arguments = New Dictionary
+		  End If
+		  
+		  // Assign valid arguments to their corresponding properties.
+		  Var argValue As String
+		  If LaunchArgumentGetValue(arguments, "--Port", "EXPRESS_PORT", argValue) Then
+		    Port = Val(argValue)
+		  End If
+		  
+		  If LaunchArgumentGetValue(arguments, "--MaxSockets", "EXPRESS_MAXSOCKETS", argValue) Then
+		    MaximumSocketsConnected = Val(argValue)
+		  End If
+		  
+		  If LaunchArgumentGetValue(arguments, "--MinSockets", "EXPRESS_MINSOCKETS", argValue) Then
+		    MinimumSocketsAvailable = Val(argValue)
+		  End If
+		  
+		  Loopback = LaunchArgumentIsSet(arguments, "--Loopback", "EXPRESS_LOOPBACK")
+		  
+		  If LaunchArgumentIsSet(arguments, "--Nothreads", "EXPRESS_NOTHREADS") Then
+		    Multithreading = False
+		  End If
+		  
+		  If arguments.HasKey("--Secure") Then 
+		    Secure = True
+		  End If
+		  
+		  If arguments.HasKey("--ConnectionType") Then 
+		    ConnectionType = arguments.Value("--ConnectionType")
+		  End If
+		  
+		  If arguments.HasKey("--CertificateFile") Then 
+		    CertificateFile = New FolderItem(arguments.Value("--CertificateFile"), FolderItem.PathModes.Shell)
+		  End If
+		  
+		  If arguments.HasKey("--CertificatePassword") Then 
+		    CertificatePassword = CertificatePassword
+		  End If
+		  
+		  If LaunchArgumentIsSet(arguments, "--CloseConnections", "EXPRESS_CLOSECONNECTIONS") Then
+		    KeepAlive = False
+		  End If
+		  
+		  If LaunchArgumentIsSet(arguments, "--SilentStart", "EXPRESS_SILENTSTART") Then
+		    SilentStart = True
+		  End If
+		  
 		  
 		  // Initialise the Custom dictionary.
 		  Custom = New Dictionary
