@@ -141,49 +141,54 @@ Inherits ServerSocket
 		    
 		  End If
 		  
-		  // Initlialise the Custom dictionary.
+		  // Initialise the Custom dictionary.
 		  Custom = New Dictionary
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 446973706C6179732073657276657220636F6E66696775726174696F6E20696E666F2E
-		Sub ServerInfoDisplay()
-		  /// Displays server configuration info.
+		Function ServerInfo() As Dictionary
+		  //Server configuration info
+		  
+		  Var infos As New Dictionary
+		  infos.Value("Express Version") = Express.VERSION_STRING
+		  infos.Value("Xojo Version") = XojoVersionString
+		  infos.Value("Caching") = If(CachingEnabled , "Enabled", "Disabled")
+		  infos.Value("Cache Sweep Interval") = CacheSweepIntervalSecs.ToString + " seconds"
+		  infos.Value("Loopback") = If(Loopback , "Enabled", "Disabled")
+		  infos.Value("Keep-Alive") = If(KeepAlive , "Enabled", "Disabled")
+		  infos.Value("Keep-Alive Timeout") = KeepAliveTimeout.ToString  + " seconds"
+		  infos.Value("Keep-Alive Sweep Interval") = ConnectionSweepIntervalSecs.ToString
+		  infos.Value("Maximum Entity Size") = MaxEntitySize.ToString
+		  infos.Value("Maximum Sockets Connected") = MaximumSocketsConnected.ToString
+		  infos.Value("Minimum Sockets Available") = MinimumSocketsAvailable.ToString
+		  infos.Value("Multithreading") = If(Multithreading, "Enabled", "Disabled")
+		  infos.Value("Port") = Port.ToString
+		  infos.Value("Sessions") = If(SessionsEnabled , "Enabled", "Disabled")
+		  infos.Value("SSL") = If(Secure , "Enabled", "Disabled")
+		  infos.Value("WebSocket Timeout") = WSTimeout.ToString + " seconds"
+		  
+		  If Secure Then
+		    infos.Value("SSL Certificate Path") = CertificateFile.NativePath
+		    infos.Value("SSL Connection Type") = ConnectionType.ToString
+		  End If
+		  
+		  Return infos
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21, Description = 446973706C6179732073657276657220636F6E66696775726174696F6E20696E666F2E
+		Private Sub ServerInfoDisplay()
+		  // Displays server configuration info.
 		  
 		  Express.EventLog(Name + " has started... ", Express.LogLevel.Always)
 		  
-		  Var info() As String
-		  info.Add("Xojo Version: " + XojoVersionString)
-		  info.Add("Express Version: " + Express.VERSION_STRING)
-		  info.Add("Caching: " + If(CachingEnabled , "Enabled", "Disabled"))
-		  info.Add("Cache Sweep Interval: " + CacheSweepIntervalSecs.ToString + " seconds")
-		  info.Add("Loopback: " + If(Loopback , "Enabled", "Disabled"))
-		  info.Add("Keep-Alives: " + If(KeepAlive , "Enabled", "Disabled"))
-		  info.Add("Keep-Alive Timeout: " + KeepAliveTimeout.ToString  + " seconds")
-		  info.Add("Keep-Alive Sweep Interval: " + ConnectionSweepIntervalSecs.ToString)
-		  info.Add("Maximum Entity Size: " + MaxEntitySize.ToString)
-		  info.Add("Maximum Sockets Connected: " + MaximumSocketsConnected.ToString)
-		  info.Add("Minimum Sockets Available: " + MinimumSocketsAvailable.ToString)
-		  info.Add("Multithreading: " + If(Multithreading, "Enabled", "Disabled"))
-		  info.Add("Port: " + Port.ToString)
-		  info.Add("Sessions: " + If(SessionsEnabled , "Enabled", "Disabled"))
-		  info.Add("SSL: " + If(Secure , "Enabled", "Disabled"))
-		  info.Add("WebSocket Timeout: " + WSTimeout.ToString + " seconds")
+		  Var info As Dictionary = Me.ServerInfo
 		  
-		  If Secure Then
-		    info.Add("SSL Certificate Path: " + CertificateFile.NativePath)
-		    info.Add("SSL Connection Type: " + ConnectionType.ToString)
-		  End If
-		  
-		  If AdditionalServerDisplayInfo <> Nil Then
-		    For Each entry As DictionaryEntry In AdditionalServerDisplayInfo
-		      info.Add(entry.Key.StringValue + ": " + entry.Value.StringValue)
-		    Next entry
-		  End If
-		  
-		  For Each infoLine As String In info
-		    Express.EventLog(CHAR_LOG_BULLET + " " + infoLine, Express.LogLevel.Always)
+		  For Each infoKey As Variant In info.Keys
+		    Express.EventLog(CHAR_LOG_BULLET + " " + infoKey.StringValue + ": " + info.Lookup(infoKey, "n/a").StringValue, Express.LogLevel.Always)
 		  Next
 		  
 		  Express.EventLog("", Express.LogLevel.Always)
@@ -288,10 +293,6 @@ Inherits ServerSocket
 		End Sub
 	#tag EndMethod
 
-
-	#tag Property, Flags = &h0, Description = 4F7074696F6E616C206164646974696F6E616C20696E666F726D6174696F6E20746861742063616E20626520646973706C617965642062792074686520736572766572207768656E2063616C6C696E67207468652060536572766572496E666F446973706C617960206D6574686F642E
-		AdditionalServerDisplayInfo As Dictionary
-	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 54686520736572766572277320636163686520656E67696E652E
 		CacheEngine As Express.CacheEngine
