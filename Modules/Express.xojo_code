@@ -1760,6 +1760,35 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 6.2.1 - Demos with Args and Env
+		Express 6.2.1
+		*************
+		The provided Demos have been updated to respect Launch Arguments and Environment Variables.
+		In DebugBuilds the Loopback Network Interface (localhost, 127.0.0.1) is being used by default.
+		
+		Express-Demo-Console
+		--------------------
+		Now uses a demo in the following priority:
+		1. Launch Argument: --Demo=1
+		2. Environment Variable: EXPRESS_DEMO=1
+		3. if no set: displays a choice and asks which demo to use
+		
+		This now allows to
+		- Build the Express-Demo-Console.xojo_project without modifying any code
+		- Deploy to a webserver (e.g. using Lifeboat)
+		  - Set Environment Variable EXPRESS_DEMO=1
+		  - Stage - and enjoy/test the Demo 1
+		  - Set Environment Variable EXPRESS_DEMO=2
+		  - Stage - and enjoy/test the Demo 2
+		- Deploy to a webserver manually
+		  - Launch with Arguments --Port=xxxx --Demo=1 (or set the Environment Variables)
+		  - Enjoy/test the Demo 1
+		  - Launch with Arguments --Port=xxxx --Demo=2 (or set the Environment Variables)
+		  - Enjoy/test the Demo 2
+		
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1876,7 +1905,7 @@ Protected Module Express
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.0", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.1", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 
