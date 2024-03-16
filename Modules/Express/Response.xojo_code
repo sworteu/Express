@@ -2,7 +2,7 @@
 Protected Class Response
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F72207468617420637265617465732061206E657720726573706F6E736520776974682061207765616B207265666572656E636520746F207468652070617373656420726571756573742060726571602E
 		Sub Constructor(req As Express.Request)
-		  /// Default constructor that creates a new response with a weak reference to the passed request `req`.
+		  // Default constructor that creates a new response with a weak reference to the passed request `req`.
 		  
 		  // Store the request that this response is associated with.
 		  mRequest = New WeakRef(req)
@@ -18,9 +18,9 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 436F6D707265737365732074686520636F6E74656E74207573696E6720677A69702C20616E64206164647320746865206E6563657373617279206865616465722E
 		Sub ContentCompress()
-		  /// Compresses the content using gzip, and adds the necessary header.
-		  ///
-		  /// Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
+		  // Compresses the content using gzip, and adds the necessary header.
+		  //
+		  // Source: https://forum.xojo.com/11634-gunzip-without-a-file/0
 		  
 		  // Compress the content.
 		  Content = GZip(Content)
@@ -36,7 +36,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 41646473206120636F6F6B696520746F2074686520696E7465726E616C2060436F6F6B696573602064696374696F6E6172792E
 		Sub CookieSet(name As String, value As String, expiration As DateTime = Nil, domain As String = "", path As String = "/", secure As Boolean = False, HttpOnly As Boolean = False)
-		  /// Adds a cookie to the internal `Cookies` dictionary.
+		  // Adds a cookie to the internal `Cookies` dictionary.
 		  
 		  // Create a dictionary for the cookie's settings.
 		  Var cookie As New Dictionary
@@ -55,7 +55,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 41646473206120636F6F6B696520746F2074686520696E7465726E616C2060436F6F6B696573602064696374696F6E61727920776974682066696E6520636F6E74726F6C206F766572207468652065787069726174696F6E20646174652F74696D652E
 		Sub CookieSet(name As String, value As String, expirationDays As Integer = 0, expirationHours As Integer = 0, expirationMinutes As Integer = 0, expirationSeconds As Integer = 0, domain As String = "", path As String = "/", secure As Boolean = False, HttpOnly As Boolean = False)
-		  /// Adds a cookie to the internal `Cookies` dictionary with fine control over the expiration date/time.
+		  // Adds a cookie to the internal `Cookies` dictionary with fine control over the expiration date/time.
 		  
 		  // Create the cookie's expiration date.
 		  Var expirationDate As DateTime = DateTime.Now
@@ -79,7 +79,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h21, Description = 436F6E7665727473207468652020696E7465726E616C2060436F6F6B696573602064696374696F6E61727920696E746F20612068656164657220737472696E672E
 		Private Function CookiesToHeaders() As String
-		  /// Converts the  internal `Cookies` dictionary into a header string.
+		  // Converts the  internal `Cookies` dictionary into a header string.
 		  
 		  Var headersString As String
 		  
@@ -128,7 +128,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 44756D70732074686520636F6E74656E74206F66207468697320726573706F6E736520617320616E2048544D4C20737472696E672E
 		Function Dump() As String
-		  /// Dumps the content of this response as an HTML string.
+		  // Dumps the content of this response as an HTML string.
 		  
 		  Var html As String
 		  
@@ -151,9 +151,9 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 52657475726E732074686520726573706F6E73652E
 		Function Get() As String
-		  /// Returns the response.
-		  ///
-		  /// Called by `Request.ResponseReturn`.
+		  // Returns the response.
+		  //
+		  // Called by `Request.ResponseReturn`.
 		  
 		  // If the content is to be compressed...
 		  If Compress = True Then
@@ -168,7 +168,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h21, Description = 53657473207468652064656661756C7420726573706F6E736520686561646572732E
 		Private Sub HeadersInit()
-		  /// Sets the default response headers.
+		  // Sets the default response headers.
 		  
 		  Headers = New Dictionary
 		  
@@ -201,7 +201,7 @@ Protected Class Response
 
 	#tag Method, Flags = &h21, Description = 436F6E76657274732074686520726573706F6E73652060486561646572736020746F206120737472696E67
 		Private Function HeadersToString() As String
-		  /// Converts the response `Headers` to a string
+		  // Converts the response `Headers` to a string
 		  
 		  // This is the string that will be returned.
 		  Var rh As String
@@ -234,9 +234,9 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 47656E657261746573207468652048544D4C206E656564656420746F20646F2061204D657461205265667265736820746F2061207370656369666965642055524C2C2077686963682072656469726563747320746865207573657220746F2061206E6577206C6F636174696F6E2E2060436F6E74656E7460206973207570646174656420616E642060537461747573602069732073657420746F203230302E
 		Sub MetaRefresh(URL As String)
-		  /// Generates the HTML needed to do a Meta Refresh to a specified URL,
-		  /// which redirects the user to a new location.
-		  /// `Content` is updated and `Status` is set to 200.
+		  // Generates the HTML needed to do a Meta Refresh to a specified URL,
+		  // which redirects the user to a new location.
+		  // `Content` is updated and `Status` is set to 200.
 		  
 		  // Update the status code.
 		  Status = "200"
@@ -256,11 +256,11 @@ Protected Class Response
 
 	#tag Method, Flags = &h0, Description = 53657473207375676765737465642073656375726974792D72656C6174656420686561646572732E
 		Sub SecurityHeadersSet()
-		  /// Sets suggested security-related headers.
-		  ///
-		  /// For guidance, see:
-		  /// https://content-security-policy.com/
-		  /// https://wiki.mozilla.org/Security/Guidelines/Web_Security
+		  // Sets suggested security-related headers.
+		  //
+		  // For guidance, see:
+		  // https://content-security-policy.com/
+		  // https://wiki.mozilla.org/Security/Guidelines/Web_Security
 		  
 		  Headers.Value("Content-Security-Policy") = "default-src 'none'; connect-src 'self'; frame-ancestors 'none'; img-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self';"
 		  Headers.Value("Referrer-Policy") = "no-referrer, strict-origin-when-cross-origin"

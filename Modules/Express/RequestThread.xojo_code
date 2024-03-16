@@ -3,7 +3,7 @@ Protected Class RequestThread
 Inherits Thread
 	#tag Event
 		Sub Run()
-		  /// Processes a request.
+		  // Processes a request.
 		  
 		  If Request <> Nil Then
 		    

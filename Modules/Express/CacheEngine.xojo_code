@@ -3,8 +3,8 @@ Protected Class CacheEngine
 Inherits Timer
 	#tag Event
 		Sub Action()
-		  /// Removes expired objects from the cache.
-		  /// This prevents the cache from growing unnecessarily due to orphaned objects.
+		  // Removes expired objects from the cache.
+		  // This prevents the cache from growing unnecessarily due to orphaned objects.
 		  
 		  // Get the current date/time.
 		  Var now As DateTime = DateTime.Now
@@ -43,7 +43,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 436C65617273207468652063616368652E
 		Sub Clear()
-		  /// Clears the cache.
+		  // Clears the cache.
 		  
 		  Cache = New Dictionary
 		  
@@ -52,7 +52,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor(SweepIntervalSecs As Integer = 300)
-		  /// Default constructor.
+		  // Default constructor.
 		  
 		  // Initialise the Cache dictionary.
 		  Cache = New Dictionary
@@ -76,7 +76,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 44656C6574657320616E206F626A6563742066726F6D207468652063616368652E
 		Sub Delete(Name As String)
-		  /// Deletes an object from the cache.
+		  // Deletes an object from the cache.
 		  
 		  // If the value is in the cache...
 		  If Cache.HasKey(Name) Then
@@ -96,8 +96,8 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 4765747320616E206F626A6563742066726F6D207468652063616368652C20616E6420636865636B73206974732065787069726174696F6E20646174652E20496620746865206F626A65637420697320666F756E642C206275742068617320657870697265642C207468656E20697427732064656C657465642066726F6D207468652063616368652E
 		Function Get(name As String) As Dictionary
-		  /// Gets an object from the cache, and checks its expiration date.
-		  /// If the object is found, but has expired, then it's deleted from the cache.
+		  // Gets an object from the cache, and checks its expiration date.
+		  // If the object is found, but has expired, then it's deleted from the cache.
 		  
 		  // If the value is in the cache...
 		  If Cache.HasKey(Name) Then
@@ -133,7 +133,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 5075747320616E206F626A65637420696E746F207468652063616368652C20616E642073657473206974732065787069726174696F6E20646174652E
 		Sub Put(name As String, content As Variant, expirationSecs As Integer)
-		  /// Puts an object into the cache, and sets its expiration date.
+		  // Puts an object into the cache, and sets its expiration date.
 		  
 		  // Create the expiration date/time.
 		  Var expiration As DateTime = DateTime.Now

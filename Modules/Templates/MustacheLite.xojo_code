@@ -2,7 +2,7 @@
 Protected Class MustacheLite
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor()
-		  /// Default constructor.
+		  // Default constructor.
 		  
 		  // Initialise the data object.
 		  Data = New JSONItem
@@ -12,7 +12,7 @@ Protected Class MustacheLite
 
 	#tag Method, Flags = &h0, Description = 4D657267657320612074656D706C617465202860536F757263656029207769746820646174612028604461746160292C20616E642073746F7265732074686520726573756C7420696E2060457870616E646564602E
 		Sub Merge()
-		  /// Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
+		  // Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
 		  
 		  // Append the system hash to the data hash.
 		  If MergeSystemTokens Then

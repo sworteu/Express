@@ -324,12 +324,12 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h21
 		Private Function ExpressEventLog(Message As String, Level As Express.LogLevel) As Boolean
-		  //If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
-		  //System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
-		  //handle the Logging there.
-		  //Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
+		  // If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
+		  // System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
+		  // handle the Logging there.
+		  // Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
 		  
-		  //So this would be the place to forward the Logs to your App's own Log-Handling facility
+		  // So this would be the place to forward the Logs to your App's own Log-Handling facility
 		  
 		  Select Case CType(Level, Integer)
 		    

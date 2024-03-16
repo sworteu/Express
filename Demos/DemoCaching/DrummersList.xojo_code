@@ -24,7 +24,7 @@ Protected Class DrummersList
 
 	#tag Method, Flags = &h0, Description = 4F70656E73206120636F6E6E656374696F6E20746F207468652053514C6974652064617461626173652E
 		Sub DatabaseConnect()
-		  /// Opens a connection to the SQLite database.
+		  // Opens a connection to the SQLite database.
 		  
 		  // Create a folderitem that points to the database file.
 		  DatabaseFile = SpecialFolder.Resources.Child("data").Child("drummers.sqlite")
@@ -107,7 +107,7 @@ Protected Class DrummersList
 
 	#tag Method, Flags = &h0, Description = 4765747320616C6C207265636F7264732066726F6D20746865204472756D6D657273207461626C652E
 		Sub RecordsGet()
-		  /// Gets all records from the Drummers table.
+		  // Gets all records from the Drummers table.
 		  
 		  // Simulate a slow query.
 		  Thread.SleepCurrent(3000)

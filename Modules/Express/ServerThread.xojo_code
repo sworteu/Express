@@ -3,7 +3,7 @@ Protected Class ServerThread
 Inherits Thread
 	#tag Event
 		Sub Run()
-		  /// Start the server.
+		  // Start the server.
 		  
 		  Server.Start
 		End Sub
@@ -12,7 +12,7 @@ Inherits Thread
 
 	#tag Method, Flags = &h0, Description = 43726561746520616E20696E7374616E6365206F6620457870726573732E536572766572
 		Sub Constructor(args() As String, requestHandler As Express.RequestHandlerDelegate)
-		  /// Create an instance of Express.Server
+		  // Create an instance of Express.Server
 		  
 		  Server = New Express.Server(args, requestHandler)
 		  
