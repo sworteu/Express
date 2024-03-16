@@ -16,11 +16,44 @@ Protected Module DemoHelloWorld
 		    Var now As String = Express.DateToRFC1123
 		    
 		    request.Response.Content = "<link rel=""stylesheet"" type=""text/css"" media=""all"" href=""/stylesheets/stylesheet.css"" />" _
-		    + "<p style=""margin-top: 24px; text-align: center; font-size: 24pt;"">Hello again!</p>" _
-		    + "<p style=""text-align: center; font-size: 14pt;"">This is a dynamically generated response.</p>" _
-		    + "<p style=""text-align: center; font-size: 14pt;"">This is a demo of Express Server " + Express.VERSION_STRING + ".</p>" _
-		    + "<p style=""text-align: center; font-size: 14pt;"">You're running Xojo " + XojoVersionString + ".</p>" _
-		    + "<p style=""text-align: center; font-size: 14pt;"">The date and time is " + Now + ".</p>"
+		    + "<div class=""pagewrapper"">" _
+		    + "<p style=""text-align: center; margin-bottom: 24px;"">" _
+		    + "<img src=""/images/aloe-logo-white.png"" width=""200"">" _
+		    + "</p>" _
+		    + "<h1 style=""text-align: center; font-size: 24pt;"">Hello again!</h1>" _
+		    + "<p style=""text-align: center;"">This is a dynamically generated response.</p>" _
+		    + "<p style=""text-align: center;"">This is a demo of Express Server " + Express.VERSION_STRING + ".</p>" _
+		    + "<p style=""text-align: center;"">You're running Xojo " + XojoVersionString + ".</p>" _
+		    + "<p style=""text-align: center;"">The date and time is " + Now + ".</p>" _
+		    + "<br><br>" _
+		    + "<p style=""text-align: center;""><a href=""/"">Back</a></p>" _
+		    + "</div>"
+		    
+		  ElseIf request.Path = "/express-info" Then
+		    // Get Server Info
+		    Var serverInstance As Express.Server = request.Server
+		    Var info As Dictionary
+		    If (serverInstance <> Nil) Then info = serverInstance.ServerInfo
+		    If (info = Nil) Then info = New Dictionary
+		    
+		    Var infoLinesHtml() As String
+		    For Each infoKey As Variant In info.Keys
+		      infoLinesHtml.Add("<tr><td>" + infoKey.StringValue + "</td><td>" + info.Lookup(infoKey, "n/a").StringValue + "</td></tr>")
+		    Next
+		    
+		    request.Response.Content = "<link rel=""stylesheet"" type=""text/css"" media=""all"" href=""/stylesheets/stylesheet.css"" />" _
+		    + "<div class=""pagewrapper"">" _
+		    + "<p style=""text-align: center; margin-bottom: 24px;"">" _
+		    + "<img src=""/images/aloe-logo-white.png"" width=""200"">" _
+		    + "</p>" _
+		    + "<h1 style=""text-align: center; font-size: 24pt;"">Express Server Info</h1>" _
+		    + "<table class=""gridtable"" width=""100%"">" _
+		    + "<tr><th width=""30%"">Info</th><th width=""70%"">Value</th></tr>" _
+		    + String.FromArray(infoLinesHtml, "") _
+		    + "</table>" _
+		    + "<br><br>" _
+		    + "<p style=""text-align: center;""><a href=""/"">Back</a></p>" _
+		    + "</div>"
 		    
 		  Else
 		    
