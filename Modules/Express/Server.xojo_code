@@ -3,7 +3,7 @@ Protected Class Server
 Inherits ServerSocket
 	#tag Event
 		Function AddSocket() As TCPSocket
-		  /// Tries to add a socket to the pool.
+		  // Tries to add a socket to the pool.
 		  
 		  Try
 		    
@@ -46,7 +46,7 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 52657475726E7320746865206E756D626572206F6620636F6E6E65637465642061637469766520736F636B6574732E
 		Function ConnectedSocketCount() As Integer
-		  /// Returns the number of connected active sockets.
+		  // Returns the number of connected active sockets.
 		  
 		  Var activeSockets() As TCPSocket = Self.ActiveConnections
 		  Var count As Integer = 0
@@ -152,7 +152,7 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 446973706C6179732073657276657220636F6E66696775726174696F6E20696E666F2E
 		Function ServerInfo() As Dictionary
-		  //Server configuration info
+		  // Server configuration info
 		  
 		  Var infos As New Dictionary
 		  infos.Value("Express Version") = Express.VERSION_STRING
@@ -281,7 +281,7 @@ Inherits ServerSocket
 
 	#tag Method, Flags = &h0, Description = 42726F616463617374732061206D65737361676520746F20616C6C206F662074686520576562536F636B65747320746861742061726520636F6E6E656374656420746F20746865207365727665722E
 		Sub WSMessageBroadcast(message As String)
-		  /// Broadcasts a message to all of the WebSockets that are connected to the server.
+		  // Broadcasts a message to all of the WebSockets that are connected to the server.
 		  
 		  // Loop over each WebSocket connection.
 		  For Each socket As Express.Request In WebSockets

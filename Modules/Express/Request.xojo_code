@@ -115,9 +115,9 @@ Inherits SSLSocket
 
 	#tag Event
 		Sub Error(err As RuntimeException)
-		  /// An error occurred with the socket.
-		  ///
-		  /// Typically, this will be a 102 error, where the client has closed the connection.
+		  // An error occurred with the socket.
+		  //
+		  // Typically, this will be a 102 error, where the client has closed the connection.
 		  
 		  Select Case err.ErrorNumber
 		    
@@ -142,7 +142,7 @@ Inherits SSLSocket
 	#tag Event
 		Sub SendComplete(UserAborted As Boolean)
 		  #Pragma Unused UserAborted
-		  /// The response has been sent back to the client.
+		  // The response has been sent back to the client.
 		  Express.EventLog("Socket " + SocketID.ToString + ": SendComplete", Express.LogLevel.Debug)
 		  
 		  // If persistent connections are disabled...
@@ -193,8 +193,8 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4576616C756174657320746865207265717565737420626F647920746F206372656174652064696374696F6E617269657320726570726573656E74696E6720616E7920504F5354207661726961626C657320616E642F6F722066696C657320746861742068617665206265656E2073656E742E
 		Private Sub BodyProcess()
-		  /// Evaluates the request body to create dictionaries representing any POST variables 
-		  /// and/or files that have been sent.
+		  // Evaluates the request body to create dictionaries representing any POST variables 
+		  // and/or files that have been sent.
 		  
 		  // Create the POST and Files dictionaries.
 		  POST = New Dictionary
@@ -227,7 +227,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 436C6F7365732074686520736F636B657420616E642072657365747320637573746F6D2070726F706572746965732E
 		Sub Close()
-		  /// Closes the socket and resets custom properties.
+		  // Closes the socket and resets custom properties.
 		  Express.EventLog("Socket " + SocketID.toString + ": Close", Express.LogLevel.Debug)
 		  
 		  Reset
@@ -242,7 +242,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor(server As Express.Server)
-		  /// Default constructor.
+		  // Default constructor.
 		  
 		  // Associate this request (socket) with its server.
 		  Self.Server = server
@@ -264,7 +264,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 476574732074686520436F6E74656E742D4C656E677468206865616465722E
 		Sub ContentLengthGet()
-		  /// Gets the Content-Length header.
+		  // Gets the Content-Length header.
 		  
 		  If Headers.HasKey("Content-Length") Then
 		    ContentLength = Headers.Value("Content-Length")
@@ -277,10 +277,10 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207265717565737420636F6F6B6965732E
 		Private Sub CookiesDictionaryCreate()
-		  /// Creates an internal dictionary representing the request cookies.
-		  ///
-		  /// The cookies are delivered as a request header, like this:
-		  /// Cookie: x=12; y=124
+		  // Creates an internal dictionary representing the request cookies.
+		  //
+		  // The cookies are delivered as a request header, like this:
+		  // Cookie: x=12; y=124
 		  
 		  // Create the dictionary.
 		  Cookies = New Dictionary
@@ -318,7 +318,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 44756D70732074686973207265717565737420617320616E2048544D4C20737472696E672E
 		Function Dump() As String
-		  /// Dumps this request as an HTML string.
+		  // Dumps this request as an HTML string.
 		  
 		  Var html() As String
 		  
@@ -404,11 +404,11 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E67207468652055524C20706172616D732E
 		Private Sub GETDictionaryCreate()
-		  /// Creates an internal dictionary representing the URL params.
-		  ///
-		  /// When multiple values are passed for the same key, the dictionary entry is treated as an array of strings.
-		  /// Example: 
-		  ///  a=1&b=2&a=3&b=4&a=5&c=678
+		  // Creates an internal dictionary representing the URL params.
+		  //
+		  // When multiple values are passed for the same key, the dictionary entry is treated as an array of strings.
+		  // Example: 
+		  //  a=1&b=2&a=3&b=4&a=5&c=678
 		  
 		  // Create the dictionary.
 		  GET = New Dictionary
@@ -459,9 +459,9 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207265717565737420686561646572732E
 		Private Sub HeadersDictionaryCreate()
-		  /// Creates an internal dictionary representing the request headers.
-		  ///
-		  /// Note that "header 0" is actually the method, path, etc.
+		  // Creates an internal dictionary representing the request headers.
+		  //
+		  // Note that "header 0" is actually the method, path, etc.
 		  
 		  // Create the dictionary.
 		  Headers = New Dictionary
@@ -486,10 +486,10 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765747320616E6420736574732074686520485454502076657273696F6E2066726F6D207468652066697273742048656164657273526177417272617920656C656D656E742E
 		Private Sub HTTPVersionGet()
-		  /// Gets and sets the HTTP version from the first HeadersRawArray element.
-		  ///
-		  /// Example: 
-		  ///   POST /?a=123&b=456&c=999 HTTP/1.1
+		  // Gets and sets the HTTP version from the first HeadersRawArray element.
+		  //
+		  // Example: 
+		  //   POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -501,7 +501,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 536574732074686520696E7465726E616C204B656570416C6976652070726F70657274792E
 		Sub KeepAliveGet()
-		  /// Sets the internal KeepAlive property.
+		  // Sets the internal KeepAlive property.
 		  
 		  // If we're willing to keep connections open...
 		  If KeepAlive = True Then
@@ -519,7 +519,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target32Bit or Target64Bit)), Description = 417474656D70747320746F206D61702061207265717565737420746F2061207374617469632066696C652E
 		Sub MapToFile(useETags As Boolean = True)
-		  /// Attempts to map a request to a static file.
+		  // Attempts to map a request to a static file.
 		  
 		  // Assume that the requested resource will not be found.
 		  Response.Status = "404"
@@ -638,10 +638,10 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 47657420746865206D6574686F642066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E6420736574732074686520696E7465726E616C20604D6574686F64602070726F70657274792E
 		Private Sub MethodGet()
-		  /// Get the method from the first HeadersRawArray element and sets the internal `Method` property.
-		  ///
-		  /// Example:
-		  ///  POST /?a=123&b=456&c=999 HTTP/1.1
+		  // Get the method from the first HeadersRawArray element and sets the internal `Method` property.
+		  //
+		  // Example:
+		  //  POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -654,7 +654,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 48616E646C652061206D756C74697061727420666F726D2E
 		Private Sub MultipartFormHandle()
-		  /// Handle a multipart form.
+		  // Handle a multipart form.
 		  
 		  // Split the content type at the boundary.
 		  Var contentTypeParts() As String = ContentType.Split("boundary=")
@@ -769,7 +769,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 536574732074686520696E7465726E616C206050617468436F6D706F6E656E7473602070726F70657274792E
 		Private Sub PathComponentsGet()
-		  /// Sets the internal `PathComponents` property.
+		  // Sets the internal `PathComponents` property.
 		  
 		  // Create the path components by splitting the Path.
 		  PathComponents = Path.Split("/")
@@ -784,10 +784,10 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765742074686520706174682066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E6420736574732074686520696E7465726E616C206050617468602070726F70657274792E
 		Private Sub PathGet()
-		  /// Get the path from the first HeadersRawArray element and sets the internal `Path` property.
-		  ///
-		  /// Example:
-		  ///   POST /?a=123&b=456&c=999 HTTP/1.1
+		  // Get the path from the first HeadersRawArray element and sets the internal `Path` property.
+		  //
+		  // Example:
+		  //   POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -800,7 +800,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4372656174657320616E20696E7465726E616C2064696374696F6E61727920726570726573656E74696E6720746865207061746820636F6D706F6E656E74732028506174684974656D73292E
 		Private Sub PathItemsGet()
-		  /// Creates an internal dictionary representing the path components (PathItems).
+		  // Creates an internal dictionary representing the path components (PathItems).
 		  
 		  // Create the dictionary.
 		  PathItems = New Dictionary
@@ -821,8 +821,8 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 50726570617265732061206E6577207265717565737420666F722070726F63657373696E672E20546869732069732063616C6C6564206F6E63652070657220726571756573742C207768656E20746865206669727374206261746368206F66206461746120697320726563656976656420766961207468652044617461417661696C61626C65206576656E742E
 		Sub Prepare()
-		  /// Prepares a new request for processing.
-		  /// This is called once per request, when the first batch of data is received via the DataAvailable event.
+		  // Prepares a new request for processing.
+		  // This is called once per request, when the first batch of data is received via the DataAvailable event.
 		  
 		  // Split the request into two parts: headers and the request entity.
 		  Var requestParts() As String = Lookahead(Encodings.UTF8).Split(EndOfLine.CRLF + EndOfLine.CRLF)
@@ -899,9 +899,9 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0
 		Sub Process()
-		  /// Processes a request.
-		  /// Called (1) by a RequestThread's Run event handler, if multithreading is enabled and 
-		  /// (2) by the DataAvailable event handler, if multithreading is disabled.
+		  // Processes a request.
+		  // Called (1) by a RequestThread's Run event handler, if multithreading is enabled and 
+		  // (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
 		  Try
 		    // We no longer need the data that was received, so clear it.
@@ -928,7 +928,7 @@ Inherits SSLSocket
 		    
 		  Catch err As ThreadEndException
 		    
-		    //RequestThread has been killed
+		    // RequestThread has been killed
 		    DataReceivedCount = 0
 		    Return
 		    
@@ -947,7 +947,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 47657473207468652070726F746F636F6C2066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E64207365747320746865206050726F746F636F6C6020616E64206050726F746F636F6C56657273696F6E602070726F706572746965732E
 		Private Sub ProtocolGet()
-		  /// Gets the protocol from the first HeadersRawArray element and sets the `Protocol` and `ProtocolVersion` properties.
+		  // Gets the protocol from the first HeadersRawArray element and sets the `Protocol` and `ProtocolVersion` properties.
 		  // Example: POST /?a=123&b=456&c=999 HTTP/1.1
 		  
 		  // Get the first header.
@@ -961,11 +961,11 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 5265736574732074686520736F636B65742070726F706572746965732061667465722061207265717565737420686173206265656E2070726F6365737365642E
 		Sub Reset()
-		  /// Resets the socket properties after a request has been processed.
-		  ///
-		  /// Note that these properties are not reset because they are used to service WebSockets:
-		  /// - Custom
-		  /// - Path
+		  // Resets the socket properties after a request has been processed.
+		  //
+		  // Note that these properties are not reset because they are used to service WebSockets:
+		  // - Custom
+		  // - Path
 		  
 		  Data = ""
 		  Body = ""
@@ -989,8 +989,8 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 53657427732074686520726573706F6E73652073746174757320746F2034303420224E6F7420466F756E642220616E642074686520636F6E74656E7420746F207468652048544D4C2077697468696E2074686520604E6F74466F756E64436F6E74656E746020636F6E7374616E742E
 		Sub ResourceNotFound()
-		  /// Set's the response status to 404 "Not Found" and the content to the 
-		  /// HTML within the `NotFoundContent` constant.
+		  // Set's the response status to 404 "Not Found" and the content to the 
+		  // HTML within the `NotFoundContent` constant.
 		  
 		  // Set the response content.
 		  Response.Content = NotFoundContent
@@ -1003,7 +1003,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4576616C756174657320746865207265717565737420746F2064657465726D696E652069662074686520726573706F6E73652073686F756C6420626520636F6D707265737365642E
 		Private Sub ResponseCompressDefault()
-		  /// Evaluates the request to determine if the response should be compressed.
+		  // Evaluates the request to determine if the response should be compressed.
 		  
 		  // If the request did not include an "Accept-Encoding" header.
 		  If Headers.HasKey("Accept-Encoding") = False Then
@@ -1027,7 +1027,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 52657475726E2074686520726573706F6E73652E
 		Sub ResponseReturn()
-		  /// Return the response.
+		  // Return the response.
 		  
 		  // If the socket is still connected, try to write the response.
 		  If IsConnected Then
@@ -1055,7 +1055,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 4765747320612073657373696F6E20666F7220746865207265717565737420616E64206173736F636961746573206974207769746820746865206053657373696F6E602070726F70657274792E
 		Sub SessionGet(assignNewID As Boolean = True)
-		  /// Gets a session for the request and associates it with the `Session` property.
+		  // Gets a session for the request and associates it with the `Session` property.
 		  
 		  Var serverInstance As Express.Server = Me.Server
 		  If (serverInstance = Nil) Then Return
@@ -1066,7 +1066,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 5465726D696E61746573207468652063757272656E742073657373696F6E2E
 		Sub SessionTerminate()
-		  /// Terminates the current session.
+		  // Terminates the current session.
 		  
 		  If Session <> Nil Then
 		    Var serverInstance As Express.Server = Me.Server
@@ -1079,10 +1079,10 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 53706C6974732074686520636F6E74656E7420737472696E6720696E746F20616E206172726179206F6620737472696E677320616E642075706461746573207468652060504F5354602064696374696F6E6172792070726F70657274792E
 		Private Sub URLEncodedFormHandle()
-		  /// Splits the content string into an array of strings and updates the `POST` dictionary property.
-		  ///
-		  /// Example: 
-		  ///   a=123&b=456&c=999
+		  // Splits the content string into an array of strings and updates the `POST` dictionary property.
+		  //
+		  // Example: 
+		  //   a=123&b=456&c=999
 		  
 		  Var POSTParams() As String = Body.Split("&")
 		  
@@ -1104,13 +1104,13 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h21, Description = 4765742074686520706172616D65746572732066726F6D207468652066697273742048656164657273526177417272617920656C656D656E7420616E64207365747320746865206055524C506172616D73602070726F70657274792E
 		Private Sub URLParamsGet()
-		  /// Get the parameters from the first HeadersRawArray element and sets the `URLParams` property.
-		  ///
-		  /// Example:
-		  ///  POST /?a=123&b=456&c=999 HTTP/1.1
-		  ///
-		  /// Note that it's also possible for a parameter to include a question mark in it:
-		  ///   GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
+		  // Get the parameters from the first HeadersRawArray element and sets the `URLParams` property.
+		  //
+		  // Example:
+		  //  POST /?a=123&b=456&c=999 HTTP/1.1
+		  //
+		  // Note that it's also possible for a parameter to include a question mark in it:
+		  //   GET /?a=1234?format%3D1500w&MaxHeight=50 HTTP/1.1
 		  
 		  // Get the first header.
 		  Var header As String = HeadersRawArray(0)
@@ -1132,7 +1132,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 436C6F736573207468697320776562736F636B657420636F6E6E656374696F6E2E
 		Sub WSConnectionClose()
-		  /// Closes this websocket connection.
+		  // Closes this websocket connection.
 		  
 		  Var serverInstance As Express.Server = Me.Server
 		  If (serverInstance <> Nil) Then
@@ -1153,7 +1153,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 506572666F726D7320616E206F70656E696E6720576562536F636B65742068616E647368616B652C2073657473206057535374617475736020616E64207265676973746572732074686520736F636B657420696E207468652060576562536F636B657473602061727261792E
 		Sub WSHandshake()
-		  /// Performs an opening WebSocket handshake, sets `WSStatus` and registers the socket in the `WebSockets` array.
+		  // Performs an opening WebSocket handshake, sets `WSStatus` and registers the socket in the `WebSockets` array.
 		  
 		  // If this isn't the WebSocket version that we're supporting...
 		  If Headers.Lookup("Sec-WebSocket-Version", "") <> "13" Then
@@ -1187,7 +1187,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 50726F636573736573206120576562536F636B6574206D6573736167652E
 		Sub WSMessageGet()
-		  /// Processes a WebSocket message.
+		  // Processes a WebSocket message.
 		  
 		  // Get the data.
 		  DataGet
@@ -1270,7 +1270,7 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 53656E6473206120576562536F636B657420287465787429206D65737361676520746F206120636C69656E742E
 		Sub WSMessageSend(message As String)
-		  /// Sends a WebSocket (text) message to a client.
+		  // Sends a WebSocket (text) message to a client.
 		  
 		  // Get the message length.
 		  Var messageLength As UInteger = message.Length
@@ -1695,14 +1695,6 @@ Inherits SSLSocket
 			InitialValue="True"
 			Type="Boolean"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Data"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="HeadersRaw"

@@ -5,9 +5,17 @@ Inherits ConsoleApplication
 		Function Run(args() as String) As Integer
 		  // Use Port 8080 for this demo if not specified otherwise
 		  Var arguments As Dictionary = Express.ArgsToDictionary(args)
-		  If (Not arguments.HasKey("--Port")) Then
+		  Var argValue As String
+		  If (Not Express.LaunchArgumentGetValue(arguments, "--Port", "EXPRESS_PORT", argValue)) Then
 		    args.Add("--Port=8080")
 		  End If
+		  
+		  // Use Loopback Network Interface for Debug Builds
+		  #If DebugBuild Then
+		    If (Not Express.LaunchArgumentIsSet(arguments, "--Loopback", "EXPRESS_LOOPBACK")) Then
+		      args.Add("--Loopback")
+		    End If
+		  #EndIf
 		  
 		  // Express Demo
 		  Print "----------------"
@@ -16,27 +24,22 @@ Inherits ConsoleApplication
 		  Print Express.CHAR_LOG_BULLET + " Express Version: " + Express.VERSION_STRING
 		  Print ""
 		  Print ""
-		  Print "-----------------"
-		  Print "- Choose a demo -"
-		  Print "-----------------"
-		  Print " 1: Hello World"
-		  Print " 2: Hello World (simple plain text response)"
-		  Print " 3: Caching (Drummers)"
-		  Print " 4: Multipart Forms"
-		  Print " 5: Sessions"
-		  Print " 6: Templates Client Side"
-		  Print " 7: Templates Server Side"
-		  Print " 8: WebSockets (simple chat app)"
-		  Print " 9: XojoScript"
-		  Print "10: ServerThread"
-		  Print ""
-		  Print ""
-		  Print "Enter number and <enter> to start a demo:"
 		  
-		  Var inputString As String = Input
-		  Var inputNumber As Integer = Val(inputString)
+		  // Choose a Demo
+		  Var demoNumber As Integer = 0
 		  
-		  Select Case inputNumber
+		  // Get from Launch Parameter or from Environment Variable
+		  If Express.LaunchArgumentGetValue(arguments, "--Demo", "EXPRESS_DEMO", argValue) Then
+		    demoNumber = Val(argValue)
+		  End If
+		  
+		  If (demoNumber < 1) Or (demoNumber > 10) Then
+		    // Ask to choose a Demo
+		    demoNumber = Me.Demo_Choose
+		  End If
+		  
+		  // Launch Demo
+		  Select Case demoNumber
 		  Case 1
 		    Me.Demo_01_HelloWorld(args)
 		  Case 2
@@ -294,13 +297,39 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function ExpressEventLog(Message As String, Level As Express.LogLevel) As Boolean
-		  //If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
-		  //System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
-		  //handle the Logging there.
-		  //Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
+		Private Function Demo_Choose() As Integer
+		  // Choose Express Demo
+		  Print "-----------------"
+		  Print "- Choose a demo -"
+		  Print "-----------------"
+		  Print " 1: Hello World"
+		  Print " 2: Hello World (simple plain text response)"
+		  Print " 3: Caching (Drummers)"
+		  Print " 4: Multipart Forms"
+		  Print " 5: Sessions"
+		  Print " 6: Templates Client Side"
+		  Print " 7: Templates Server Side"
+		  Print " 8: WebSockets (simple chat app)"
+		  Print " 9: XojoScript"
+		  Print "10: ServerThread"
+		  Print ""
+		  Print ""
+		  Print "Enter number and <enter> to start a demo:"
 		  
-		  //So this would be the place to forward the Logs to your App's own Log-Handling facility
+		  Var inputString As String = Input
+		  Return Val(inputString)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ExpressEventLog(Message As String, Level As Express.LogLevel) As Boolean
+		  // If you don't want to use Express's default EventLog-Handling (StdOut in Console Applications,
+		  // System.DebugLog in GUI Applications), then you can add the Express.EventLogHandlerDelegate and
+		  // handle the Logging there.
+		  // Just make sure to 'Return True' to tell Express to NOT handle the EventLog as well
+		  
+		  // So this would be the place to forward the Logs to your App's own Log-Handling facility
 		  
 		  Select Case CType(Level, Integer)
 		    

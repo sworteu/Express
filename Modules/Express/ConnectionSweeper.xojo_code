@@ -3,7 +3,7 @@ Protected Class ConnectionSweeper
 Inherits Timer
 	#tag Event
 		Sub Action()
-		  /// Closes defunct connections.
+		  // Closes defunct connections.
 		  
 		  // Closes any HTTP connections that have timed out.
 		  HTTPConnSweep
@@ -18,7 +18,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F722E
 		Sub Constructor(server As Express.Server)
-		  /// Default constructor.
+		  // Default constructor.
 		  
 		  // Store the server.
 		  Self.Server = server
@@ -32,7 +32,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 436C6F73657320636F6E6E656374696F6E73207468617420686176652074696D6564206F75742E
 		Sub HTTPConnSweep()
-		  /// Closes connections that have timed out.
+		  // Closes connections that have timed out.
 		  
 		  // Loop over the server's connections.
 		  Var socks() As TCPSocket = server.ActiveConnections
@@ -93,7 +93,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 436C6F73657320616E7920576562536F636B657420636F6E6E656374696F6E73207468617420686176652074696D6564206F75742E
 		Sub WSConnSweep()
-		  /// Closes any WebSocket connections that have timed out.
+		  // Closes any WebSocket connections that have timed out.
 		  
 		  // If the server has been configured so that WebSocket connections do not timeout...
 		  If Server.WSTimeout = 0 Then

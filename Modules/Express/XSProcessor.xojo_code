@@ -3,8 +3,8 @@ Protected Class XSProcessor
 Inherits XojoScript
 	#tag Event
 		Function CompilerError(location As XojoScriptLocation, error As XojoScript.Errors, errorInfo As Dictionary) As Boolean
-		  /// Handles XojoScript compilation errors.
-		  /// Sets the internal `Result` property and logs to the system log if a debug build.
+		  // Handles XojoScript compilation errors.
+		  // Sets the internal `Result` property and logs to the system log if a debug build.
 		  
 		  #Pragma Unused location
 		  #Pragma Unused errorInfo
@@ -19,7 +19,7 @@ Inherits XojoScript
 
 	#tag Event
 		Sub CompilerWarning(location As XojoScriptLocation, warning As XojoScript.Warnings, warningInfo As Dictionary)
-		  /// Logs to the system log the current method name if in a debug build.
+		  // Logs to the system log the current method name if in a debug build.
 		  
 		  #Pragma Unused location
 		  #Pragma Unused Warning
@@ -32,7 +32,7 @@ Inherits XojoScript
 
 	#tag Event
 		Sub Print(msg As String)
-		  /// Appends XojoScript-generated content to the the `Result` property.
+		  // Appends XojoScript-generated content to the the `Result` property.
 		  
 		  Result = Result + msg
 		End Sub
@@ -40,8 +40,8 @@ Inherits XojoScript
 
 	#tag Event
 		Sub RuntimeError(error As RuntimeException)
-		  /// Handles XojoScript runtime errors.
-		  /// Sets the internal `Result` property and logs to the system log if a debug build.
+		  // Handles XojoScript runtime errors.
+		  // Sets the internal `Result` property and logs to the system log if a debug build.
 		  
 		  Result = "<!-- XojoScript Error: " + error.Message + " -->"
 		  
@@ -53,7 +53,7 @@ Inherits XojoScript
 
 	#tag Method, Flags = &h0, Description = 437265617465732061206E657720586F6A6F536372697074206576616C7561746F722077697468207468652070617373656420636F6E746578742E
 		Sub Constructor()
-		  /// Creates a new XojoScript evaluator with the passed context.
+		  // Creates a new XojoScript evaluator with the passed context.
 		  
 		  Context = New XSContext
 		End Sub
@@ -61,7 +61,7 @@ Inherits XojoScript
 
 	#tag Method, Flags = &h0, Description = 52657475726E7320612068756D616E207265616461626C6520737472696E6720726570726573656E746174696F6E206F66206120586F6A6F536372697074206572726F7220636F64652E
 		Function ErrorCodeToString(code As XojoScript.Errors) As String
-		  /// Returns a human readable string representation of a XojoScript error code.
+		  // Returns a human readable string representation of a XojoScript error code.
 		  
 		  Static errors As New Dictionary( _
 		  XojoScript.Errors.Syntax: "Syntax does not make sense.", _
@@ -239,7 +239,7 @@ Inherits XojoScript
 
 	#tag Method, Flags = &h0, Description = 52756E7320746865207363726970742E
 		Sub Run()
-		  /// Runs the script.
+		  // Runs the script.
 		  
 		  // Initialise the result.
 		  Result = ""

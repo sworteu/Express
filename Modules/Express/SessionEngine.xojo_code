@@ -4,9 +4,9 @@ Inherits Timer
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target32Bit or Target64Bit ) )
 	#tag Event
 		Sub Action()
-		  /// Removes any expired sessions.
-		  ////
-		  /// This prevents the dictionary from growing unnecessarily large due to orphaned sessions.
+		  // Removes any expired sessions.
+		  //
+		  // This prevents the dictionary from growing unnecessarily large due to orphaned sessions.
 		  
 		  #If Not DebugBuild Then
 		    #Pragma BackgroundTasks False
@@ -53,7 +53,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 44656661756C7420636F6E7374727563746F7220746861742074616B657320746865206E756D626572206F66207365636F6E647320666F722074686520737765657020696E74657276616C2E
 		Sub Constructor(sweepIntervalSecs As Integer = 300)
-		  /// Default constructor that takes the number of seconds for the sweep interval.
+		  // Default constructor that takes the number of seconds for the sweep interval.
 		  
 		  // Initiliase the Sessions dictionary.
 		  Sessions = New Dictionary
@@ -70,9 +70,9 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 52657475726E7320612073657373696F6E20666F722074686520726571756573742E20496620616E206578697374696E672073657373696F6E20697320617661696C61626C652C207468656E20697427732072657475726E65642E204F74686572776973652061206E65772073657373696F6E206973206372656174656420616E642072657475726E65642E
 		Function SessionGet(request As Express.Request, assignNewID As Boolean = True) As Dictionary
-		  /// Returns a session for the request.
-		  /// If an existing session is available, then it's returned.
-		  /// Otherwise a new session is created and returned.
+		  // Returns a session for the request.
+		  // If an existing session is available, then it's returned.
+		  // Otherwise a new session is created and returned.
 		  
 		  // This is the session that we'll return.
 		  Var session As Dictionary
@@ -182,7 +182,7 @@ Inherits Timer
 
 	#tag Method, Flags = &h0, Description = 5465726D696E61746573206120676976656E2073657373696F6E2E
 		Sub SessionTerminate(session As Dictionary)
-		  /// Terminates a given session.
+		  // Terminates a given session.
 		  
 		  // If the session still exists...
 		  If Sessions.HasKey(session.Value("SessionID")) Then
