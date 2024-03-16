@@ -5,9 +5,17 @@ Inherits ConsoleApplication
 		Function Run(args() as String) As Integer
 		  // Use Port 8080 for this demo if not specified otherwise
 		  Var arguments As Dictionary = Express.ArgsToDictionary(args)
-		  If (Not arguments.HasKey("--Port")) Then
+		  Var argValue As String
+		  If (Not Express.LaunchArgumentGetValue(arguments, "--Port", "EXPRESS_PORT", argValue)) Then
 		    args.Add("--Port=8080")
 		  End If
+		  
+		  // Use Loopback Network Interface for Debug Builds
+		  #If DebugBuild Then
+		    If (Not Express.LaunchArgumentIsSet(arguments, "--Loopback", "EXPRESS_LOOPBACK")) Then
+		      args.Add("--Loopback")
+		    End If
+		  #EndIf
 		  
 		  // Express Demo
 		  Print "----------------"

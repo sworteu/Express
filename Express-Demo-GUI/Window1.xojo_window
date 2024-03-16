@@ -776,7 +776,21 @@ End
 		  
 		  // Create an instance of Express.Server, and configure it with optional command-line arguments.
 		  // Note: The Express.RequestHandlerDelegate tells Express.Server which method is going to process the requests
-		  Var args() As String = Array("--Port=8080")
+		  Var args() As String
+		  Var arguments As Dictionary = Express.ArgsToDictionary(args)
+		  Var argValue As String
+		  
+		  // Use Port 8080 for this demo if not specified otherwise
+		  If (Not Express.LaunchArgumentGetValue(arguments, "--Port", "EXPRESS_PORT", argValue)) Then
+		    args.Add("--Port=8080")
+		  End If
+		  
+		  // Use Loopback Network Interface for Debug Builds
+		  #If DebugBuild Then
+		    If (Not Express.LaunchArgumentIsSet(arguments, "--Loopback", "EXPRESS_LOOPBACK")) Then
+		      args.Add("--Loopback")
+		    End If
+		  #EndIf
 		  
 		  Select Case lstDemo.RowTagAt(lstDemo.SelectedRowIndex)
 		    
