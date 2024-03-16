@@ -24,27 +24,22 @@ Inherits ConsoleApplication
 		  Print Express.CHAR_LOG_BULLET + " Express Version: " + Express.VERSION_STRING
 		  Print ""
 		  Print ""
-		  Print "-----------------"
-		  Print "- Choose a demo -"
-		  Print "-----------------"
-		  Print " 1: Hello World"
-		  Print " 2: Hello World (simple plain text response)"
-		  Print " 3: Caching (Drummers)"
-		  Print " 4: Multipart Forms"
-		  Print " 5: Sessions"
-		  Print " 6: Templates Client Side"
-		  Print " 7: Templates Server Side"
-		  Print " 8: WebSockets (simple chat app)"
-		  Print " 9: XojoScript"
-		  Print "10: ServerThread"
-		  Print ""
-		  Print ""
-		  Print "Enter number and <enter> to start a demo:"
 		  
-		  Var inputString As String = Input
-		  Var inputNumber As Integer = Val(inputString)
+		  // Choose a Demo
+		  Var demoNumber As Integer = 0
 		  
-		  Select Case inputNumber
+		  // Get from Launch Parameter or from Environment Variable
+		  If Express.LaunchArgumentGetValue(arguments, "--Demo", "EXPRESS_DEMO", argValue) Then
+		    demoNumber = Val(argValue)
+		  End If
+		  
+		  If (demoNumber < 1) Or (demoNumber > 10) Then
+		    // Ask to choose a Demo
+		    demoNumber = Me.Demo_Choose
+		  End If
+		  
+		  // Launch Demo
+		  Select Case demoNumber
 		  Case 1
 		    Me.Demo_01_HelloWorld(args)
 		  Case 2
@@ -299,6 +294,32 @@ Inherits ConsoleApplication
 		  DemoServerThreads.ServersLaunch(args, AddressOf DemoServerThreads.RequestProcess)
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function Demo_Choose() As Integer
+		  // Choose Express Demo
+		  Print "-----------------"
+		  Print "- Choose a demo -"
+		  Print "-----------------"
+		  Print " 1: Hello World"
+		  Print " 2: Hello World (simple plain text response)"
+		  Print " 3: Caching (Drummers)"
+		  Print " 4: Multipart Forms"
+		  Print " 5: Sessions"
+		  Print " 6: Templates Client Side"
+		  Print " 7: Templates Server Side"
+		  Print " 8: WebSockets (simple chat app)"
+		  Print " 9: XojoScript"
+		  Print "10: ServerThread"
+		  Print ""
+		  Print ""
+		  Print "Enter number and <enter> to start a demo:"
+		  
+		  Var inputString As String = Input
+		  Return Val(inputString)
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
