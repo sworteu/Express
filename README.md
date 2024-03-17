@@ -5,6 +5,30 @@ Note that we aim to keep all features, but they may break over time since the Xo
 Improvements to code efficiency is in the works and will be the main target for this repository.
 
 
+## Documentation
+
+### Express Change Log
+
+The change logs are available within the provided Express Demo project:
+- `Modules -> Express -> Notes`
+
+### Express Demo Projects
+
+Learn by looking at the Demo Projects how to use Express in a Xojo built application.
+They contain several demos showing various features of Express.
+- `Express-Demo-Console.xojo_project`
+- `Express-Demo-GUI.xojo_project`
+
+### Deployment
+
+Express runs as a Xojo Built Console or Desktop application.  
+The following tutorials give you an idea how to:
+
+- [Run Express in Docker](./docs/docker/Express2Docker.pdf)
+- [Deploy Express with Lifeboat](./docs/lifeboat/Express2Lifeboat.pdf)
+  - *[Lifeboat](https://strawberrysw.com/lifeboat/) is a product of Strawberry Software (by Tim Parnell).  
+  Lifeboat makes it simple to deploy and manage your Xojo Web applications on a Linux server.*
+
 ## Express supports http Keep-Alive And WebSockets (server)
 
 In combination with URLConnection (in for example desktop/ios etc) this improves connectivity 
@@ -14,11 +38,6 @@ connected. This directly competes against Xojo's WebApplication that does NOT al
 *(at least not in the same App.HandleURL context)* and thus is not HTTP/1.1 compliant. 
 Express aims to be as much as we can to be HTTP 1.1 compliant. If something is missing
 please create an issue. 
-
-## Express Change Log
-The change logs are available within the provided Express Demo project:
-- Modules -> Express -> Notes
-
 
 ## Important changes in Express that fixes some issues from AloeExpress 4.1 (last version of AE)
 
