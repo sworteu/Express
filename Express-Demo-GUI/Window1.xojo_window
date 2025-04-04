@@ -879,7 +879,7 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub Stop()
-		  If (Server = Nil) Then Return
+		  If (Server Is Nil) Then Return
 		  
 		  Server.Stop
 		  
