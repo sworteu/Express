@@ -33,8 +33,8 @@ Protected Module DemoHelloWorld
 		    // Get Server Info
 		    Var serverInstance As Express.Server = request.Server
 		    Var info As Dictionary
-		    If (serverInstance <> Nil) Then info = serverInstance.ServerInfo
-		    If (info = Nil) Then info = New Dictionary
+		    If Not (serverInstance Is Nil) Then info = serverInstance.ServerInfo
+		    If (info Is Nil) Then info = New Dictionary
 		    
 		    Var infoLinesHtml() As String
 		    For Each infoKey As Variant In info.Keys
