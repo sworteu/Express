@@ -5,7 +5,7 @@ Inherits Thread
 		Sub Run()
 		  // Processes a request.
 		  
-		  If Request <> Nil Then
+		  If Not (Request Is Nil) Then
 		    
 		    Request.Process
 		    
@@ -22,7 +22,7 @@ Inherits Thread
 	#tag ComputedProperty, Flags = &h0, Description = 41207765616B207265666572656E636520746F207468697320746872656164277320726571756573742E
 		#tag Getter
 			Get
-			  If (mRequest = Nil) Or (mRequest.Value = Nil) Then
+			  If (mRequest Is Nil) Or (mRequest.Value Is Nil) Then
 			    Return Nil
 			  Else
 			    Return Express.Request(mRequest.Value)
@@ -32,7 +32,7 @@ Inherits Thread
 		#tag EndGetter
 		#tag Setter
 			Set
-			  If value = Nil Then
+			  If value Is Nil Then
 			    mRequest = Nil
 			  Else
 			    mRequest = New WeakRef(value)
@@ -45,6 +45,18 @@ Inherits Thread
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Type"
+			Visible=true
+			Group="Behavior"
+			InitialValue=""
+			Type="Types"
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - Cooperative"
+				"1 - Preemptive"
+			#tag EndEnumValues
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
 			Visible=true
