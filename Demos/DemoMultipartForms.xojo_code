@@ -4,7 +4,7 @@ Protected Module DemoMultipartForms
 	#tag Method, Flags = &h21
 		Private Function GetOrCreateUploadsFolder() As FolderItem
 		  Var base As FolderItem = SpecialFolder.Desktop
-		  If (base = Nil) Or (Not base.IsFolder) Or (Not base.Exists) Then
+		  If (base Is Nil) Or (Not base.IsFolder) Or (Not base.Exists) Then
 		    base = SpecialFolder.UserHome
 		  End If
 		  
