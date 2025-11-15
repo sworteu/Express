@@ -14,8 +14,6 @@ Inherits ServerSocket
 		    Var newSocket As New Request(Self)
 		    NewSocket.SocketID = CurrentSocketID
 		    
-		    Express.EventLog("Server: Adding Socket " + NewSocket.SocketID.ToString, Express.LogLevel.Debug)
-		    
 		    // Return the socket.
 		    Return newSocket
 		    
@@ -272,7 +270,7 @@ Inherits ServerSocket
 		    socket.Close
 		  Next
 		  
-		  // Exit the 'Rock on' Loop (in Method 'Start')
+		  // Exit the "Rock on" Loop (in Method 'Start')
 		  ServerIsRunning = False
 		  StartTimestamp = Nil
 		  
@@ -491,6 +489,7 @@ Inherits ServerSocket
 				"3 - TLSv1"
 				"4 - TLSv11"
 				"5 - TLSv12"
+				"6 - TLSv13"
 			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty

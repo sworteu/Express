@@ -903,6 +903,15 @@ Inherits SSLSocket
 		  // Called (1) by a RequestThread's Run event handler, if multithreading is enabled and 
 		  // (2) by the DataAvailable event handler, if multithreading is disabled.
 		  
+		  // If the response is Nil, it means the socket was closed or reset
+		  // (e.g., by the Error event) while this thread was spooling up.
+		  // We must abort to prevent a NilObjectException.
+		  If Response = Nil Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Aborting processing. Socket was closed.", _
+		    Express.LogLevel.Debug)
+		    Return
+		  End If
+		  
 		  Try
 		    // We no longer need the data that was received, so clear it.
 		    Data = ""
@@ -966,6 +975,15 @@ Inherits SSLSocket
 		  // Note that these properties are not reset because they are used to service WebSockets:
 		  // - Custom
 		  // - Path
+		  
+		  // Check if a RequestThread is currently active for this socket.
+		  // If it is, we MUST abort the reset. The Error event (on the
+		  // main thread) is racing the RequestThread. If we set Response = Nil,
+		  // the RequestThread will crash when it calls the RequestHandler.
+		  If RequestThread <> Nil And RequestThread.ThreadState = Thread.ThreadStates.Running Then
+		    Express.EventLog("Socket " + SocketID.ToString + ": Reset deferred, RequestThread is still running.", Express.LogLevel.Debug)
+		    Return
+		  End If
 		  
 		  Data = ""
 		  Body = ""
@@ -1270,47 +1288,43 @@ Inherits SSLSocket
 
 	#tag Method, Flags = &h0, Description = 53656E6473206120576562536F636B657420287465787429206D65737361676520746F206120636C69656E742E
 		Sub WSMessageSend(message As String)
-		  // Sends a WebSocket (text) message to a client.
+		  /// Sends a WebSocket (text) message to a client.
+		  ///
+		  /// NOTE: This version is corrected to use .Bytes for length
+		  /// calculation, which is required by the WebSocket protocol.
 		  
-		  // Get the message length.
-		  Var messageLength As UInteger = message.Length
+		  // Get the message length IN BYTES, not characters.
+		  Var messageBytes As UInteger = message.Bytes
 		  
 		  // If the entire message can be sent in a single frame...
-		  If messageLength < 126 Then
+		  If messageBytes < 126 Then
 		    Var mb As New MemoryBlock( 2 )
-		    mb.Byte( 0 ) = 129
-		    mb.Byte( 1 ) = messageLength
+		    mb.Byte( 0 ) = 129 // 10000001 (FIN + Text OpCode)
+		    mb.Byte( 1 ) = messageBytes
 		    Write(mb.StringValue( 0, 2 ) + message)
 		    Return
 		  End If
 		  
 		  // Due to its length, the message needs to be sent in multiple frames...
-		  If messageLength >= 126 and messageLength < 65535 Then
+		  If messageBytes >= 126 And messageBytes <= 65535 Then
 		    Var mb As New MemoryBlock( 4 )
-		    mb.Byte( 0 ) = 129
+		    mb.LittleEndian = False // Use Big-Endian for network order
+		    mb.Byte( 0 ) = 129 // 10000001 (FIN + Text OpCode)
 		    mb.Byte( 1 ) = 126
-		    mb.Byte( 2 ) = Bitwise.ShiftRight(messageLength, 8) And 255
-		    mb.Byte( 3 ) = messageLength And 255
+		    mb.UInt16Value( 2 ) = messageBytes
 		    Write(mb.StringValue( 0, 4 ) + message)
 		    Return
 		  End If
 		  
-		  If messageLength >= 65535 Then
+		  If messageBytes > 65535 Then
 		    Var mb As New MemoryBlock( 10 )
-		    mb.Byte( 0 ) = 129
+		    mb.LittleEndian = False // Use Big-Endian for network order
+		    mb.Byte( 0 ) = 129 // 10000001 (FIN + Text OpCode)
 		    mb.Byte( 1 ) = 127
-		    mb.Byte( 2 ) = Bitwise.ShiftRight(messageLength, 56) And 255
-		    mb.Byte( 3 ) = Bitwise.ShiftRight(messageLength, 48) And 255
-		    mb.Byte( 4 ) = Bitwise.ShiftRight(messageLength, 40) And 255
-		    mb.Byte( 5 ) = Bitwise.ShiftRight(messageLength, 32) And 255
-		    mb.Byte( 6 ) = Bitwise.ShiftRight(messageLength, 24) And 255
-		    mb.Byte( 7 ) = Bitwise.ShiftRight(messageLength, 16) And 255
-		    mb.Byte( 8 ) = Bitwise.ShiftRight(messageLength, 8) And 255
-		    mb.Byte( 9 ) =  messageLength And 255
+		    mb.UInt64Value( 2 ) = messageBytes
 		    Write(mb.StringValue( 0, 10 ) + message)
 		    Return
 		  End If
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1534,6 +1548,7 @@ Inherits SSLSocket
 				"3 - TLSv1"
 				"4 - TLSv11"
 				"5 - TLSv12"
+				"6 - TLSv13"
 			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty

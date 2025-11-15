@@ -200,7 +200,7 @@ Protected Module Express
 		    'Outputs msg To the System debug Log.
 		    'On Windows, it logs To the debugger, so programs like DebugView can be used To view the String. On macOS, it logs To the Console. On Linux, it prints the message To stderr.
 		    'You can also view DebugLog output Using the Messages panel In Xojo which Is displayed by clicking the Messages icon at the bottom Of the Xojo workspace Window.
-		    System.DebugLog Message
+		    System.DebugLog(Message)
 		  #EndIf
 		  
 		End Sub
@@ -1587,7 +1587,7 @@ Protected Module Express
 		
 		Express 6.0.0 decouples this hardcoded requirement by introducing the Express.RequestHandlerDelegate.
 		
-		The Module 'Express' now is a completely independent component.
+		The Module `Express` now is a completely independent component.
 		A Xojo project using it can now specify which Method (that implements the delegate) an Express instance
 		should use as it's request handler.
 		
@@ -1747,7 +1747,7 @@ Protected Module Express
 		* EXPRESS_CLOSECONNECTIONS=true
 		* EXPRESS_SILENTSTART=true
 		
-		Note: you need to specify the value 'true' for the last four Environment Variables
+		Note: you need to specify the value `True` for the last four Environment Variables
 		
 		The SSL related launch arguments have not been implemented.
 		In hosted environments you could/should use a Gateway (e.g. nginx)
@@ -1785,6 +1785,26 @@ Protected Module Express
 		  - Launch with Arguments --Port=xxxx --Demo=2 (or set the Environment Variables)
 		  - Enjoy/test the Demo 2
 		
+		
+	#tag EndNote
+
+	#tag Note, Name = 6.2.2 - Bug fixes
+		Express 6.2.2
+		*************
+		
+		Fixed three bugs.
+		
+		Request.Process():
+		Added a guard clause to prevent NilObjectExceptions which can occur in threaded race conditions.
+		
+		Request.Reset():
+		Now checks if a RequestThread is currently active for this socket.
+		If it is, we  abort the reset to prevent the Error event (on the
+		main thread) racing the RequestThread.
+		
+		Request.WSMessageSend():
+		Fixed a bug where the server was sending an incorrect byte-length for its WebSocket messages, 
+		causing the browser to fail when parsing them.
 		
 	#tag EndNote
 
@@ -1904,7 +1924,7 @@ Protected Module Express
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.1", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.2", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 
