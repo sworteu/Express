@@ -1014,34 +1014,6 @@ Protected Module Express
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1, Description = 47656E657261746573206120555549442E
-		Protected Function UUIDGenerate() As String
-		  // Generates a UUID.
-		  //
-		  // Source: https://forum.xojo.com/18856-getting-guid/0 (Roberto Calvi)
-		  // Replace this with whatever UUID generation function that you prefer.
-		  
-		  Var db As New SQLiteDatabase
-		  
-		  Var SQL_Instruction As String= "select hex( randomblob(4)) " _
-		  + "|| '-' || hex( randomblob(2)) " _
-		  + "|| '-' || '4' || substr( hex( randomblob(2)), 2) " _
-		  + "|| '-' || substr('AB89', 1 + (abs(random()) % 4) , 1) " _
-		  + "|| substr(hex(randomblob(2)), 2) " _
-		  + "|| '-' || hex(randomblob(6)) AS GUID"
-		  
-		  Try
-		    db.Connect
-		    Var GUID As String = db.SelectSQL(SQL_Instruction).Column("GUID")
-		    db.Close
-		    Return GUID
-		  Catch error As DatabaseException
-		    Express.EventLog("UUIDGenerate - SQLite Error: " + error.Message, Express.LogLevel.Error)
-		  End Try
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h1, Description = 4163636570747320612064696374696F6E61727920636F6E7461696E696E6720224E616D65223A22537472696E6756616C756522204F7220224E616D65223A466F6C6465724974656D20706169727320746F20626520656E636F6465642C20616C6F6E67207769746820616E206F7074696F6E616C20626F756E6461727920737472696E6720746F20626520757365642E2053657473207468652070617373656420636F6E6E656374696F6E2773207265717565737420636F6E74656E742E
 		Protected Sub xSetMultipartFormData(Extends con As URLConnection, formData As Dictionary, boundary As String = "")
 		  // Accepts a dictionary containing "Name":"StringValue" Or "Name":FolderItem pairs to be encoded, 
@@ -1808,6 +1780,14 @@ Protected Module Express
 		
 	#tag EndNote
 
+	#tag Note, Name = 6.2.3
+		Express 6.2.3
+		*************
+		
+		Removed `Express.GenerateUUID()`. The module now uses `System.Random.UUID`.
+		
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -1924,7 +1904,7 @@ Protected Module Express
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.2", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.3", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 

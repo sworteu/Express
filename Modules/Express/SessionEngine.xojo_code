@@ -136,7 +136,7 @@ Inherits Timer
 		    // Assign a new session ID to the existing session.
 		    
 		    // Generate a new session ID.
-		    newSessionID = UUIDGenerate
+		    newSessionID = System.Random.UUID
 		    
 		    // Update the session with the new ID.
 		    session.Value("SessionID") = newSessionID
@@ -151,7 +151,7 @@ Inherits Timer
 		    
 		    // We were unable to re-use an existing session, so create a new one.
 		    
-		    newSessionID = UUIDGenerate
+		    newSessionID = System.Random.UUID
 		    
 		    // Create a new session dictionary.
 		    session = New Dictionary
