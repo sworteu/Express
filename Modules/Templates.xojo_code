@@ -14,6 +14,26 @@ Protected Module Templates
 		
 	#tag EndNote
 
+	#tag Note, Name = 1.0.1
+		------------------------------------------------------------------------------------------
+		1.0.1
+		------------------------------------------------------------------------------------------
+		
+		Fixed MustacheLite.Merge() to handle conditional sections for simple values (strings, 
+		booleans) not just values in JSONItem arrays.
+		
+		Supports inverted sections with {{^key}}...{{/key}} which show content only when a key 
+		is missing or falsy.
+		
+		For example:
+		
+		```html
+		{{^loggedIn}}
+		  <a href="/login">Please sign in</a>
+		{{/loggedIn}}
+		```
+	#tag EndNote
+
 	#tag Note, Name = About
 		-----------------------------------------------------------------------------------------
 		About
@@ -49,6 +69,10 @@ Protected Module Templates
 		
 		To learn more, visit https://www.tldrlegal.com/l/mit.
 	#tag EndNote
+
+
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"1.0.1", Scope = Protected, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag EndConstant
 
 
 	#tag ViewBehavior

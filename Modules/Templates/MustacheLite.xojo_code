@@ -12,7 +12,7 @@ Protected Class MustacheLite
 
 	#tag Method, Flags = &h0, Description = 4D657267657320612074656D706C617465202860536F757263656029207769746820646174612028604461746160292C20616E642073746F7265732074686520726573756C7420696E2060457870616E646564602E
 		Sub Merge()
-		  // Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
+		  /// Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
 		  
 		  // Append the system hash to the data hash.
 		  If MergeSystemTokens Then
@@ -35,6 +35,122 @@ Protected Class MustacheLite
 		      rgMatch = rg.Search(Expanded)
 		    Wend
 		  End If
+		  
+		  // ============================================================================
+		  // HANDLE CONDITIONAL SECTIONS (before processing data keys)
+		  // Process {{#key}}...{{/key}} for missing or falsy keys (remove entire section)
+		  // Process {{^key}}...{{/key}} inverted sections (show when key is missing/falsy)
+		  // ============================================================================
+		  
+		  // First, find and process all section tags in the template
+		  Var sectionRegex As New RegEx
+		  sectionRegex.SearchPattern = "\{\{([#^])([^}]+)\}\}"
+		  
+		  Var processedSections() As String // Track which sections we've handled
+		  
+		  rgMatch = sectionRegex.Search(Expanded)
+		  While rgMatch <> Nil
+		    Var sectionType As String = rgMatch.SubExpressionString(1) // "#" or "^"
+		    Var sectionKey As String = rgMatch.SubExpressionString(2).Trim
+		    
+		    // Skip if we've already processed this section
+		    Var sectionId As String = sectionType + sectionKey
+		    If processedSections.IndexOf(sectionId) > -1 Then
+		      rgMatch = sectionRegex.Search(Expanded, rgMatch.SubExpressionStartB(0) + rgMatch.SubExpressionString(0).Bytes + 1)
+		      Continue
+		    End If
+		    processedSections.Add(sectionId)
+		    
+		    // Build the token strings
+		    Var tokenBegin As String = "{{" + sectionType + sectionKey + "}}"
+		    Var tokenEnd As String = "{{/" + sectionKey + "}}"
+		    
+		    // Find the positions
+		    Var startPos As Integer = Expanded.IndexOf(tokenBegin)
+		    Var endPos As Integer = Expanded.IndexOf(startPos, tokenEnd)
+		    
+		    If startPos = -1 Or endPos = -1 Then
+		      rgMatch = sectionRegex.Search(Expanded, rgMatch.SubExpressionStartB(0) + rgMatch.SubExpressionString(0).Bytes + 1)
+		      Continue
+		    End If
+		    
+		    // Get the content between the tags
+		    Var innerContent As String = Expanded.Middle(startPos + tokenBegin.Length, endPos - startPos - tokenBegin.Length)
+		    Var fullSection As String = tokenBegin + innerContent + tokenEnd
+		    
+		    // Determine if the key exists and is truthy
+		    Var keyExists As Boolean = Data.HasKey(sectionKey)
+		    Var isTruthy As Boolean = False
+		    
+		    If keyExists Then
+		      Var value As Variant = Data.Value(sectionKey)
+		      If value <> Nil Then
+		        Select Case value.Type
+		        Case Variant.TypeBoolean
+		          isTruthy = value.BooleanValue
+		        Case Variant.TypeString, Variant.TypeText
+		          isTruthy = (value.StringValue <> "")
+		        Case Variant.TypeInt32, Variant.TypeInt64
+		          isTruthy = (value.IntegerValue <> 0)
+		        Case Variant.TypeDouble
+		          isTruthy = (value.DoubleValue <> 0)
+		        Case Else
+		          // For objects (like JSONItem), check if it's an array with items or a non-empty object
+		          Var valueType As Introspection.TypeInfo = Introspection.GetType(value)
+		          If valueType.Name = "JSONItem" Then
+		            Var jsonVal As JSONItem = value
+		            If jsonVal.IsArray Then
+		              isTruthy = (jsonVal.Count > 0)
+		            Else
+		              isTruthy = True // Non-array JSONItem is truthy (will be processed later)
+		            End If
+		          Else
+		            isTruthy = True // Other objects are truthy
+		          End If
+		        End Select
+		      End If
+		    End If
+		    
+		    // Handle based on section type
+		    If sectionType = "#" Then
+		      // Regular section: show if truthy
+		      If isTruthy Then
+		        // Check if it's a JSONItem that needs special processing (arrays handled later)
+		        If keyExists Then
+		          Var value As Variant = Data.Value(sectionKey)
+		          If value <> Nil Then
+		            Var valueType As Introspection.TypeInfo = Introspection.GetType(value)
+		            If valueType <> Nil And valueType.Name = "JSONItem" Then
+		              // Let the existing array/object handling code deal with this
+		              rgMatch = sectionRegex.Search(Expanded, rgMatch.SubExpressionStartB(0) + rgMatch.SubExpressionString(0).Bytes + 1)
+		              Continue
+		            End If
+		          End If
+		        End If
+		        // For simple truthy values, just remove the section tags but keep content
+		        Expanded = Expanded.Replace(fullSection, innerContent)
+		      Else
+		        // Remove the entire section
+		        Expanded = Expanded.Replace(fullSection, "")
+		      End If
+		    Else
+		      // Inverted section (^): show if falsy/missing
+		      If Not isTruthy Then
+		        // Remove the section tags but keep content
+		        Expanded = Expanded.Replace(fullSection, innerContent)
+		      Else
+		        // Remove the entire section
+		        Expanded = Expanded.Replace(fullSection, "")
+		      End If
+		    End If
+		    
+		    // Start search over since we modified the string
+		    rgMatch = sectionRegex.Search(Expanded)
+		  Wend
+		  
+		  // ============================================================================
+		  // END CONDITIONAL SECTIONS
+		  // ============================================================================
 		  
 		  // Loop over the data object's values.
 		  For Each key As String In Data.Keys
@@ -93,10 +209,10 @@ Protected Class MustacheLite
 		        Var tokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
 		        
 		        // Get the start position of the beginning token.
-		        Var startPosition As Integer = Source.IndexOf(0, tokenBegin) 
+		        Var startPosition As Integer = Expanded.IndexOf(0, tokenBegin) 
 		        
 		        // Get the position of the ending token.
-		        Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
+		        Var stopPosition As Integer = Expanded.IndexOf(startPosition, tokenEnd)
 		        
 		        // If the template does not include both the beginning and ending tokens.
 		        If ( (startPosition = -1) Or (stopPosition = -1) ) Then
@@ -105,13 +221,13 @@ Protected Class MustacheLite
 		        End If
 		        
 		        // Get the content between the beginning and ending tokens.
-		        Var loopSource As String = Source.Middle( startPosition + tokenBegin.Length, stopPosition - startPosition - tokenBegin.Length)
+		        Var loopSource As String = Expanded.Middle( startPosition + tokenBegin.Length, stopPosition - startPosition - tokenBegin.Length)
 		        
 		        // LoopContent is the content created by looping over the array and merging each value.
 		        Var loopContent As String
 		        
 		        // Loop over the array elements.
-		        For i As Integer = 0 to NestedJSON.Count - 1
+		        For i As Integer = 0 To NestedJSON.Count - 1
 		          
 		          Var arrayValue As Variant = NestedJSON.ValueAt(i)
 		          
@@ -156,6 +272,157 @@ Protected Class MustacheLite
 		      rgMatch = rg.Search(Expanded)
 		    Wend
 		  End If
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  ' // Merges a template (`Source`) with data (`Data`), and stores the result in `Expanded`.
+		  ' 
+		  ' // Append the system hash to the data hash.
+		  ' If MergeSystemTokens Then
+		  ' SystemDataAppend
+		  ' End If
+		  ' 
+		  ' // Load the template.
+		  ' Expanded = Source
+		  ' 
+		  ' // Regex used for removal of comments and orphans.
+		  ' Var rg As New RegEx
+		  ' Var rgMatch As RegExMatch
+		  ' 
+		  ' // Remove comments.
+		  ' If RemoveComments = True Then
+		  ' rg.SearchPattern = "\{\{!(?:(?!}})(.|\n))*\}\}"
+		  ' rgMatch = rg.Search(Expanded)
+		  ' While rgMatch <> Nil
+		  ' Expanded = rg.Replace(Expanded)
+		  ' rgMatch = rg.Search(Expanded)
+		  ' Wend
+		  ' End If
+		  ' 
+		  ' // Loop over the data object's values.
+		  ' For Each key As String In Data.Keys
+		  ' 
+		  ' // Get the value.
+		  ' Var value As Variant = Data.Value(key)
+		  ' 
+		  ' // If the value is Nil then continue.
+		  ' If value = Nil Then
+		  ' Continue
+		  ' End If
+		  ' 
+		  ' // Handle Xojo primitive types first.
+		  ' Select Case value.Type
+		  ' Case Variant.TypeBoolean, Variant.TypeDouble, Variant.TypeInt32, Variant.TypeInt64, Variant.TypeString, _
+		  ' Variant.TypeText, Variant.TypeDateTime, Variant.TypeColor, Variant.TypeCurrency
+		  ' // Convert the primitive value to a string.
+		  ' Var valueString As String = value.StringValue
+		  ' 
+		  ' // Using the object's name and the entry's key, generate the token to replace.
+		  ' Var token As String = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		  ' 
+		  ' // Replace all occurrences of the token with the value.
+		  ' Expanded = Expanded.ReplaceAll("{{" + Token + "}}", valueString)
+		  ' 
+		  ' Continue
+		  ' End Select
+		  ' 
+		  ' // Not a primitive value. Use introspection to determine the entry's value type.
+		  ' Var valueType As Introspection.TypeInfo = Introspection.GetType(value)
+		  ' 
+		  ' // If the value is a nested JSONItem.
+		  ' If valueType.Name = "JSONItem" Then
+		  ' 
+		  ' // Get the nested JSONItem.
+		  ' Var nestedJSON As JSONItem = value
+		  ' 
+		  ' // If the nested JSONItem is not an array.
+		  ' If nestedJSON.IsArray = False Then
+		  ' 
+		  ' // Process the nested JSON using another Template instance. 
+		  ' Var engine As New MustacheLite
+		  ' engine.Source = Expanded
+		  ' engine.Data = nestedJSON
+		  ' engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		  ' engine.MergeSystemTokens = False
+		  ' engine.RemoveComments = False
+		  ' engine.RemoveOrphans = False
+		  ' engine.Merge
+		  ' Expanded = engine.Expanded
+		  ' 
+		  ' Else
+		  ' 
+		  ' // Get the beginning and ending tokens for this array.
+		  ' Var tokenBegin As String = "{{#" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
+		  ' Var tokenEnd As String = "{{/" + If(KeyPrefix <> "", KeyPrefix + ".", "") + key + "}}"
+		  ' 
+		  ' // Get the start position of the beginning token.
+		  ' Var startPosition As Integer = Source.IndexOf(0, tokenBegin) 
+		  ' 
+		  ' // Get the position of the ending token.
+		  ' Var stopPosition As Integer = Source.IndexOf(startPosition, tokenEnd)
+		  ' 
+		  ' // If the template does not include both the beginning and ending tokens.
+		  ' If ( (startPosition = -1) Or (stopPosition = -1) ) Then
+		  ' // We do not need to merge the array.
+		  ' Continue
+		  ' End If
+		  ' 
+		  ' // Get the content between the beginning and ending tokens.
+		  ' Var loopSource As String = Source.Middle( startPosition + tokenBegin.Length, stopPosition - startPosition - tokenBegin.Length)
+		  ' 
+		  ' // LoopContent is the content created by looping over the array and merging each value.
+		  ' Var loopContent As String
+		  ' 
+		  ' // Loop over the array elements.
+		  ' For i As Integer = 0 to NestedJSON.Count - 1
+		  ' 
+		  ' Var arrayValue As Variant = NestedJSON.ValueAt(i)
+		  ' 
+		  ' // Process the value using another MustacheLite instance. 
+		  ' Var engine As New MustacheLite
+		  ' engine.Source = loopSource
+		  ' engine.Data = arrayValue
+		  ' engine.KeyPrefix = If(KeyPrefix <> "", KeyPrefix + ".", "") + key
+		  ' engine.MergeSystemTokens = False
+		  ' engine.RemoveComments = False
+		  ' Engine.RemoveOrphans = False
+		  ' Engine.Merge
+		  ' 
+		  ' // Append the expanded content with the loop content.
+		  ' loopContent = loopContent + engine.Expanded
+		  ' 
+		  ' Next i
+		  ' 
+		  ' // Substitute the loop content block of the template with the expanded content.
+		  ' Var loopBlock As String = tokenBegin + loopSource + tokenEnd
+		  ' Expanded = Expanded.ReplaceAll(loopBlock, loopContent)
+		  ' 
+		  ' End If
+		  ' 
+		  ' Continue
+		  ' 
+		  ' End If
+		  ' 
+		  ' // This is an unhandled value type.
+		  ' // In theory, we should never get this far.
+		  ' // Look at ValueType.Name to determine what the type is.
+		  ' Break
+		  ' 
+		  ' Next key
+		  ' 
+		  ' // Remove orphaned tokens.
+		  ' If RemoveOrphans = True Then
+		  ' rg.SearchPattern = "\{\{(?:(?!}}).)*\}\}"
+		  ' rgMatch = rg.Search(Expanded)
+		  ' While rgMatch <> Nil
+		  ' Expanded = rg.Replace(Expanded)
+		  ' rgMatch = rg.Search(Expanded)
+		  ' Wend
+		  ' End If
 		  
 		End Sub
 	#tag EndMethod

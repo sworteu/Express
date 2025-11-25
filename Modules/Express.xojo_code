@@ -1904,7 +1904,7 @@ Protected Module Express
 		#Tag Instance, Platform = Windows, Language = Default, Definition  = \"-"
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.3", Scope = Public, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
+	#tag Constant, Name = VERSION_STRING, Type = String, Dynamic = False, Default = \"6.2.3", Scope = Protected, Description = 546865206D6F64756C6527732076657273696F6E2E20496E2053656D56657220666F726D617420284D414A4F522E4D494E4F522E5041544348292E
 	#tag EndConstant
 
 
