@@ -539,7 +539,7 @@ Inherits SSLSocket
 		    
 		    // Try to add the URL-decoded path component.
 		    Try
-		      f = f.Child(DecodeURLComponent( pathComponent ))
+		      f = f.Child(DefineEncoding(DecodeURLComponent( pathComponent ), Encodings.UTF8))
 		    Catch e As NilObjectException
 		      Return
 		    Catch e As UnsupportedFormatException
