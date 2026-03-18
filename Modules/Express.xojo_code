@@ -304,8 +304,11 @@ Protected Module Express
 		  //
 		  // Source: https://github.com/samuelneff/MimeTypeMap
 		  
-		  Var mimeTypes As New Dictionary
-		  mimeTypes.Value("323") = "text/h323"
+		  Static mimeTypes As Dictionary
+		  
+		  If mimeTypes Is Nil Then
+		    mimeTypes = New Dictionary
+		    mimeTypes.Value("323") = "text/h323"
 		  mimeTypes.Value("3g2") = "video/3gpp2"
 		  mimeTypes.Value("3gp") = "video/3gpp"
 		  mimeTypes.Value("3gp2") = "video/3gpp2"
@@ -903,9 +906,14 @@ Protected Module Express
 		  mimeTypes.Value("xtp") = "application/octet-stream"
 		  mimeTypes.Value("xwd") = "image/x-xwindowdump"
 		  mimeTypes.Value("z") = "application/x-compress"
-		  mimeTypes.Value("zip") = "application/zip"
+		    mimeTypes.Value("zip") = "application/zip"
+		  End If
 		  
-		  Return mimeTypes.Lookup(extension, "binary/octet-stream")
+		  If mimeTypes.HasKey(extension) Then
+		    Return mimeTypes.Value(extension)
+		  End If
+		  
+		  Return mimeTypes.Lookup(extension.Lowercase, "application/octet-stream")
 		  
 		  
 		End Function
