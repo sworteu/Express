@@ -421,12 +421,11 @@ Inherits SSLSocket
 		  For i As Integer = 0 To GETParams.LastIndex
 		    Var thisParam As String = GETParams( i )
 		    Var key As String = thisParam.NthField( "=", 1 )
-		    Var value As String = thisParam.NthField( "=", 2 )
-		    value = URLDecode(value) 
+		    Var value As String = URLDecode(thisParam.NthField( "=", 2 ))
 		    
 		    // If the key does not already exist in the GET dictionary...
 		    If Not Get.HasKey(key) Then
-		      GET.Value(key) = URLDecode(value)
+		      GET.Value(key) = value
 		    Else
 		      
 		      Var temp() As String
@@ -589,7 +588,11 @@ Inherits SSLSocket
 		      currentEtag = currentEtag.NthField(".", 1)
 		      
 		      // Get any Etag that the client sent in the request.
-		      Var clientEtag As String = Headers.Lookup("If-None-Match", "")
+		      Var clientEtag As String = Headers.Lookup("If-None-Match", "").StringValue.Trim
+		      If clientEtag.BeginsWith("W/") Then
+		        clientEtag = clientEtag.Middle(2).Trim
+		      End If
+		      clientEtag = clientEtag.ReplaceAll(quote, "")
 		      
 		      // If the client has the current resource...
 		      If clientEtag = currentEtag Then
@@ -606,11 +609,16 @@ Inherits SSLSocket
 		    // Update the response status.
 		    Response.Status = "200"
 		    
-		    // Get the file's contents.
-		    Response.Content = FileRead(f)
-		    
-		    // Set the encoding of the content.
-		    Response.Content = Response.Content.DefineEncoding(Encodings.UTF8)
+		    // Get the file's contents using a binary-safe read so non-text assets are not corrupted.
+		    Try
+		      Var bs As BinaryStream = BinaryStream.Open(f)
+		      Response.Content = bs.Read(bs.Length)
+		      bs.Close
+		    Catch e As IOException
+		      Response.Status = "500 Internal Server Error"
+		      Response.Content = "Error 500: Internal Server Error"
+		      Return
+		    End Try
 		    
 		    // Get the file's extension.
 		    Var extension As String = f.Name.NthField( ".", f.Name.CountFields( "."))

@@ -59,8 +59,7 @@ Protected Class Response
 		  
 		  // Create the cookie's expiration date.
 		  Var expirationDate As DateTime = DateTime.Now
-		  expirationDate = ExpirationDate.AddInterval( 0, 0, expirationDate.Day + expirationDays, expirationDate.Hour + expirationHours, _
-		  expirationDate.Minute + expirationMinutes, expirationDate.Second + expirationSeconds )
+		  expirationDate = expirationDate.AddInterval(0, 0, expirationDays, expirationHours, expirationMinutes, expirationSeconds)
 		  
 		  // Create a dictionary for the cookie's settings.
 		  Var cookie As New Dictionary

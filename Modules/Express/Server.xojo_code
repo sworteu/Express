@@ -130,7 +130,7 @@ Inherits ServerSocket
 		  End If
 		  
 		  If arguments.HasKey("--CertificatePassword") Then 
-		    CertificatePassword = CertificatePassword
+		    CertificatePassword = arguments.Value("--CertificatePassword")
 		  End If
 		  
 		  If LaunchArgumentIsSet(arguments, "--CloseConnections", "EXPRESS_CLOSECONNECTIONS") Then
